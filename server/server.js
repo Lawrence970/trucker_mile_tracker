@@ -29,4 +29,19 @@ app.use((req, res, next) => {
   next();
 });
 
+//Get - gets all of the Routes
+app.get("/route", (req, res, next) => {
+  res.setHeader("Content-Type", "application/json");
+  let findQuery = {};
+  console.log("getting all the routes");
+  Route.find(findQuery, function (err, routes) {
+    if (err) {
+      res.status(500).json({ message: `unable to list routes`, error: err });
+      return;
+    }
+    res.status(200).json(routes);
+    console.log("Getting Routes Successful");
+  });
+});
+
 module.exports = app; // export app variables
