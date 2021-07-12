@@ -1,12 +1,15 @@
 // this file is where all the data[types] go
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const schema = mongoose.schema({ // this is a schema. it contains all datatypes
-
+const trackerSchema = mongoose.Schema({
+  // this is a schema. it contains all datatypes
 });
 
-// let store = {}; depricated
+const Tracker = mongoose.model("Tracker", trackerSchema);
+
+let store = {};
 
 module.exports = {
-    schema,
-}
+  Tracker,
+  store,
+};
