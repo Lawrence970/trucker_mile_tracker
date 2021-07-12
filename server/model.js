@@ -2,6 +2,9 @@
 const mongoose = require("mongoose");
 const { stringify } = require("querystring");
 
+/*NOTE: user_id is tied to routeSchema because every route needs a user. Users
+shouldn't have access to all routes, so no routeSchema imported to user*/
+
 const routeSchema = mongoose.Schema(
   {
     // this is a schema. it contains all datatypes
@@ -9,28 +12,43 @@ const routeSchema = mongoose.Schema(
     to_location: String,
     start_mileage: Number,
     end_mileage: Number,
+    //every route will have a user_id, so pass through user_id as object
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "Route" },
+    //When we implement company/employer schema:
+    //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamp: true }
 );
 
 const userSchema = mongoose.Schema(
   {
-    //user_id: ???
     first_name: String,
     last_name: String,
     email: String,
     encrypted_pass: String,
-    routes: [routeSchema],
-    Category: String,
+    role: String,
+    //DON'T pass route schema through here, because it will give access to all routes.
+    //When we implement company_id schema:
+    //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamp: true }
 );
 
-const Route = mongoose.model("Route", routeSchema);
+//When we implement Company/Employer Schema,
+/*
+const companySchema = mongoose.Schema(
+	{
+		company_name:String,
+		role:String,
+	}
+);
 
-let store = {};
+*/
+
+const Route = mongoose.model("Route", routeSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = {
   Route,
-  store,
+  User,
 };

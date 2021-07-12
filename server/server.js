@@ -4,7 +4,9 @@
 const express = require("express");
 const { Model } = require("mongoose"); //??????
 const { routeSchema, Route } = require("./model");
+const { userSchema, User } = require("./model");
 const cors = require("cors");
+const constants = require("./constants");
 
 // initialize your app/server
 const app = express();
@@ -29,10 +31,23 @@ app.use((req, res, next) => {
   next();
 });
 
-//Get - gets all of the Routes
+//Get - gets all of the Routes based on role
 app.get("/route", (req, res, next) => {
   res.setHeader("Content-Type", "application/json");
+  role = "admin"; //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
   let findQuery = {};
+
+  //Check role if role == admin look at all Queries, don't add filter
+  if (role === constants.UserRoles.admin) {
+    findQuery = {};
+  }
+  //if role == driver add that user's id to the filter
+  else if (role === constants.UserRoles.driver) {
+    findQuery = {
+      user_id,
+    };
+  }
+
   console.log("getting all the routes");
   Route.find(findQuery, function (err, routes) {
     if (err) {
@@ -43,5 +58,7 @@ app.get("/route", (req, res, next) => {
     console.log("Getting Routes Successful");
   });
 });
+
+//Get - gets all routes with the given user
 
 module.exports = app; // export app variables
