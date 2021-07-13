@@ -3,12 +3,12 @@ var app = new Vue({
 
     //! data
     data: {
-      
+     
     },
 
     //! methods
     methods: {
-
+      
     },
 
     //!created
