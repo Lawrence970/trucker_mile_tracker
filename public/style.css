@@ -1,24 +1,109 @@
+/* FONTS */
+@font-face {
+    font-family: "Staatliches";
+    src: url(/fonts/Staatliches/Staatliches-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url(/fonts/Roboto/Roboto-Light.ttf);
+}
+/* GLOBAL --webkit*/
+
+/* GLOBAL custom styles */
+
 /* GLOBAL styles */
 body {
     margin:0;
     padding:0;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
-    background-color: azure;
+    background-color: #464347;
 }
 
+.nav-bar {
+    height:68px;
+    background-color: #FFFA6B;
+    box-shadow:0px 10px 0px 0px rgba(248, 250, 113, 0.603);
+}
 
+.input-field{
+    height: 44px;
+    width: 310px;
+    text-align: center;
+    font-size:1.2em;
+    border:none;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    margin:25px;
+    font-family: Roboto;
+}
 
+.input-field:focus{
+    outline:none;
+}
 
-/* styles by id */
+.input-field::placeholder{
+    color:#464347;
+    opacity: .55;
+    font-size:24px;
+}
 
+.input-button{
+    border:none;
+    border-radius:5px;
+    font-family:Roboto;
+    font-size:27px;
+    margin:50px;
+    cursor: pointer;
+    color:#282A35;
+    background-color: #FFFA6B;
+    width:310px;
+    height:64px;
+}
 
+.input-button:hover{
+    background-color: #282A35;
+    color:#FFFA6B;
+}
 
+.subscript-gray {
+    font-size: 24px;
+    color:#8D8C80;
+}
 
+.subscript-yellow {
+    color:#FFFA6B;
+    font-size: 26px;
+}
 
+/* use this wherever TRUCKER MILES h1 is used */
+.app-name-header-one {
+    font-family:Staatliches;
+    letter-spacing: .1em;
+    font-size:60px;
+    color:#FFFA6B;
+    margin-top: 100px;
+    margin-bottom:0px;
+}
 
+/* styles index.html*/
+#login-input {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+#login-btn-container{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-/* styles by class */
+#employer-sign-in{
+    position:absolute;
+    bottom:50px;
+    text-align: center;
+}
 
 
 
