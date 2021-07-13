@@ -16,7 +16,7 @@
 body {
     margin:0;
     padding:0;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-family:Roboto;
     background-color: #464347;
 }
 
@@ -24,6 +24,17 @@ body {
     height:68px;
     background-color: #FFFA6B;
     box-shadow:0px 10px 0px 0px rgba(248, 250, 113, 0.603);
+    display:flex;
+    align-items: center;
+    justify-content:left;
+    padding-left: 40px;
+    padding-right:40px;
+}
+
+.nav-bar a{
+    text-decoration: none;
+    color:#282A35;
+    font-size:2em;
 }
 
 .input-field{
@@ -53,7 +64,7 @@ body {
     border-radius:5px;
     font-family:Roboto;
     font-size:27px;
-    margin:50px;
+    margin: 20px;
     cursor: pointer;
     color:#282A35;
     background-color: #FFFA6B;
@@ -62,13 +73,14 @@ body {
 }
 
 .input-button:hover{
-    background-color: #282A35;
-    color:#FFFA6B;
+    background-color: #f5ef54;
+    color:#282A35;
 }
 
 .subscript-gray {
-    font-size: 24px;
+    font-size: 16px;
     color:#8D8C80;
+    margin:2px;
 }
 
 .subscript-yellow {
@@ -87,10 +99,13 @@ body {
 }
 
 /* styles index.html*/
+/* styles index.html*/
+/* styles index.html*/
 #login-input {
     display:flex;
     flex-direction: column;
     align-items: center;
+    margin:200px;
 }
 
 #login-btn-container{
@@ -105,15 +120,35 @@ body {
     text-align: center;
 }
 
+/* styles signUp.html*/
+/* styles signUp.html*/
+/* styles signUp.html*/
 
+#sign-up-input {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-
-
+#sign-up-form {
+    background-color: #2f2f33;
+    border-radius:25px;
+    margin: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+}
 
 
 
 
 /* media query at width of 700px */
 @media screen and (max-width: 700px) {
-
+    .subscript-gray {
+        font-size: 16px;
+        color:#8D8C80;
+        text-align:center;
+        margin:2px;
+    }
 }

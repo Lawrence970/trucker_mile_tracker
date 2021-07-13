@@ -1,6 +1,16 @@
 // this file for BASE js functions
 
-//* button for redirection to another page
-document.getElementById("sign-in-button-redirect").onclick = function() {
-    window.location.href = "www.youtube.com";
-};
+//! learning 
+let signUpBtnVerify = document.getElementById('sign-up-btn-verify')
+const event = new Event('build', {
+    boolin: true,
+    detail: {text: () => signUpBtnVerify.value}
+});
+
+Element.addEventListener('build', function (e) {
+    detail: Element.dataset.time
+})
+
+function eventHandler(e) {
+    console.log('the time is: ' + e.detail)
+}
