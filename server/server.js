@@ -34,15 +34,15 @@ app.use((req, res, next) => {
 //Get - gets all of the Routes based on role
 app.get("/route", (req, res, next) => {
   res.setHeader("Content-Type", "application/json");
-  role = "admin"; //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
+  role = "driver"; //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
   let findQuery = {};
 
   //Check role if role == admin look at all Queries, don't add filter
-  if (role === constants.UserRoles.admin) {
+  if (req.body.role === constants.UserRoles.admin) {
     findQuery = {};
   }
   //if role == driver add that user's id to the filter
-  else if (role === constants.UserRoles.driver) {
+  else if (req.body.role === constants.UserRoles.driver) {
     findQuery = {
       user_id,
     };
@@ -59,83 +59,74 @@ app.get("/route", (req, res, next) => {
   });
 });
 
-//Get - gets all routes with the given user
+//post - Creates new route
+app.post("/route", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log("Creating a new route");
 
-
-
+  let creatingRoute = {
+    from_location: req.body.from_location || "",
+    to_location: req.body.to_location || "",
+    start_mileage: req.body.start_mileage || "",
+    end_mileage: req.body.end_mileage || "",
+    //???user id?
+  };
+  Route.create(creatingRoute, (err, route) => {
+    if (err) {
+      console.log("unable to create todo");
+      res.status(500).json({
+        message: "unable to create route",
+        error: err,
+      });
+      return;
+    }
+    res.status(201).json(route);
+    console.log("successfully created route");
+  });
+});
 
 // AUTHENTICATION
 
-
 // CREATING NEW USERS
-app.post("/user", function(req, res){
+app.post("/user", function (req, res) {
   // CHECKING IF THE EMAIL IS UNIQUE
-  User.findOne({email: req.body.email}).then(function(user){
-    if (user){
+  User.findOne({ email: req.body.email }).then(function (user) {
+    if (user) {
       res.status(422).json({
-        error: "Email Already registered"
-      })
-    }
-    else{
+        error: "Email Already registered",
+      });
+    } else {
       // CREATING THE NEW USER MODEL
       var user = new User({
         first_name: req.body.firstName,
         last_name: req.body.lastName,
         email: req.body.email,
-        role: req.body.role
+        role: req.body.role,
       });
       // storing the plain password
       var plainPassword = req.body.plainPassword;
-      user.setEncryptedPassword(plainPassword, function(){
-        user.save().then(function(){
-          res.status(201).json(user)
-        }).catch(function(err){
-          if (err.errors){
-            // MONGOOSE VALIDATION FAILURE
-            var messages = {};
-            for (var e in err.errors){
-              messages[e] = err.errors[e].message;
+      user.setEncryptedPassword(plainPassword, function () {
+        user
+          .save()
+          .then(function () {
+            res.status(201).json(user);
+          })
+          .catch(function (err) {
+            if (err.errors) {
+              // MONGOOSE VALIDATION FAILURE
+              var messages = {};
+              for (var e in err.errors) {
+                messages[e] = err.errors[e].message;
+              }
+              res.status(422).json(messages);
+            } else {
+              // worse failure
+              res.sendStatus(500);
             }
-            res.status(422).json(messages);
-          }
-          else{
-            // worse failure
-            res.sendStatus(500);
-          }
-        })
-      })
-
-
-
+          });
+      });
     }
-
-  })
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  });
+});
 
 module.exports = app; // export app variables

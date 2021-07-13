@@ -6,7 +6,7 @@ const db = mongoose.connection;
 function connect(callback) {
   // connection to mongo DB atlas
   // password for cluster myCoolPassword
-  let connectionString = `mongodb+srv://todo_2021:myCoolPassword@raider144.ia1un.mongodb.net/todo_2021_DB?retryWrites=true&w=majority`;
+  let connectionString = `mongodb+srv://todo_2021:myCoolPassword@raider144.ia1un.mongodb.net/route_2021_DB?retryWrites=true&w=majority`;
 
   console.log("connecting to raider144...");
   mongoose
