@@ -2,6 +2,9 @@
 const mongoose = require("mongoose");
 const { stringify } = require("querystring");
 
+// IMPORTING BCRYPT LIBRARY TO HASH PASSWORDS
+const bcrypt = require("bcrypt");
+
 /*NOTE: user_id is tied to routeSchema because every route needs a user. Users
 shouldn't have access to all routes, so no routeSchema imported to user*/
 
@@ -22,11 +25,26 @@ const routeSchema = mongoose.Schema(
 
 const userSchema = mongoose.Schema(
   {
-    first_name: String,
-    last_name: String,
-    email: String,
-    encrypted_pass: String,
-    role: String,
+    first_name:{
+      type: String,
+      required: true
+    },
+    last_name:{
+      type: String,
+      required: true
+    },
+    email:{
+      type: String,
+      required: true,
+      unique: true
+    },
+    encrypted_password:{
+      type: String,
+      required: true
+    },
+    role: {
+      type: String
+    }
     //DON'T pass route schema through here, because it will give access to all routes.
     //When we implement company_id schema:
     //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -44,6 +62,15 @@ const companySchema = mongoose.Schema(
 );
 
 */
+
+// METHODS TO ENCRYPT PASSWORD
+userSchema.methods.setEncryptedPassword = function(plainPassword, callback){
+  bcrypt.hash(plainPassword, 12).then(hash =>{
+    this.encrypted_password = hash;
+    callback();
+  })
+}
+
 
 const Route = mongoose.model("Route", routeSchema);
 const User = mongoose.model("User", userSchema);

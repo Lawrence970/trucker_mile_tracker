@@ -61,4 +61,81 @@ app.get("/route", (req, res, next) => {
 
 //Get - gets all routes with the given user
 
+
+
+
+// AUTHENTICATION
+
+
+// CREATING NEW USERS
+app.post("/user", function(req, res){
+  // CHECKING IF THE EMAIL IS UNIQUE
+  User.findOne({email: req.body.email}).then(function(user){
+    if (user){
+      res.status(422).json({
+        error: "Email Already registered"
+      })
+    }
+    else{
+      // CREATING THE NEW USER MODEL
+      var user = new User({
+        first_name: req.body.firstName,
+        last_name: req.body.lastName,
+        email: req.body.email,
+        role: req.body.role
+      });
+      // storing the plain password
+      var plainPassword = req.body.plainPassword;
+      user.setEncryptedPassword(plainPassword, function(){
+        user.save().then(function(){
+          res.status(201).json(user)
+        }).catch(function(err){
+          if (err.errors){
+            // MONGOOSE VALIDATION FAILURE
+            var messages = {};
+            for (var e in err.errors){
+              messages[e] = err.errors[e].message;
+            }
+            res.status(422).json(messages);
+          }
+          else{
+            // worse failure
+            res.sendStatus(500);
+          }
+        })
+      })
+
+
+
+    }
+
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = app; // export app variables
