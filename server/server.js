@@ -58,17 +58,48 @@ app.get("/route", (req, res, next) => {
     console.log("Getting Routes Successful");
   });
 });
+/*
+//Gets specific route based on id
+app.get("/route/:id/", (req, res, next) => {
+  res.setHeader("Content-Type", "application/json");
+  role = "driver"; //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
+  let findQuery = {};
+
+  //Check role if role == admin look at all Queries, don't add filter
+  if (req.body.role === constants.UserRoles.admin) {
+    findQuery = {};
+  }
+  //if role == driver add that user's id to the filter
+  else if (req.body.role === constants.UserRoles.driver) {
+    findQuery = {
+      user_id,
+    };
+  }
+
+  console.log("getting all the routes");
+  Route.find(findQuery, function (err, routes) {
+    if (err) {
+      res.status(500).json({ message: `unable to list routes`, error: err });
+      return;
+    }
+    res.status(200).json(routes);
+    console.log("Getting Routes Successful");
+  });
+});*/
 
 //post - Creates new route
 app.post("/route", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log("Creating a new route");
+  //var total = req.body.end_mileage - req.body.start_mileage;
+  //console.log(total);
 
   let creatingRoute = {
     from_location: req.body.from_location || "",
     to_location: req.body.to_location || "",
     start_mileage: req.body.start_mileage || "",
     end_mileage: req.body.end_mileage || "",
+    total_miles: total || "",
     //???user id?
   };
   Route.create(creatingRoute, (err, route) => {

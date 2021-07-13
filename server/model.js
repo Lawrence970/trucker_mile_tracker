@@ -15,6 +15,7 @@ const routeSchema = mongoose.Schema(
     to_location: String,
     start_mileage: Number,
     end_mileage: Number,
+    total_miles: Number,
     //every route will have a user_id, so pass through user_id as object
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: "Route" },
     //When we implement company/employer schema:
@@ -25,26 +26,26 @@ const routeSchema = mongoose.Schema(
 
 const userSchema = mongoose.Schema(
   {
-    first_name:{
-      type: String,
-      required: true
-    },
-    last_name:{
-      type: String,
-      required: true
-    },
-    email:{
+    first_name: {
       type: String,
       required: true,
-      unique: true
     },
-    encrypted_password:{
+    last_name: {
       type: String,
-      required: true
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    encrypted_password: {
+      type: String,
+      required: true,
     },
     role: {
-      type: String
-    }
+      type: String,
+    },
     //DON'T pass route schema through here, because it will give access to all routes.
     //When we implement company_id schema:
     //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -64,13 +65,12 @@ const companySchema = mongoose.Schema(
 */
 
 // METHODS TO ENCRYPT PASSWORD
-userSchema.methods.setEncryptedPassword = function(plainPassword, callback){
-  bcrypt.hash(plainPassword, 12).then(hash =>{
+userSchema.methods.setEncryptedPassword = function (plainPassword, callback) {
+  bcrypt.hash(plainPassword, 12).then((hash) => {
     this.encrypted_password = hash;
     callback();
-  })
-}
-
+  });
+};
 
 const Route = mongoose.model("Route", routeSchema);
 const User = mongoose.model("User", userSchema);
