@@ -160,4 +160,92 @@ app.post("/user", function (req, res) {
   });
 });
 
+ //PASSPORT
+ const session = require("express-session");
+ const passport = require("passport");
+ const passportLocal = require("passport-local");
+
+
+ // PASSPORT MIDDLEWARES
+ app.use(session({
+   secret: 'fljadskjvn123bf',
+   resave: false,
+   saveUninitialized: true
+ }));
+ app.use(passport.initialize());
+ app.use(passport.session());
+
+ // 1. Local Strategy
+ passport.use(new passportLocal.Strategy({
+   //some configs
+   usernameField: "email",
+   passwordField: "plainPassword"
+ }, function(email, plainPassword, done){
+   console.log("local got hit");
+   User.findOne({email: email}).then(function(user){
+     console.log("this is the user: ",user);
+     if (!user){
+       done(null, false, {message: "No user with that email"});
+       return;
+     }
+     // verify that the user exists
+     user.verifyPassword(plainPassword, function(result){
+       if (result){
+         done(null, user);
+       }
+       else{
+         done(null, false, {message: "Password incorrect"});
+       }
+     })
+   }).catch(function(err){
+     done(err);
+   })
+ }))
+ // 2. SERIALIZED USER TO SESSION
+ passport.serializeUser(function(user,done){
+   done(null, user._id);
+ })
+
+ //3. DESERIALIZED USER FROM SESSION
+ passport.deserializeUser(function(userId, done){
+   User.findOne({_id: userId}).then(function(user){
+     done(null, user);
+   }).catch(function(err){
+     done(err);
+   })
+ })
+
+ // 4. Authenticate endpoint
+ app.post("/session", passport.authenticate("local"),function(req,res){
+   // this function is called if authentication succeeds.
+   console.log("session got hit");
+   res.sendStatus(201);
+ });
+
+ // 5. ME ENDPOINT
+app.get("/session", function(req, res){
+  if (req.user){
+    // send user details
+    res.json(req.user);
+  }
+  else{
+    res.sendStatus(401);
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = app; // export app variables

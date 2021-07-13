@@ -72,6 +72,13 @@ userSchema.methods.setEncryptedPassword = function (plainPassword, callback) {
   });
 };
 
+// METHOD TO VERIFY PASSWORD
+userSchema.methods.verifyPassword = function(plainPassword, callback){
+  bcrypt.compare(plainPassword, this.encrypted_password).then(result =>{
+    callback(result);
+  });
+};
+
 const Route = mongoose.model("Route", routeSchema);
 const User = mongoose.model("User", userSchema);
 
