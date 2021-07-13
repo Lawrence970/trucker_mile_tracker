@@ -15,7 +15,6 @@ const routeSchema = mongoose.Schema(
     to_location: String,
     start_mileage: Number,
     end_mileage: Number,
-    total_miles: Number,
     //every route will have a user_id, so pass through user_id as object
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: "Route" },
     //When we implement company/employer schema:
