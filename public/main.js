@@ -1,12 +1,5 @@
 // this file for BASE js functions
 
-
-
-
-
-
-
-
 //! {sign-up & login form}----------------------------------------------------------------------------
 //? setFormMessage(loginForm, "success", "youre logged in")
 
@@ -73,9 +66,29 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
 
         // TODO
-        // perform the login fetch method
+        // perform the login fetch/GET method on server/user with data below
+        //  var user = new User({
+        //     first_name: req.body.firstName,
+        //     last_name: req.body.lastName,
+        //     email: req.body.email,
+        //     role: req.body.role,
+        //   });
+        //  var plainPassword = req.body.plainPassword;
+
+        
         // error if(statements)
     });
+
+    createAccountForm.addEventListener("submit", (e) =>{
+        e.preventDefault();
+
+        // TODO
+        // perform the create account fetch/POST method
+        // error if(statements)
+
+
+
+    })
 
     document.querySelectorAll(".form-input").forEach(inputElement =>{
         inputElement.addEventListener("blur", (e) =>{
@@ -90,4 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //* end of form container logic <<<
 });
+
+//? fetch requests for {sign up login form}--------------------------
+
+
+
+
+
+
+
 //! end of {sign up login form} -----------------------------------------------------------------
