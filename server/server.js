@@ -31,6 +31,12 @@ app.use((req, res, next) => {
   next();
 });
 
+//HELPER FUNCTIONS
+// MODULE EXPORTS HELPER FUNCTION TO CALCULATE AND SET TOTAL MILEAGE
+const {setTotalMileageOfRoutes} = require("./server-helper-functions");
+
+
+// METHODS
 //Get - gets all of the Routes based on role
 app.get("/route", (req, res, next) => {
   res.setHeader("Content-Type", "application/json");
@@ -55,22 +61,14 @@ app.get("/route", (req, res, next) => {
       return;
     }
     console.log("These are the routes: ", routes);
-    for (route in routes) {
-      console.log("These are the routes", routes[route]);
-      var total = routes[route].end_mileage - routes[route].start_mileage;
-      routes[route] = {
-        _id: routes[route]._id,
-        from_location: routes[route].from_location,
-        to_location: routes[route].to_location,
-        start_mileage: routes[route].start_mileage,
-        end_mileage: routes[route].end_mileage,
-        total_miles: total,
-      };
-    }
-    res.status(200).json(routes);
+    var calculatedRoutes = setTotalMileageOfRoutes(routes);
+    res.status(200).json(calculatedRoutes);
     console.log("Getting Routes Successful");
   });
 });
+
+
+
 /*
 //Gets specific route based on id
 app.get("/route/:id/", (req, res, next) => {
