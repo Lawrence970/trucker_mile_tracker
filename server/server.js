@@ -55,18 +55,29 @@ const {setTotalMileageOfRoutes} = require("./server-helper-functions");
 // METHODS
 //Get - gets all of the Routes based on role
 app.get("/route", (req, res, next) => {
+
+  if (!req.user){
+    res.sendStatus(401);
+    return;
+  }
+
+  console.log("This is the user: ", req.user);
+
   res.setHeader("Content-Type", "application/json");
   role = "driver"; //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
   let findQuery = {};
 
   //Check role if role == admin look at all Queries, don't add filter
+
   if (req.body.role === constants.UserRoles.admin) {
     findQuery = {};
   }
+
   //if role == driver add that user's id to the filter
-  else if (req.body.role === constants.UserRoles.driver) {
+  // IF THE USER IS A DRIVER, HE CAN SEE JUST HIS ROUTES
+  else if (req.user.role === constants.UserRoles.driver) {
     findQuery = {
-      user_id,
+      user: req.user._id
     };
   }
 
@@ -76,7 +87,6 @@ app.get("/route", (req, res, next) => {
       res.status(500).json({ message: `unable to list routes`, error: err });
       return;
     }
-    console.log("These are the routes: ", routes);
     var calculatedRoutes = setTotalMileageOfRoutes(routes);
     res.status(200).json(calculatedRoutes);
     console.log("Getting Routes Successful");
@@ -125,7 +135,7 @@ app.post("/route", function (req, res) {
 
   res.setHeader("Content-Type", "application/json");
   console.log("Creating a new route");
-  
+
   let creatingRoute = {
     from_location: req.body.from_location,
     to_location: req.body.to_location || "",
