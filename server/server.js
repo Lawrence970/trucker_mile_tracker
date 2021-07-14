@@ -227,6 +227,13 @@ app.patch("/route/:id", function (req, res) {
 
 // CREATING NEW USERS
 app.post("/user", function (req, res) {
+  // ---------CREATING AN ACCOUNT FOR A COMPANY
+  if (req.body.company_name){
+    User.findOne({email})
+  }
+
+
+  // -------CREATING AN ACCOUNT FOR AN EMPLOYEE ---------------
   // CHECKING IF THE EMAIL IS UNIQUE
   User.findOne({ email: req.body.email }).then(function (user) {
     if (user) {
