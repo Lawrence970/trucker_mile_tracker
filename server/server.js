@@ -5,6 +5,7 @@ const express = require("express");
 const { Model } = require("mongoose"); //??????
 const { routeSchema, Route } = require("./model");
 const { userSchema, User } = require("./model");
+const { companySchema, Company } = require("./model");
 const cors = require("cors");
 const constants = require("./constants");
 
@@ -158,12 +159,27 @@ app.post("/route", function (req, res) {
     console.log("successfully created route");
   });
 });
-/*
+
 app.delete("/route/:id", (req, res) => {
   res.setHeader("Content-TypeError", "application/json");
   console.log("deleting route with id:", req.params._id);
+  Route.findByIdAndDelete(req.params.id, (err, route) => {
+    if (err) {
+      res.status(500).json({
+        message: "unable to find and delete route",
+        error: err,
+      });
+    } else if (route === null) {
+      res.status(404).json({
+        error: `Returns Null`,
+        error: err,
+      });
+      return;
+    }
+    res.status(201).json(route);
+  });
 });
-*/
+
 app.patch("/route/:id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(

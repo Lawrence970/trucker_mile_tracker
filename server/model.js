@@ -16,16 +16,9 @@ const routeSchema = mongoose.Schema(
     start_mileage: Number,
     end_mileage: Number,
     //every route will have a user_id, so pass through user_id as object
-    // user_id: { type: mongoose.Schema.Types.ObjectId, ref: "Route" },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     //When we implement company/employer schema:
-    //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    
-    // EVERY ROUTE WILL HAVE A USER
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    }
+    company_id: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
   },
   { timestamp: true }
 );
@@ -34,11 +27,11 @@ const userSchema = mongoose.Schema(
   {
     first_name: {
       type: String,
-      required: true,
+      required: false,
     },
     last_name: {
       type: String,
-      required: true,
+      required: false,
     },
     email: {
       type: String,
@@ -54,21 +47,31 @@ const userSchema = mongoose.Schema(
     },
     //DON'T pass route schema through here, because it will give access to all routes.
     //When we implement company_id schema:
-    //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    company_id: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
   },
   { timestamp: true }
 );
 
 //When we implement Company/Employer Schema,
-/*
-const companySchema = mongoose.Schema(
-	{
-		company_name:String,
-		role:String,
-	}
-);
 
-*/
+const companySchema = mongoose.Schema(
+  {
+    company_name: {
+      type: String,
+      required: true,
+    },
+    company_email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    encrypted_password: {
+      type: String,
+      required: true,
+    }
+  },
+  { timestamp: true }
+);
 
 // METHODS TO ENCRYPT PASSWORD
 userSchema.methods.setEncryptedPassword = function (plainPassword, callback) {
@@ -78,17 +81,11 @@ userSchema.methods.setEncryptedPassword = function (plainPassword, callback) {
   });
 };
 
-// METHOD TO VERIFY PASSWORD
-userSchema.methods.verifyPassword = function(plainPassword, callback){
-  bcrypt.compare(plainPassword, this.encrypted_password).then(result =>{
-    callback(result);
-  });
-};
-
 const Route = mongoose.model("Route", routeSchema);
 const User = mongoose.model("User", userSchema);
-
+const Company = mongoose.model("Company", companySchema);
 module.exports = {
   Route,
   User,
+  Company,
 };
