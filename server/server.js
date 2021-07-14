@@ -67,18 +67,33 @@ app.get("/route", (req, res, next) => {
 });
 
 //Gets specific route based on id
-app.get("/route/:id/", (req, res, next) => {
+app.get("/route/:id", (req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   role = "driver"; //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
 
-  console.log("getting specific route:", req.params._id);
-  Route.findById(req.params.id, (err, routes) => {
+  console.log("getting specific route:", req.params.id);
+  Route.findById(req.params.id, (err, route) => {
     if (err) {
       console.log("there was an error finding route with id");
       res.status(500).json({ message: `unable to find route`, error: err });
+    } else if (route === null) {
+      res.status(404).json({
+        error: `Returns Null`,
+        error: err,
+      });
       return;
     }
-    res.status(200).json(routes);
+    var total = route.end_mileage - route.start_mileage;
+
+    route = {
+      _id: route._id,
+      from_location: route.from_location,
+      to_location: route.to_location,
+      start_mileage: route.start_mileage,
+      end_mileage: route.end_mileage,
+      total_miles: total,
+    };
+    res.status(200).json(route);
     console.log("Getting Routes Successful");
   });
 });
@@ -109,7 +124,12 @@ app.post("/route", function (req, res) {
     console.log("successfully created route");
   });
 });
-
+/*
+app.delete("/route/:id", (req, res) => {
+  res.setHeader("Content-TypeError", "application/json");
+  console.log("deleting route with id:", req.params._id);
+});
+*/
 app.patch("/route/:id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(
