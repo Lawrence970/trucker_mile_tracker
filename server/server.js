@@ -8,6 +8,10 @@ const { userSchema, User } = require("./model");
 const cors = require("cors");
 const constants = require("./constants");
 
+//HELPER FUNCTIONS
+// MODULE EXPORTS HELPER FUNCTION TO CALCULATE AND SET TOTAL MILEAGE
+const { setTotalMileageOfRoutes } = require("./server-helper-functions");
+
 // initialize your app/server
 const app = express();
 
@@ -46,11 +50,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-
-//HELPER FUNCTIONS
-// MODULE EXPORTS HELPER FUNCTION TO CALCULATE AND SET TOTAL MILEAGE
-const {setTotalMileageOfRoutes} = require("./server-helper-functions");
-
 
 // METHODS
 //Get - gets all of the Routes based on role
@@ -94,36 +93,37 @@ app.get("/route", (req, res, next) => {
   });
 });
 
-
-
-/*
 //Gets specific route based on id
-app.get("/route/:id/", (req, res, next) => {
+app.get("/route/:id", (req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   role = "driver"; //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
-  let findQuery = {};
 
-  //Check role if role == admin look at all Queries, don't add filter
-  if (req.body.role === constants.UserRoles.admin) {
-    findQuery = {};
-  }
-  //if role == driver add that user's id to the filter
-  else if (req.body.role === constants.UserRoles.driver) {
-    findQuery = {
-      user_id,
-    };
-  }
-
-  console.log("getting all the routes");
-  Route.find(findQuery, function (err, routes) {
+  console.log("getting specific route:", req.params.id);
+  Route.findById(req.params.id, (err, route) => {
     if (err) {
-      res.status(500).json({ message: `unable to list routes`, error: err });
+      console.log("there was an error finding route with id");
+      res.status(500).json({ message: `unable to find route`, error: err });
+    } else if (route === null) {
+      res.status(404).json({
+        error: `Returns Null`,
+        error: err,
+      });
       return;
     }
-    res.status(200).json(routes);
+    var total = route.end_mileage - route.start_mileage;
+
+    route = {
+      _id: route._id,
+      from_location: route.from_location,
+      to_location: route.to_location,
+      start_mileage: route.start_mileage,
+      end_mileage: route.end_mileage,
+      total_miles: total,
+    };
+    res.status(200).json(route);
     console.log("Getting Routes Successful");
   });
-});*/
+});
 
 //post - Creates new route
 app.post("/route", function (req, res) {
@@ -158,7 +158,12 @@ app.post("/route", function (req, res) {
     console.log("successfully created route");
   });
 });
-
+/*
+app.delete("/route/:id", (req, res) => {
+  res.setHeader("Content-TypeError", "application/json");
+  console.log("deleting route with id:", req.params._id);
+});
+*/
 app.patch("/route/:id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(
@@ -246,6 +251,7 @@ app.post("/user", function (req, res) {
   });
 });
 
+<<<<<<< HEAD
  //PASSPORT
  // 1. Local Strategy
  passport.use(new passportLocal.Strategy({
@@ -277,47 +283,87 @@ app.post("/user", function (req, res) {
  passport.serializeUser(function(user,done){
    done(null, user._id);
  })
+=======
+//PASSPORT
+const session = require("express-session");
+const passport = require("passport");
+const passportLocal = require("passport-local");
 
- //3. DESERIALIZED USER FROM SESSION
- passport.deserializeUser(function(userId, done){
-   User.findOne({_id: userId}).then(function(user){
-     done(null, user);
-   }).catch(function(err){
-     done(err);
-   })
- })
+// PASSPORT MIDDLEWARES
+app.use(
+  session({
+    secret: "fljadskjvn123bf",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
- // 4. Authenticate endpoint
- app.post("/session", passport.authenticate("local"),function(req,res){
-   // this function is called if authentication succeeds.
-   console.log("session got hit");
-   res.sendStatus(201);
- });
+// 1. Local Strategy
+passport.use(
+  new passportLocal.Strategy(
+    {
+      //some configs
+      usernameField: "email",
+      passwordField: "plainPassword",
+    },
+    function (email, plainPassword, done) {
+      console.log("local got hit");
+      User.findOne({ email: email })
+        .then(function (user) {
+          console.log("this is the user: ", user);
+          if (!user) {
+            done(null, false, { message: "No user with that email" });
+            return;
+          }
+          // verify that the user exists
+          user.verifyPassword(plainPassword, function (result) {
+            if (result) {
+              done(null, user);
+            } else {
+              done(null, false, { message: "Password incorrect" });
+            }
+          });
+        })
+        .catch(function (err) {
+          done(err);
+        });
+    }
+  )
+);
+// 2. SERIALIZED USER TO SESSION
+passport.serializeUser(function (user, done) {
+  done(null, user._id);
+});
+>>>>>>> backend_features
 
- // 5. ME ENDPOINT
-app.get("/session", function(req, res){
-  if (req.user){
+//3. DESERIALIZED USER FROM SESSION
+passport.deserializeUser(function (userId, done) {
+  User.findOne({ _id: userId })
+    .then(function (user) {
+      done(null, user);
+    })
+    .catch(function (err) {
+      done(err);
+    });
+});
+
+// 4. Authenticate endpoint
+app.post("/session", passport.authenticate("local"), function (req, res) {
+  // this function is called if authentication succeeds.
+  console.log("session got hit");
+  res.sendStatus(201);
+});
+
+// 5. ME ENDPOINT
+app.get("/session", function (req, res) {
+  if (req.user) {
     // send user details
     res.json(req.user);
-  }
-  else{
+  } else {
     res.sendStatus(401);
   }
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});
 
 module.exports = app; // export app variables
