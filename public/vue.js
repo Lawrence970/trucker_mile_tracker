@@ -1,23 +1,23 @@
 var app = new Vue({
-    el: '#vue-app-wrapper',
+  el: '#vue-app-wrapper',
 
-    //! data
-    data: {
+  //! data
+  data: {
       
-    },
+  },
 
-    //! methods
-    methods: {
+  //! methods
+  methods: {
 
-    },
+  },
 
-    //!created
-    created: {
+  //!created
+  created: {
 
-    },
+  },
 
-    //!computed
-    computed: {
+  //!computed
+  computed: {
 
-    }
-  })
+  }
+})
