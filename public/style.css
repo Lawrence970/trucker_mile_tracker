@@ -8,33 +8,26 @@
     font-family: "Roboto";
     src: url(/fonts/Roboto/Roboto-Light.ttf);
 }
-/* GLOBAL --webkit*/
 
-/* GLOBAL custom styles */
-
-/* GLOBAL styles */
 body {
-    margin:0;
-    padding:0;
-    font-family:Roboto;
-    background-color: #464347;
-}
+    /* !GLOBAL custom styles */
+    --color-primary: #FFFA6B;
+    --color-primary-dark: #f5ef54;
+    --color-secondary: #282A35;
+    --color-secondary-dark: #2f2f33;
+    --color-error: #cc3333;
+    --color-success: #4bb544;
+    --border-radius: 4px;
 
-.nav-bar {
-    height:68px;
-    background-color: #FFFA6B;
-    box-shadow:0px 10px 0px 0px rgba(248, 250, 113, 0.603);
+    margin:0;
+    height:100vh;
     display:flex;
     align-items: center;
-    justify-content:left;
-    padding-left: 40px;
-    padding-right:40px;
-}
-
-.nav-bar a{
-    text-decoration: none;
-    color:#282A35;
-    font-size:2em;
+    justify-content: center;
+    font-size:20px;
+    background: #dddddd;
+    background-size:cover;
+    font-family: Roboto;
 }
 
 .input-field{
@@ -44,7 +37,7 @@ body {
     font-size:1.2em;
     border:none;
     background-color: #FFFFFF;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     margin:25px;
     font-family: Roboto;
 }
@@ -61,20 +54,19 @@ body {
 
 .input-button{
     border:none;
-    border-radius:5px;
-    font-family:Roboto;
+    border-radius: var(--border-radius);
     font-size:27px;
     margin: 20px;
     cursor: pointer;
-    color:#282A35;
-    background-color: #FFFA6B;
+    color:var(--color-secondary);
+    background-color: var(--color-primary);
     width:310px;
     height:64px;
 }
 
 .input-button:hover{
-    background-color: #f5ef54;
-    color:#282A35;
+    background-color: var(--color-primary-dark);
+    color:var(--color-secondary);
 }
 
 .subscript-gray {
@@ -84,7 +76,7 @@ body {
 }
 
 .subscript-yellow {
-    color:#FFFA6B;
+    color:var(--color-primary);
     font-size: 26px;
 }
 
@@ -93,15 +85,15 @@ body {
     font-family:Staatliches;
     letter-spacing: .1em;
     font-size:60px;
-    color:#FFFA6B;
-    margin-top: 100px;
+    color:var(--color-primary);
+    margin-top:0px;
     margin-bottom:0px;
 }
 
 /* styles index.html*/
 /* styles index.html*/
 /* styles index.html*/
-#login-input {
+#form-login {
     display:flex;
     flex-direction: column;
     align-items: center;
@@ -114,32 +106,134 @@ body {
     align-items: center;
 }
 
-#employer-sign-in{
-    position:absolute;
-    bottom:50px;
+/* styles signUp.html*/
+/* styles signUp.html*/
+/* styles signUp.html*/
+
+.container{
+    width:400px;
+    max-width:400px;
+    background: var(--color-secondary-dark);
+    margin:1rem;
+    padding:2rem;
+    box-shadow: 0 0 40px rgba(0,0,0,0.2);
+    border-radius: var(--border-radius);
+}
+
+.container,
+.form-input,
+.form-button {
+    font: 500 1rem Roboto, sans-serif;
+}
+
+
+/* this is what i want, adding the form hidden class to an element with js hides the element */
+.form-hidden {
+    display:none;
+}
+
+.container-hidden {
+    display:none;
+}
+
+.form > *:first-child{
+    margin-top:0;
+
+}
+
+.form > *:last-child{
+    margin-bottom:0;
+}
+
+.form-title {
+    margin-bottom: 2rem;
+    text-align:center;
+    color:var(--color-primary)
+}
+
+.form-message {
+    text-align:center;
+    margin-bottom: 1rem;
+}
+
+.form-message-success {
+    color: var(--color-success);
+}
+
+.form-message-error {
+    color: var(--color-error);
+}
+
+.form-input-group {
+    margin-bottom: 1rem;
+
+}
+
+.form-input {
+    display: block;
+    width:100%;
+    padding:0.75rem;
+    box-sizing:border-box;
+    border-radius: var(--border-radius);
+    border: 1px solid #dddddd;
+    outline:none;
+    background: #eeeeee;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.form-input:focus{
+    border-color: var(--color-primary);
+    background: #ffffff;
+}
+
+.form-input-error {
+    color: var(--color-error);
+    border-color: var(--color-error);
+}
+
+.form-input-error-message {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-error);
+}
+
+.form-button {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--color-secondary-dark);
+    border:none;
+    border-radius: var(--border-radius);
+    outline:none;
+    cursor: pointer; 
+    background:var(--color-primary);
+}
+
+.form-button:hover {
+    background: var(--color-primary-dark);
+}
+
+
+/* transform: scale; => this scales the button down by 2% when clicked */
+.form-button:active {
+    transform: scale(0.98);
+}
+
+.form-text {
     text-align: center;
 }
 
-/* styles signUp.html*/
-/* styles signUp.html*/
-/* styles signUp.html*/
+.form-link {
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    cursor:pointer;
 
-#sign-up-input {
-    display:flex;
-    flex-direction: column;
-    align-items: center;
 }
 
-#sign-up-form {
-    background-color: #2f2f33;
-    border-radius:25px;
-    margin: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 400px;
+.form-link:hover {
+    text-decoration: underline;
 }
-
 
 
 
