@@ -69,6 +69,7 @@ app.get("/route", (req, res, next) => {
 
   //Check role if role == admin look at all Queries, don't add filter
 
+  // THIS NEEDS WORK
   if (req.body.role === constants.UserRoles.admin) {
     findQuery = {};
   }
