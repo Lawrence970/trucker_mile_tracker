@@ -17,6 +17,22 @@ app.use(express.static("static"));
 // tell our app to use json
 app.use(express.json({}));
 
+// PASSPORT IMPORTS AND USE
+const session = require("express-session");
+const passport = require("passport");
+const passportLocal = require("passport-local");
+
+
+// PASSPORT MIDDLEWARES
+app.use(session({
+  secret: 'fljadskjvn123bf',
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use((req, res, next) => {
   console.log(
     "Time",
@@ -100,15 +116,22 @@ app.get("/route/:id/", (req, res, next) => {
 
 //post - Creates new route
 app.post("/route", function (req, res) {
+
+  // CHECKING IF THEY ARE LOGGED IN
+  if (!req.user){
+    res.sendStatus(401);
+    return;
+  }
+
   res.setHeader("Content-Type", "application/json");
   console.log("Creating a new route");
-
+  
   let creatingRoute = {
     from_location: req.body.from_location,
     to_location: req.body.to_location || "",
     start_mileage: req.body.start_mileage || 0,
     end_mileage: req.body.end_mileage || 0,
-    //???user id?
+    user: req.user
   };
   Route.create(creatingRoute, (err, route) => {
     if (err) {
@@ -213,20 +236,6 @@ app.post("/user", function (req, res) {
 });
 
  //PASSPORT
- const session = require("express-session");
- const passport = require("passport");
- const passportLocal = require("passport-local");
-
-
- // PASSPORT MIDDLEWARES
- app.use(session({
-   secret: 'fljadskjvn123bf',
-   resave: false,
-   saveUninitialized: true
- }));
- app.use(passport.initialize());
- app.use(passport.session());
-
  // 1. Local Strategy
  passport.use(new passportLocal.Strategy({
    //some configs

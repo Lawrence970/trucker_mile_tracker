@@ -16,9 +16,16 @@ const routeSchema = mongoose.Schema(
     start_mileage: Number,
     end_mileage: Number,
     //every route will have a user_id, so pass through user_id as object
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "Route" },
+    // user_id: { type: mongoose.Schema.Types.ObjectId, ref: "Route" },
     //When we implement company/employer schema:
     //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    
+    // EVERY ROUTE WILL HAVE A USER
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    }
   },
   { timestamp: true }
 );
