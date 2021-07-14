@@ -5,6 +5,7 @@ const express = require("express");
 const { Model } = require("mongoose"); //??????
 const { routeSchema, Route } = require("./model");
 const { userSchema, User } = require("./model");
+const { companySchema, Company } = require("./model");
 const cors = require("cors");
 const constants = require("./constants");
 

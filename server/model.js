@@ -16,9 +16,9 @@ const routeSchema = mongoose.Schema(
     start_mileage: Number,
     end_mileage: Number,
     //every route will have a user_id, so pass through user_id as object
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "Route" },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     //When we implement company/employer schema:
-    //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    company_id: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
   },
   { timestamp: true }
 );
@@ -47,21 +47,34 @@ const userSchema = mongoose.Schema(
     },
     //DON'T pass route schema through here, because it will give access to all routes.
     //When we implement company_id schema:
-    //company_id:{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    company_id: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
   },
   { timestamp: true }
 );
 
 //When we implement Company/Employer Schema,
-/*
-const companySchema = mongoose.Schema(
-	{
-		company_name:String,
-		role:String,
-	}
-);
 
-*/
+const companySchema = mongoose.Schema(
+  {
+    company_name: {
+      type: String,
+      required: true,
+    },
+    company_email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    encrypted_password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+    },
+  },
+  { timestamp: true }
+);
 
 // METHODS TO ENCRYPT PASSWORD
 userSchema.methods.setEncryptedPassword = function (plainPassword, callback) {
@@ -73,8 +86,9 @@ userSchema.methods.setEncryptedPassword = function (plainPassword, callback) {
 
 const Route = mongoose.model("Route", routeSchema);
 const User = mongoose.model("User", userSchema);
-
+const Company = mongoose.model("Company", companySchema);
 module.exports = {
   Route,
   User,
+  Company,
 };
