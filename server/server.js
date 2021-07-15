@@ -228,100 +228,99 @@ app.patch("/route/:id", function (req, res) {
 // CREATING NEW USERS
 app.post("/user", function (req, res) {
   // ---------CREATING AN ACCOUNT FOR A COMPANY
-  if (req.body.company_name){
-    User.findOne({email})
-  }
-
-
-  // -------CREATING AN ACCOUNT FOR AN EMPLOYEE ---------------
-  // CHECKING IF THE EMAIL IS UNIQUE
-  User.findOne({ email: req.body.email }).then(function (user) {
-    if (user) {
-      res.status(422).json({
-        error: "Email Already registered",
-      });
-    } else {
-      // CREATING THE NEW USER MODEL
-      var user = new User({
-        first_name: req.body.firstName,
-        last_name: req.body.lastName,
-        email: req.body.email,
-        role: req.body.role,
-      });
-      // storing the plain password
-      var plainPassword = req.body.plainPassword;
-      user.setEncryptedPassword(plainPassword, function () {
-        user
-          .save()
-          .then(function () {
-            res.status(201).json(user);
-          })
-          .catch(function (err) {
-            if (err.errors) {
-              // MONGOOSE VALIDATION FAILURE
-              var messages = {};
-              for (var e in err.errors) {
-                messages[e] = err.errors[e].message;
+  if (req.body.companyName){
+    console.log("creating an account for a company");
+    User.findOne({email: req.body.companyEmail}).then(function(user){
+      if (user){
+        res.status(422).json({
+          error: "Email already registered"
+        });
+      }
+      else{
+        var newCompany = new Company({
+          company_name: req.body.companyName,
+          company_email: req.body.companyEmail
+        })
+        var companyPlainPassword = req.body.companyPlainPassword;
+        // CHECK WITH JAZE
+        newCompany.setEncryptedPassword(companyPlainPassword, function(){
+          newCompany.save().then(function(companyCreated){
+            var user = new User({
+              email: companyCreated.company_email,
+              encrypted_password: companyCreated.encrypted_password,
+              role: "admin",
+              company: companyCreated
+            })
+            user.save().then(function(){
+              res.status(201).json(user);
+            }).catch(function(err){
+              if (err.errors) {
+                // MONGOOSE VALIDATION FAILURE
+                var messages = {};
+                for (var e in err.errors) {
+                  messages[e] = err.errors[e].message;
+                }
+                res.status(422).json(messages);
+              } else {
+                // worse failure
+                res.sendStatus(500);
               }
-              res.status(422).json(messages);
-            } else {
-              // worse failure
-              res.sendStatus(500);
-            }
-          });
-      });
+            })
+          })
+        })
+      }
+    })
+  }
+  else{
+    // -------CREATING AN ACCOUNT FOR AN EMPLOYEE DRIVER---------------
+    // CHECKING IF THE COMPANY IS LOGGED IN
+    if (!req.user && !req.user.role == "admin"){
+      res.sendStatus(401);
+      return;
     }
-  });
+
+    // CHECKING IF THE EMAIL IS UNIQUE
+    User.findOne({ email: req.body.email }).then(function (user) {
+      if (user) {
+        res.status(422).json({
+          error: "Email Already registered",
+        });
+      } else {
+        // CREATING THE NEW USER MODEL
+        var user = new User({
+          first_name: req.body.firstName,
+          last_name: req.body.lastName,
+          email: req.body.email,
+          role: "driver",
+          company: req.user.company
+        });
+        // storing the plain password
+        var plainPassword = req.body.plainPassword;
+        user.setEncryptedPassword(plainPassword, function () {
+          user.save().then(function () {
+              res.status(201).json(user);
+            }).catch(function (err) {
+              if (err.errors) {
+                // MONGOOSE VALIDATION FAILURE
+                var messages = {};
+                for (var e in err.errors) {
+                  messages[e] = err.errors[e].message;
+                }
+                res.status(422).json(messages);
+              } else {
+                // worse failure
+                res.sendStatus(500);
+              }
+            });
+        });
+      }
+    });
+  }
 });
 
-<<<<<<< HEAD
- //PASSPORT
- // 1. Local Strategy
- passport.use(new passportLocal.Strategy({
-   //some configs
-   usernameField: "email",
-   passwordField: "plainPassword"
- }, function(email, plainPassword, done){
-   console.log("local got hit");
-   User.findOne({email: email}).then(function(user){
-     console.log("this is the user: ",user);
-     if (!user){
-       done(null, false, {message: "No user with that email"});
-       return;
-     }
-     // verify that the user exists
-     user.verifyPassword(plainPassword, function(result){
-       if (result){
-         done(null, user);
-       }
-       else{
-         done(null, false, {message: "Password incorrect"});
-       }
-     })
-   }).catch(function(err){
-     done(err);
-   })
- }))
- // 2. SERIALIZED USER TO SESSION
- passport.serializeUser(function(user,done){
-   done(null, user._id);
- })
-=======
-//PASSPORT
-const session = require("express-session");
-const passport = require("passport");
-const passportLocal = require("passport-local");
 
-// PASSPORT MIDDLEWARES
-app.use(
-  session({
-    secret: "fljadskjvn123bf",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+
+//PASSPORT
 
 // 1. Local Strategy
 passport.use(
@@ -359,7 +358,7 @@ passport.use(
 passport.serializeUser(function (user, done) {
   done(null, user._id);
 });
->>>>>>> backend_features
+
 
 //3. DESERIALIZED USER FROM SESSION
 passport.deserializeUser(function (userId, done) {
