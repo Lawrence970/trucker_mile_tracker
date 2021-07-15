@@ -1,23 +1,20 @@
 var app = new Vue({
-  el: '#vue-app-wrapper',
+  el: "#vue-app-wrapper",
 
+  data: {},
 
-  data: {
-      
-  },
-
-  
   methods: {
-
+    getRoutes: function () {
+      fetch(`${url}/routes`).then(function (response) {
+        response.json().then(function (data) {
+          console.log(data);
+          app.todos = data;
+        });
+      });
+    },
   },
 
+  created: {},
 
-  created: {
-
-  },
-
-  
-  computed: {
-
-  }
-})
+  computed: {},
+});
