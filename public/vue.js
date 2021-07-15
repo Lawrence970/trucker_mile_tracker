@@ -3,8 +3,24 @@ var app = new Vue({
 
   data: {
     isActive: true,
+    users: [
+      {
+        first_name: "",
+        last_name: "",
+        email: "",
+        role: "",
+      },
+    ],
 
-    routes: [],
+    routes: [
+      {
+        from_location: "",
+        to_location: "",
+        start_mileage: "",
+        end_mileage: "",
+      },
+    ],
+
     new_from_location: "",
     new_start_mileage: "",
     new_to_location: "",
@@ -29,11 +45,21 @@ var app = new Vue({
     submitForm: function () {},
 
     //Untested.
+
+    addNewUser: function () {
+      fetch(`${url}/user`).then(function (response) {
+        response.json().then(function (data) {
+          console.log(data);
+          app.users = data;
+        });
+      });
+    },
+
     getRoutes: function () {
       fetch(`${url}/routes`).then(function (response) {
         response.json().then(function (data) {
           console.log(data);
-          app.todos = data;
+          app.routes = data;
         });
       });
     },
@@ -67,8 +93,4 @@ var app = new Vue({
       }
     });
   },
-
-  created: {},
-
-  computed: {},
 });
