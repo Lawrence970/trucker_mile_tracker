@@ -23,9 +23,10 @@
                     <button type="button" class="input-button" id="redirect-form-login" v-on:click="changePageDisplay('signIn')">
                         <a>Sign In</a>
                     </button>
-                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUp')">
-                        <a>Sign Up</a>
+                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpCompany')">
+                        <a>Sign Up Company</a>
                     </button>
+                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpUser')">Sign Up User</button>
                     <p class="subscript-yellow">Are You an Employer?</p>
                     <a class="subscript-gray" href="#">Sign In Here</a>                             
                 </div>
@@ -62,8 +63,8 @@
                 </form>
 
                 <!--ANCHOR-->
-                <!--*create account form-->
-                <form action="POST" class="form" id="createAccount" v-if="page=='signUp'">
+                <!--*create account COMPANY form-->
+                <form action="POST" class="form" id="createAccount" v-if="page=='signUpCompany'">
                     <h1 class="form-title">Create Account</h1>
                     <div class="form-message form-message-error"></div> <!--* error message-->
 
@@ -95,6 +96,37 @@
                     <p class="form-text">
                         <a href="#" id="linkLogin" class="form-link" v-on:click="changePageDisplay('signIn')">Already Have an Account? Sign In Here</a>
                     </p>
+                </form>
+
+                <!--ANCHOR-->
+                <!--*create account USER form-->
+                <form action="POST" class="form" id="createAccount" v-if="page=='signUpUser'">
+                    <h1 class="form-title">Create Account</h1>
+                    <div class="form-message form-message-error"></div> <!--* error message-->
+
+                    <!-- EMAIL INPUT FIELD-->
+                    <div class="form-input-group">
+                        <input type="text" id="signUpEmail" class="form-input" placeholder="Email" autofocus>
+                        <div class="form-input-error-message"></div>
+                    </div>
+
+                    <div class="form-input-group">
+                        <input type="text" class="form-input" placeholder="First Name">
+                        <div class="form-input-error-message"></div>
+                    </div>
+
+                    <div class="form-input-group">
+                        <input type="text" class="form-input" placeholder="Last Name">
+                        <div class="form-input-error-message"></div>
+                    </div>
+
+                    <div class="form-input-group">
+                        <input type="text" class="form-input" placeholder="Your Role">
+                        <div class="form-input-error-message"></div>
+                    </div>
+
+                    <!--submit and links-->
+                    <button type="submit" class="form-button" v-on:click="addNewUser()">Continue</button>
                 </form>
 
             </div>

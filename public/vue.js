@@ -1,7 +1,11 @@
+var url = "localhost:8080"
+
 var app = new Vue({
   el: "#vue-app-wrapper",
 
   data: {
+    
+
     page: "landingContainer",
     isActive: true,
     users: [
