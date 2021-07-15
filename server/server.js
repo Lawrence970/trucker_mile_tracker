@@ -197,6 +197,22 @@ app.post("/user", function (req, res) {
   });
 });
 
+app.get("/user", (req, res, next) => {
+  res.setHeader("Content-Type", "application/json");
+  console.log("getting all users");
+
+  let findQuery = {};
+
+  User.find(findQuery, function (err, users) {
+    if (err) {
+      console.log(`there was error finding users`, err);
+      res.status(500), json({ message: `unable to list users` });
+      return;
+    }
+    res.status(200).json(users);
+  });
+});
+
 //PASSPORT
 const session = require("express-session");
 const passport = require("passport");

@@ -1,11 +1,9 @@
-var url = "localhost:8080"
+var url = "localhost:8080";
 
 var app = new Vue({
   el: "#vue-app-wrapper",
 
   data: {
-    
-
     page: "landingContainer",
     isActive: true,
     users: [
@@ -57,6 +55,37 @@ var app = new Vue({
         });
       });
     },
+  },
+
+  deleteRoutes: function (route) {
+    fetch(`${url}/route/` + route, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(function () {
+      app.getRoutes();
+    });
+  },
+
+  getUsers: function () {
+    fetch(`${url}/users`).then(function (response) {
+      response.json().then(function (data) {
+        console.log(data);
+        app.users = data;
+      });
+    });
+  },
+
+  deleteUser: function (user) {
+    fetch(`${url}/user/` + user, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(function () {
+      app.getUsers();
+    });
   },
 
   addNewRoute: function () {
