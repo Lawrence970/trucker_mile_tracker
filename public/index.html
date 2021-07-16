@@ -12,10 +12,29 @@
 </head>
 <body>
     
+
+    <!-- TODO 
+        - Continue Button Logic
+            - from sign up >  redirect to login page if successful
+                - if unsuccessful > display error and stay on same page and clear input fields
+            - from login > redirect to home /driver or /admin if successful
+                - if unsuccessful > display error and stay on same page and clear input fields
+        
+        - 
+        - 
+    -->
     
     <div id="vue-app-wrapper">
-        <!--! LANDING PAGE-->
         <div class="container"> <!--this container wraps landing page & signUp/login-->
+            
+            <div id="test-nav">
+                <a class="input-button" href="admin.html">Admin Portal</a>
+                <a class="input-button" href="driver.html">Driver Portal</a>
+                
+            </div>
+            <p style="color:red;">above for testing purposes</p>
+
+            <!--! LANDING PAGE-->
             <div id="landing-container" v-if="page=='landingContainer'">
                 <div id="login-btn-container">
                     <h1 class="app-name-header-one">TRUCKER MILES</h1>
@@ -26,9 +45,7 @@
                     <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpCompany')">
                         <a>Sign Up Company</a>
                     </button>
-                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpUser')">Sign Up User</button>
-                    <p class="subscript-yellow">Are You an Employer?</p>
-                    <a class="subscript-gray" href="#">Sign In Here</a>                             
+                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpUser')">Sign Up User</button>                        
                 </div>
             </div>
 
@@ -92,7 +109,7 @@
                     </div>
 
                     <!--submit and links-->
-                    <button type="submit" class="form-button">Continue</button>
+                    <button type="submit" class="form-button" v-on:click="addNewUser()">Continue</button>
                     <p class="form-text">
                         <a href="#" id="linkLogin" class="form-link" v-on:click="changePageDisplay('signIn')">Already Have an Account? Sign In Here</a>
                     </p>
@@ -130,6 +147,7 @@
                 </form>
 
             </div>
+
         </div>
     </div>
     
