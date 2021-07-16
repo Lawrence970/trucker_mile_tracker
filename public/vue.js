@@ -35,6 +35,7 @@ var app = new Vue({
   methods: {
     changePageDisplay: function (e) {
       this.page = e;
+      console.log(e)
     },
     submitForm: function () {},
 
