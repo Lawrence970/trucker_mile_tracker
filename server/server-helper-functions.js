@@ -13,6 +13,7 @@ function setTotalMileageOfRoutes(routes){
       to_location: route.to_location,
       start_mileage: route.start_mileage,
       end_mileage: route.end_mileage,
+      user: route.user,
       total_miles: total,
     };
     completeRoutes.push(route);
