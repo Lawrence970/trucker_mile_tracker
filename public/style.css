@@ -30,6 +30,20 @@ body {
     font-family: Roboto;
 }
 
+.hamburger-menu {
+    height: 35px;
+    width: 35px;
+    outline:none;
+    border:none;
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius);
+}
+
+.hamburger-menu:hover {
+    cursor: pointer;
+    background-color: var(--color-primary-dark);
+}
+
 .input-field{
     height: 44px;
     width: 310px;
@@ -93,6 +107,51 @@ body {
 /* styles index.html*/
 /* styles index.html*/
 /* styles index.html*/
+
+
+/* ! for testing purposes >>> */
+#test-nav {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#admin-portal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 70vh;
+}
+
+#admin-page-wrapper {
+    background: var(--color-secondary);
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vh;
+}
+
+#driver-portal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 70vh;
+}
+
+#driver-page-wrapper {
+    background: var(--color-secondary);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+
+/* ! for testing purposes <<< */
+
 #form-login {
     display:flex;
     flex-direction: column;
@@ -106,16 +165,12 @@ body {
     align-items: center;
 }
 
-/* styles signUp.html*/
-/* styles signUp.html*/
-/* styles signUp.html*/
-
 .container{
     width:400px;
     max-width:400px;
     background: var(--color-secondary-dark);
     margin:1rem;
-    padding:2rem;
+    padding:1.2rem;
     box-shadow: 0 0 40px rgba(0,0,0,0.2);
     border-radius: var(--border-radius);
 }
