@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <!-- this page home -->
     <!-- this page home -->
     <!-- this page home -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Title</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -42,10 +42,12 @@
                     <button type="button" class="input-button" id="redirect-form-login" v-on:click="changePageDisplay('signIn')">
                         <a>Sign In</a>
                     </button>
-                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpCompany')">
-                        <a>Sign Up Company</a>
+                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpCompany'), type_role=`company`">
+                        Sign Up Company
                     </button>
-                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpUser')">Sign Up User</button>                        
+                    <button type="button" class="input-button" id="redirect-form-signUp" v-on:click="changePageDisplay('signUpUser'), type_role=`user`">
+                        Sign Up User
+                    </button>                        
                 </div>
             </div>
 
@@ -147,14 +149,11 @@
                 </form>
 
             </div>
-
         </div>
     </div>
-    
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    
+
     <script src="vue.js"></script>
-    
-</body>
+  </body>
 </html>

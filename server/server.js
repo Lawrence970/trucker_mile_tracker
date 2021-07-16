@@ -23,6 +23,7 @@ app.use(express.static("static"));
 app.use(express.json({}));
 
 // PASSPORT IMPORTS AND USE
+
 const session = require("express-session");
 const passport = require("passport");
 const passportLocal = require("passport-local");
@@ -335,12 +336,12 @@ app.get("/user", (req, res, next) => {
     res.status(200).json(users);
   });
 });
-
+/* THIS ALREADY IS DEFINED ABOVE AND THIS IS DUPLICATE CODE
 //PASSPORT
 const session = require("express-session");
 const passport = require("passport");
 const passportLocal = require("passport-local");
-
+*/
 //PASSPORT
 
 // 1. Local Strategy
