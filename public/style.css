@@ -14,6 +14,7 @@ body {
     --color-primary: #FFFA6B;
     --color-primary-dark: #f5ef54;
     --color-secondary: #282A35;
+    --color-white: #dddddd;
     --color-secondary-dark: #2f2f33;
     --color-error: #cc3333;
     --color-success: #4bb544;
@@ -78,6 +79,18 @@ body {
     height:64px;
 }
 
+.cancel-button {
+    border:none;
+    border-radius: var(--border-radius);
+    font-size:16px;
+    margin: 0px;
+    cursor: pointer;
+    color:var(--color-secondary);
+    background-color: var(--color-error);
+    width:80px;
+    height:35px;
+}
+
 .input-button:hover{
     background-color: var(--color-primary-dark);
     color:var(--color-secondary);
@@ -110,7 +123,7 @@ body {
 
 
 /* ! for testing purposes >>> */
-#test-nav {
+.test-nav {
     display:flex;
     justify-content: center;
     align-items: center;
@@ -120,16 +133,21 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: var(--color-secondary-dark);
     height: 70vh;
+    margin:1rem;
+    padding:1.2rem;
+    box-shadow: 0 0 40px rgba(0,0,0,0.2);
+    border-radius: var(--border-radius);
 }
 
 #admin-page-wrapper {
-    background: var(--color-secondary);
+    background: var(--color-white);
     display:flex;
     align-items: center;
     flex-direction: column;
     height: 100vh;
-    width: 100vh;
+    width: 100vw;
 }
 
 #driver-portal {
@@ -140,17 +158,14 @@ body {
 }
 
 #driver-page-wrapper {
-    background: var(--color-secondary);
+    background: var(--color-white);
     display:flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100vh;
-    width: 100%;
+    width: 100vw;
 }
-
-
-/* ! for testing purposes <<< */
 
 #form-login {
     display:flex;
@@ -290,6 +305,10 @@ body {
     text-decoration: underline;
 }
 
+.form-menu-selection {
+    display:flex;
+    justify-content: space-between;
+}
 
 
 /* media query at width of 700px */
