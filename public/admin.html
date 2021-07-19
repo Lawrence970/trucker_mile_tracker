@@ -21,7 +21,7 @@
 
             <!--! TEST NAV-->
             <div class="container"> 
-                <div id="test-nav">
+                <div class="test-nav">
                     <a class="input-button" href="admin.html">Admin Portal</a>
                     <a class="input-button" href="driver.html">Driver Portal</a>
                     <a class="input-button" href="index.html">landing Portal</a>
@@ -30,48 +30,57 @@
             </div>
             
             <!--! admin LANDING form-->
-            <img class="hamburger-menu" src="/icons/navigation-menu.svg" alt="menu">
+            
             <div id="admin-portal" v-if="page=='landingContainer'">
-                <button class="input-button" v-on:click="changePageDisplay('allDrivers')">All Drivers</button>
-                <button class="input-button" v-on:click="changePageDisplay('addDriver')">Add New Driver</button>
+                    <button class="input-button" v-on:click="changePageDisplay('allDrivers')">All Drivers</button>
+                    <button class="input-button" v-on:click="changePageDisplay('addDriver')">Add New Driver</button>
             </div>
                 
             
             <div v-if="page=='allDrivers'">
-                <h1>All Drivers</h1>
+                <div class="container">
+
+                </div>
             </div>
 
             <!--! new DRIVER form-->
             <div class="form-container" v-if="page=='addDriver'">
                 <!--*create account USER form-->
-                <form class="form" id="createAccount">
-                    <h1 class="form-title">Create Account</h1>
-                    <div class="form-message form-message-error"></div> <!--* error message-->
+                <div class="form" id="createAccount">
+                    <div class="container">
+                        <span class="form-menu-selection">
+                            <img class="hamburger-menu" src="/icons/navigation-menu.svg" alt="menu">
+                            <button class="cancel-button" v-on:click="changePageDisplay('landingContainer')">Cancel</button> 
+                        </span>
+            
+                        <h1 class="form-title">New Driver</h1>
+                        <div class="form-message form-message-error"></div> <!--* error message-->
 
-                    <!-- EMAIL INPUT FIELD-->
-                    <div class="form-input-group">
-                        <input type="text" id="signUpEmail" class="form-input" placeholder="Email" autofocus>
-                        <div class="form-input-error-message"></div>
+                        <!-- EMAIL INPUT FIELD-->
+                        <div class="form-input-group">
+                            <input type="text" id="signUpEmail" class="form-input" placeholder="Email" autofocus>
+                            <div class="form-input-error-message"></div>
+                        </div>
+
+                        <div class="form-input-group">
+                            <input type="text" class="form-input" placeholder="First Name">
+                            <div class="form-input-error-message"></div>
+                        </div>
+
+                        <div class="form-input-group">
+                            <input type="text" class="form-input" placeholder="Last Name">
+                            <div class="form-input-error-message"></div>
+                        </div>
+
+                        <div class="form-input-group">
+                            <input type="text" class="form-input" placeholder="Your Role">
+                            <div class="form-input-error-message"></div>
+                        </div>
+
+                        <!--submit and links-->
+                        <button type="submit" class="form-button" v-on:click="addNewUser()">Continue</button>
                     </div>
-
-                    <div class="form-input-group">
-                        <input type="text" class="form-input" placeholder="First Name">
-                        <div class="form-input-error-message"></div>
-                    </div>
-
-                    <div class="form-input-group">
-                        <input type="text" class="form-input" placeholder="Last Name">
-                        <div class="form-input-error-message"></div>
-                    </div>
-
-                    <div class="form-input-group">
-                        <input type="text" class="form-input" placeholder="Your Role">
-                        <div class="form-input-error-message"></div>
-                    </div>
-
-                    <!--submit and links-->
-                    <button type="submit" class="form-button" v-on:click="addNewUser()">Continue</button>
-                </form>
+                </div>
             </div>
 
             
