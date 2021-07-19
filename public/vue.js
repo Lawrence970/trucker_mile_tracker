@@ -36,6 +36,7 @@ var app = new Vue({
 
   methods: {
     changePageDisplay: function (e) {
+      e.preventDefault;
       this.page = e;
     },
     submitForm: function () {},
@@ -82,7 +83,7 @@ var app = new Vue({
           if (data.error && response.status == 422) {
             alert("Email already registered");
           } else if (response.status == 201) {
-            //alert("Congratulations, you're signed up!");
+            app.page = "adminLanding";
           }
         });
       });
