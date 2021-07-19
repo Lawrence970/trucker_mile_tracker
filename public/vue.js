@@ -41,7 +41,6 @@ var app = new Vue({
   methods: {
     changePageDisplay: function (e) {
       this.page = e;
-      console.log(e)
     },
     submitForm: function () {},
 
@@ -53,6 +52,7 @@ var app = new Vue({
           company_name: this.new_company_name,
           company_email: this.new_company_email,
         };
+        console.log(type_role)
       } else if ((this.type_role = "user")) {
         var request_body = {
           first_name: this.new_first_name,
@@ -60,6 +60,7 @@ var app = new Vue({
           email: this.new_email,
           role: "driver",
         };
+        console.log(type_role)
       }
       fetch(`${url}/user`, {
         method: "POST",
