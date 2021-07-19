@@ -176,46 +176,6 @@
               >
             </p>
           </form>
-
-          <!--ANCHOR-->
-          <!--*create account USER form-->
-          <form class="form" id="createAccount" v-if="page=='signUpUser'">
-            <h1 class="form-title">Create Account</h1>
-            <div class="form-message form-message-error"></div>
-            <!--* error message-->
-
-            <!-- EMAIL INPUT FIELD-->
-            <div class="form-input-group">
-              <input
-                type="text"
-                id="signUpEmail"
-                class="form-input"
-                placeholder="Email"
-                autofocus
-              />
-              <div class="form-input-error-message"></div>
-            </div>
-
-            <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="First Name" />
-              <div class="form-input-error-message"></div>
-            </div>
-
-            <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="Last Name" />
-              <div class="form-input-error-message"></div>
-            </div>
-
-            <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="Your Role" />
-              <div class="form-input-error-message"></div>
-            </div>
-
-            <!--submit and links-->
-            <button type="submit" class="form-button" v-on:click="addNewUser()">
-              Continue
-            </button>
-          </form>
         </div>
       </div>
     </div>
