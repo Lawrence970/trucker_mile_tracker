@@ -1,4 +1,4 @@
-var url = "localhost:8080";
+var url = "http://localhost:8080";
 
 var app = new Vue({
   el: "#vue-app-wrapper",
@@ -7,21 +7,17 @@ var app = new Vue({
     page: "landingContainer",
     isActive: true,
     type_role: "",
-    users: [
-      {
-        first_name: "",
-        last_name: "",
-        email: "",
-        role: "",
-      },
-    ],
+    first_name: "",
+    last_name: "",
+    email: "",
+    role: "",
+    // Creating a new company account
+    new_company_name: "",
+    new_company_email: "",
+    new_company_password: "",
+    new_company_confirm_password: "",
 
-    company: [
-      {
-        company_name: "",
-        company_email: "",
-      },
-    ],
+    users: [],
 
     routes: [
       {
@@ -41,26 +37,37 @@ var app = new Vue({
   methods: {
     changePageDisplay: function (e) {
       this.page = e;
-      console.log(e)
+      console.log(e);
     },
     submitForm: function () {},
 
     //Untested.
 
-    addNewUser: function () {
-      if ((this.type_role = "company")) {
+    addNewUser: function (e) {
+      e.preventDefault();
+      console.log("This is the type role:", this.type_role);
+      if (this.new_company_password != this.new_company_confirm_password) {
+        alert("Passwords don't match");
+
+        return;
+      } else if ((this.type_role = "company")) {
+        console.log("Ready to send the request body");
         var request_body = {
-          company_name: this.new_company_name,
-          company_email: this.new_company_email,
+          companyName: this.new_company_name,
+          companyEmail: this.new_company_email,
+          companyPlainPassword: this.new_company_password,
         };
-      } else if ((this.type_role = "user")) {
+        console.log("This is the request body", request_body);
+      }
+      /*
+     else if ((this.type_role = "user")) {
         var request_body = {
           first_name: this.new_first_name,
           last_name: this.new_last_name,
           email: this.new_email,
           role: "driver",
         };
-      }
+      }*/
       fetch(`${url}/user`, {
         method: "POST",
         headers: {
@@ -68,14 +75,22 @@ var app = new Vue({
         },
         body: JSON.stringify(request_body),
       }).then(function (response) {
-        console.log(request_body);
-        if (response.status == 400) {
+        response.json().then(function (data) {
+          console.log(data);
+          if (data.error && response.status == 422) {
+            alert("Email already registered");
+          } else if (response.status == 201) {
+            //alert("Congratulations, you're signed up!");
+          }
+        });
+        /*
+        if (response.status == 422) {
           response.json().then(function (data) {
             alert(data.msg);
           });
         } else {
           response.status == 201;
-        }
+        }*/
       });
     },
 
