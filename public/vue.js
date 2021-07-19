@@ -11,6 +11,8 @@ var app = new Vue({
     last_name: "",
     email: "",
     role: "",
+    password: "",
+    confirm_password: "",
     // Creating a new company account
     new_company_name: "",
     new_company_email: "",
@@ -45,11 +47,11 @@ var app = new Vue({
     addNewUser: function (e) {
       e.preventDefault();
       console.log("This is the type role:", this.type_role);
-      if (this.new_company_password != this.new_company_confirm_password) {
-        alert("Passwords don't match");
-
-        return;
-      } else if ((this.type_role = "company")) {
+      if (this.type_role === "company") {
+        if (this.new_company_password != this.new_company_confirm_password) {
+          alert("Passwords don't match");
+          return;
+        }
         console.log("Ready to send the request body");
         var request_body = {
           companyName: this.new_company_name,
@@ -57,18 +59,20 @@ var app = new Vue({
           companyPlainPassword: this.new_company_password,
         };
         console.log("This is the request body", request_body);
-      }
-      /*
-     else if ((this.type_role = "user")) {
-        console.log(type_role);
       } else if ((this.type_role = "user")) {
+        if (this.password != this.confirm_password) {
+          alert("Passwords don't match");
+          return;
+        }
         var request_body = {
-          first_name: this.new_first_name,
-          last_name: this.new_last_name,
-          email: this.new_email,
+          firstName: this.first_name,
+          lastName: this.last_name,
+          email: this.email,
           role: "driver",
+          plainPassword: this.password,
         };
-      }*/
+        console.log("This is the request body", request_body);
+      }
 
       fetch(`${url}/user`, {
         method: "POST",

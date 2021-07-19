@@ -191,28 +191,64 @@
                 id="signUpEmail"
                 class="form-input"
                 placeholder="Email"
+                v-model="email"
                 autofocus
               />
               <div class="form-input-error-message"></div>
             </div>
 
             <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="First Name" />
+              <input
+                type="text"
+                class="form-input"
+                placeholder="First Name"
+                v-model="first_name"
+              />
               <div class="form-input-error-message"></div>
             </div>
 
             <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="Last Name" />
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Last Name"
+                v-model="last_name"
+              />
               <div class="form-input-error-message"></div>
             </div>
 
             <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="Your Role" />
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Your Role"
+                v-model="role"
+              />
+              <div class="form-input-error-message"></div>
+            </div>
+
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Password"
+                v-model="password"
+              />
+              <div class="form-input-error-message"></div>
+            </div>
+
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Confirm Password"
+                v-model="confirm_password"
+              />
               <div class="form-input-error-message"></div>
             </div>
 
             <!--submit and links-->
-            <button type="submit" class="form-button" v-on:click="addNewUser()">
+            <button type="submit" class="form-button" v-on:click="addNewUser">
               Continue
             </button>
           </form>

@@ -274,10 +274,10 @@ app.post("/user", function (req, res) {
   } else {
     // -------CREATING AN ACCOUNT FOR AN EMPLOYEE DRIVER---------------
     // CHECKING IF THE COMPANY IS LOGGED IN
-    if (!req.user && !req.user.role == "admin") {
+    /*if (!req.user && !req.user.role == "admin") {
       res.sendStatus(401);
       return;
-    }
+    }*/
 
     // CHECKING IF THE EMAIL IS UNIQUE
     User.findOne({ email: req.body.email }).then(function (user) {
@@ -292,7 +292,7 @@ app.post("/user", function (req, res) {
           last_name: req.body.lastName,
           email: req.body.email,
           role: "driver",
-          company: req.user.company,
+          //company: req.user.company,
         });
         // storing the plain password
         var plainPassword = req.body.plainPassword;
