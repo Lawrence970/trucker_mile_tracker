@@ -37,7 +37,6 @@ var app = new Vue({
   methods: {
     changePageDisplay: function (e) {
       this.page = e;
-      console.log(e);
     },
     submitForm: function () {},
 
@@ -61,6 +60,8 @@ var app = new Vue({
       }
       /*
      else if ((this.type_role = "user")) {
+        console.log(type_role);
+      } else if ((this.type_role = "user")) {
         var request_body = {
           first_name: this.new_first_name,
           last_name: this.new_last_name,
@@ -68,6 +69,7 @@ var app = new Vue({
           role: "driver",
         };
       }*/
+
       fetch(`${url}/user`, {
         method: "POST",
         headers: {
@@ -83,14 +85,6 @@ var app = new Vue({
             //alert("Congratulations, you're signed up!");
           }
         });
-        /*
-        if (response.status == 422) {
-          response.json().then(function (data) {
-            alert(data.msg);
-          });
-        } else {
-          response.status == 201;
-        }*/
       });
     },
 

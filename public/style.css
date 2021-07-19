@@ -1,303 +1,319 @@
 /* FONTS */
 @font-face {
-    font-family: "Staatliches";
-    src: url(/fonts/Staatliches/Staatliches-Regular.ttf);
+  font-family: "Staatliches";
+  src: url(/fonts/Staatliches/Staatliches-Regular.ttf);
 }
 
 @font-face {
-    font-family: "Roboto";
-    src: url(/fonts/Roboto/Roboto-Light.ttf);
+  font-family: "Roboto";
+  src: url(/fonts/Roboto/Roboto-Light.ttf);
 }
 
 body {
-    /* !GLOBAL custom styles */
-    --color-primary: #FFFA6B;
-    --color-primary-dark: #f5ef54;
-    --color-secondary: #282A35;
-    --color-secondary-dark: #2f2f33;
-    --color-error: #cc3333;
-    --color-success: #4bb544;
-    --border-radius: 4px;
+  /* !GLOBAL custom styles */
+  --color-primary: #fffa6b;
+  --color-primary-dark: #f5ef54;
+  --color-secondary: #282a35;
+  --color-white: #dddddd;
+  --color-secondary-dark: #2f2f33;
+  --color-error: #cc3333;
+  --color-success: #4bb544;
+  --border-radius: 4px;
 
-    margin:0;
-    height:100vh;
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    font-size:20px;
-    background: #dddddd;
-    background-size:cover;
-    font-family: Roboto;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: #dddddd;
+  background-size: cover;
+  font-family: Roboto;
 }
 
 .hamburger-menu {
-    height: 35px;
-    width: 35px;
-    outline:none;
-    border:none;
-    background-color: var(--color-primary);
-    border-radius: var(--border-radius);
+  height: 35px;
+  width: 35px;
+  outline: none;
+  border: none;
+  background-color: var(--color-primary);
+  border-radius: var(--border-radius);
 }
 
 .hamburger-menu:hover {
-    cursor: pointer;
-    background-color: var(--color-primary-dark);
+  cursor: pointer;
+  background-color: var(--color-primary-dark);
 }
 
-.input-field{
-    height: 44px;
-    width: 310px;
-    text-align: center;
-    font-size:1.2em;
-    border:none;
-    background-color: #FFFFFF;
-    border-radius: var(--border-radius);
-    margin:25px;
-    font-family: Roboto;
+.input-field {
+  height: 44px;
+  width: 310px;
+  text-align: center;
+  font-size: 1.2em;
+  border: none;
+  background-color: #ffffff;
+  border-radius: var(--border-radius);
+  margin: 25px;
+  font-family: Roboto;
 }
 
-.input-field:focus{
-    outline:none;
+.input-field:focus {
+  outline: none;
 }
 
-.input-field::placeholder{
-    color:#464347;
-    opacity: .55;
-    font-size:24px;
+.input-field::placeholder {
+  color: #464347;
+  opacity: 0.55;
+  font-size: 24px;
 }
 
-.input-button{
-    border:none;
-    border-radius: var(--border-radius);
-    font-size:27px;
-    margin: 20px;
-    cursor: pointer;
-    color:var(--color-secondary);
-    background-color: var(--color-primary);
-    width:310px;
-    height:64px;
+.input-button {
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 27px;
+  margin: 20px;
+  cursor: pointer;
+  color: var(--color-secondary);
+  background-color: var(--color-primary);
+  width: 310px;
+  height: 64px;
 }
 
-.input-button:hover{
-    background-color: var(--color-primary-dark);
-    color:var(--color-secondary);
+.cancel-button {
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  margin: 0px;
+  cursor: pointer;
+  color: var(--color-secondary);
+  background-color: var(--color-error);
+  width: 80px;
+  height: 35px;
+}
+
+.input-button:hover {
+  background-color: var(--color-primary-dark);
+  color: var(--color-secondary);
+}
+
+.input-button:active {
+  transform: scale(0.98);
 }
 
 .subscript-gray {
-    font-size: 16px;
-    color:#8D8C80;
-    margin:2px;
+  font-size: 16px;
+  color: #8d8c80;
+  margin: 2px;
 }
 
 .subscript-yellow {
-    color:var(--color-primary);
-    font-size: 26px;
+  color: var(--color-primary);
+  font-size: 26px;
 }
 
 /* use this wherever TRUCKER MILES h1 is used */
 .app-name-header-one {
-    font-family:Staatliches;
-    letter-spacing: .1em;
-    font-size:60px;
-    color:var(--color-primary);
-    margin-top:0px;
-    margin-bottom:0px;
+  font-family: Staatliches;
+  letter-spacing: 0.1em;
+  font-size: 60px;
+  color: var(--color-primary);
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 /* styles index.html*/
 /* styles index.html*/
 /* styles index.html*/
 
-
 /* ! for testing purposes >>> */
-#test-nav {
-    display:flex;
-    justify-content: center;
-    align-items: center;
+.test-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #admin-portal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--color-secondary-dark);
+  height: 70vh;
+  margin: 1rem;
+  padding: 1.2rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius);
 }
 
 #admin-page-wrapper {
-    background: var(--color-secondary);
-    display:flex;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vh;
+  background: var(--color-white);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
 }
 
 #driver-portal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 70vh;
 }
 
 #driver-page-wrapper {
-    background: var(--color-secondary);
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
+  background: var(--color-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
 }
-
-
-/* ! for testing purposes <<< */
 
 #form-login {
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    margin:200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 200px;
 }
 
-#login-btn-container{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
+#login-btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.container{
-    width:400px;
-    max-width:400px;
-    background: var(--color-secondary-dark);
-    margin:1rem;
-    padding:1.2rem;
-    box-shadow: 0 0 40px rgba(0,0,0,0.2);
-    border-radius: var(--border-radius);
+.container {
+  width: 400px;
+  max-width: 400px;
+  background: var(--color-secondary-dark);
+  margin: 1rem;
+  padding: 1.2rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius);
 }
 
 .container,
 .form-input,
 .form-button {
-    font: 500 1rem Roboto, sans-serif;
+  font: 500 1rem Roboto, sans-serif;
 }
-
 
 /* this is what i want, adding the form hidden class to an element with js hides the element */
 .form-hidden {
-    display:none;
+  display: none;
 }
 
 .container-hidden {
-    display:none;
+  display: none;
 }
 
-.form > *:first-child{
-    margin-top:0;
-
+.form > *:first-child {
+  margin-top: 0;
 }
 
-.form > *:last-child{
-    margin-bottom:0;
+.form > *:last-child {
+  margin-bottom: 0;
 }
 
 .form-title {
-    margin-bottom: 2rem;
-    text-align:center;
-    color:var(--color-primary)
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--color-primary);
 }
 
 .form-message {
-    text-align:center;
-    margin-bottom: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .form-message-success {
-    color: var(--color-success);
+  color: var(--color-success);
 }
 
 .form-message-error {
-    color: var(--color-error);
+  color: var(--color-error);
 }
 
 .form-input-group {
-    margin-bottom: 1rem;
-
+  margin-bottom: 1rem;
 }
 
 .form-input {
-    display: block;
-    width:100%;
-    padding:0.75rem;
-    box-sizing:border-box;
-    border-radius: var(--border-radius);
-    border: 1px solid #dddddd;
-    outline:none;
-    background: #eeeeee;
-    transition: background 0.2s, border-color 0.2s;
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  border: 1px solid #dddddd;
+  outline: none;
+  background: #eeeeee;
+  transition: background 0.2s, border-color 0.2s;
 }
 
-.form-input:focus{
-    border-color: var(--color-primary);
-    background: #ffffff;
+.form-input:focus {
+  border-color: var(--color-primary);
+  background: #ffffff;
 }
 
 .form-input-error {
-    color: var(--color-error);
-    border-color: var(--color-error);
+  color: var(--color-error);
+  border-color: var(--color-error);
 }
 
 .form-input-error-message {
-    margin-top: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--color-error);
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-error);
 }
 
 .form-button {
-    width: 100%;
-    padding: 1rem 2rem;
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: var(--color-secondary-dark);
-    border:none;
-    border-radius: var(--border-radius);
-    outline:none;
-    cursor: pointer; 
-    background:var(--color-primary);
+  width: 100%;
+  padding: 1rem 2rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--color-secondary-dark);
+  border: none;
+  border-radius: var(--border-radius);
+  outline: none;
+  cursor: pointer;
+  background: var(--color-primary);
 }
 
 .form-button:hover {
-    background: var(--color-primary-dark);
+  background: var(--color-primary-dark);
 }
-
 
 /* transform: scale; => this scales the button down by 2% when clicked */
 .form-button:active {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 .form-text {
-    text-align: center;
+  text-align: center;
 }
 
 .form-link {
-    color: var(--color-primary-dark);
-    text-decoration: none;
-    cursor:pointer;
-
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .form-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-
+.form-menu-selection {
+  display: flex;
+  justify-content: space-between;
+}
 
 /* media query at width of 700px */
 @media screen and (max-width: 700px) {
-    .subscript-gray {
-        font-size: 16px;
-        color:#8D8C80;
-        text-align:center;
-        margin:2px;
-    }
+  .subscript-gray {
+    font-size: 16px;
+    color: #8d8c80;
+    text-align: center;
+    margin: 2px;
+  }
 }
