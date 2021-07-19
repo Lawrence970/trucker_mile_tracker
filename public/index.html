@@ -172,7 +172,7 @@
 
         <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! ADMIN LANDING success on login/signup-->
-        <div v-if="page=='adminLanding'" id="admin-page-container">
+        <div v-if="page=='adminLanding'" class="align-content-page-container">
           <button
             class="input-button"
             v-on:click="changePageDisplay('allDrivers')"
@@ -258,9 +258,22 @@
 
         <!--* DRIVER PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! DRIVER LANDING success on login-->
-        <div v-if="page=='driverLanding'" id="driver-page-container">
-          <h1>Driver Page</h1>
+        <div v-if="page=='driverLanding'" class="align-content-page-container">
+          <button
+            class="input-button"
+            v-on:click="changePageDisplay('allRoutes')"
+          >
+            My Routes
+          </button>
+          <button
+            class="input-button"
+            v-on:click="changePageDisplay('newRoute')"
+          >
+            New Route
+          </button>
         </div>
+        <!--! My Routes *DISPLAY ALL ROUTES* -->
+        <div v-if="page=='allRoutes'"></div>
       </div>
     </div>
 

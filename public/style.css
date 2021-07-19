@@ -132,7 +132,7 @@ body {
   align-items: center;
 }
 
-#admin-page-container {
+.align-content-page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -154,6 +154,7 @@ body {
 .container {
   width: 400px;
   max-width: 400px;
+  height: 100vh;
   background: var(--color-secondary-dark);
   margin: 1rem;
   padding: 1.2rem;
