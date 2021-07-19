@@ -96,6 +96,10 @@ body {
     color:var(--color-secondary);
 }
 
+.input-button:active {
+    transform:scale(0.98);
+}
+
 .subscript-gray {
     font-size: 16px;
     color:#8D8C80;

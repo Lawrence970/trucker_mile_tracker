@@ -31,16 +31,14 @@
             
             <!--! admin LANDING form-->
             
-            <div id="admin-portal" v-if="page=='landingContainer'">
+            <div id="admin-portal" v-if="page=='landingContainer'">    
                     <button class="input-button" v-on:click="changePageDisplay('allDrivers')">All Drivers</button>
                     <button class="input-button" v-on:click="changePageDisplay('addDriver')">Add New Driver</button>
             </div>
                 
             
-            <div v-if="page=='allDrivers'">
-                <div class="container">
-
-                </div>
+            <div class="container" v-if="page=='allDrivers'">
+                
             </div>
 
             <!--! new DRIVER form-->
@@ -73,8 +71,9 @@
                         </div>
 
                         <div class="form-input-group">
-                            <input type="text" class="form-input" placeholder="Your Role">
+                            <input type="text" class="form-input" placeholder="password">
                             <div class="form-input-error-message"></div>
+                            <p class="subscript-gray">Give this password to your driver</p>
                         </div>
 
                         <!--submit and links-->
