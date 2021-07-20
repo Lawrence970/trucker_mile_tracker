@@ -1,5 +1,6 @@
 var url = "http://localhost:8080";
 
+// LOG IN A USER
 function verifyUserAccountOnServer(user) {
   return fetch(`${url}/session`, {
     method: "POST",
@@ -8,6 +9,13 @@ function verifyUserAccountOnServer(user) {
     headers: {
       "Content-Type": "application/json",
     },
+  });
+}
+
+// GETTING THE USER THAT IS LOGGED IN
+function getUser() {
+  return fetch(`${url}/session`, {
+    credentials: "same-origin",
   });
 }
 
@@ -42,6 +50,7 @@ var app = new Vue({
     logInUserErrors: [],
 
     // LOGGED IN USER
+    currentUser: {},
 
     users: [],
 
@@ -149,6 +158,26 @@ var app = new Vue({
 
       verifyUserAccountOnServer(user).then((response) => {
         console.log("This is the logIn status code: ", response.status);
+        if (response.status == 201) {
+          getUser().then((response) => {
+            console.log("THis is the session response: ", response);
+            response.json().then((user) => {
+              console.log("This is the session json data: ", user);
+              if (user.role == "admin") {
+                this.currentUser = user;
+                this.page = "adminLanding";
+                console.log("This is the current user", this.currentUser);
+              } else if (user.role == "driver") {
+                this.currentUser = user;
+                this.page = "driverLanding";
+                console.log("This is the current user", this.currentUser);
+              }
+            });
+          });
+        } else {
+          console.log("Error login in");
+          this.logInUserErrors.push("Error Login In");
+        }
       });
     },
 

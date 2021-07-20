@@ -17,7 +17,7 @@ const { setTotalMileageOfRoutes } = require("./server-helper-functions");
 const app = express();
 
 app.use(cors());
-app.use(express.static("static"));
+app.use(express.static("public"));
 
 // tell our app to use json
 app.use(express.json({}));
@@ -48,7 +48,9 @@ app.use((req, res, next) => {
     "- Path",
     req.originalUrl,
     "- Body",
-    req.body
+    req.body,
+    "--cookies",
+    req.cookies
   );
   next();
 });
@@ -383,7 +385,7 @@ passport.serializeUser(function (user, done) {
 
 //3. DESERIALIZED USER FROM SESSION
 passport.deserializeUser(function (userId, done) {
-  User.findOne({ _id: userId })
+  User.findOne({ _id: userId }).populate("company")
     .then(function (user) {
       done(null, user);
     })
