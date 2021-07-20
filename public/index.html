@@ -65,10 +65,20 @@
             <div class="form-message form-message-error"></div>
             <!--* error message-->
 
+            <!-- DISPLAYING THE FIELDS THAT NEED TO BE DISPLAYED: VALIDATION -->
+            <div class="logInErrors">
+              <ul>
+                <li v-for="error in logInUserErrors">
+                  {{error}}
+                </li>
+              </ul>
+            </div>
+
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
               <input
                 type="text"
+                v-model="logInEmail"
                 class="form-input"
                 placeholder="Email"
                 autofocus
@@ -80,6 +90,7 @@
             <div class="form-input-group">
               <input
                 type="password"
+                v-model="logInPassword"
                 class="form-input"
                 placeholder="Password"
               />
@@ -87,7 +98,7 @@
             </div>
 
             <!--submit and links-->
-            <button type="submit" class="form-button">Continue</button>
+            <button type="submit" v-on:click="logInUser" class="form-button">Continue</button>
             <p class="form-text">
               <a href="#" class="form-link">Forgot your password?</a>
             </p>

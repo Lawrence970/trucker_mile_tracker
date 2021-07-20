@@ -1,5 +1,16 @@
 var url = "http://localhost:8080";
 
+function verifyUserAccountOnServer(user){
+  return fetch(`${url}/session`,{
+    method: "POST",
+    body: JSON.stringify(user),
+    // credentials: 'include',
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+}
+
 var app = new Vue({
   el: "#vue-app-wrapper",
 
@@ -18,6 +29,15 @@ var app = new Vue({
     new_company_confirm_password: "",
     //validation for signing up company
     signUpCompanyErrors: [],
+
+    // LOGIN A USER
+    logInEmail: "",
+    logInPassword: "",
+    // LOGIN USER VALIDATION
+    logInUserErrors: [],
+
+    // LOGGED IN USER
+    
 
     users: [],
 
@@ -96,6 +116,25 @@ var app = new Vue({
           }
         });
       });
+    },
+
+    logInUser: function(e){
+      e.preventDefault();
+      var valid = this.validateLogInInputs;
+      if (!valid){
+        console.log(this.logInUserErrors);
+        return;
+      }
+      var user = {
+        email: this.logInEmail,
+        plainPassword: this.logInPassword
+      }
+
+      verifyUserAccountOnServer(user).then((response)=>{
+        console.log("This is the logIn status code: ", response.status);
+      })
+
+
     },
 
     getRoutes: function() {
@@ -183,6 +222,17 @@ var app = new Vue({
         this.signUpCompanyErrors.push("Please Enter Company Confirm Password");
       }
       return this.signUpCompanyErrors == 0;
+    },
+
+    validateLogInInputs: function(){
+      this.logInUserErrors = [];
+      if (this.logInEmail.length == 0){
+        this.logInUserErrors.push("Please Enter an Email");
+      }
+      if (this.logInPassword == 0){
+        this.logInUserErrors.push("Please Enter a Password");
+      }
+      return this.logInUserErrors == 0;
     }
   }
 });
