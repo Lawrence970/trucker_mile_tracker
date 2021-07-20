@@ -11,28 +11,28 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- TODO 
+    <!-- TODO
         - Continue Button Logic
             - from sign up >  redirect to login page if successful
                 - if unsuccessful > display error and stay on same page and clear input fields
             - from login > redirect to home /driver or /admin if successful
                 - if unsuccessful > display error and stay on same page and clear input fields
-        
+
         -
-        - 
+        -
     -->
 
     <div id="vue-app-wrapper">
       <div class="container">
         <!--this container wraps landing page & signUp/login-->
 
-        <div class="test-nav">
-          <a class="input-button" href="admin.html">Admin Portal</a>
-          <a class="input-button" href="driver.html">Driver Portal</a>
-        </div>
-        <p style="color: red">above for testing purposes</p>
-
         <!--! LANDING PAGE-->
+        <div class="test-nav">
+          <button v-on:click="changePageDisplay('adminLanding')">admin</button>
+          <button v-on:click="changePageDisplay('driverLanding')">
+            driver
+          </button>
+        </div>
         <div id="landing-container" v-if="page=='landingContainer'">
           <div id="login-btn-container">
             <h1 class="app-name-header-one">TRUCKER MILES</h1>
@@ -51,15 +51,7 @@
               id="redirect-form-signUp"
               v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
             >
-              Sign Up Company
-            </button>
-            <button
-              type="button"
-              class="input-button"
-              id="redirect-form-signUp"
-              v-on:click="changePageDisplay('signUpUser'), type_role=`user`"
-            >
-              Sign Up User
+              Sign Up
             </button>
           </div>
         </div>
@@ -67,16 +59,26 @@
         <!--! SIGN UP / LOGIN FORMs-->
         <div id="form-container">
           <!--*login form-->
-          <form class="form" id="login" v-if="page=='signIn'">
+          <div class="form" id="login" v-if="page=='signIn'">
             <!--action="POST"-->
             <h1 class="form-title">Login</h1>
             <div class="form-message form-message-error"></div>
             <!--* error message-->
 
+            <!-- DISPLAYING THE FIELDS THAT NEED TO BE DISPLAYED: VALIDATION -->
+            <div class="logInErrors">
+              <ul>
+                <li v-for="error in logInUserErrors">
+                  {{error}}
+                </li>
+              </ul>
+            </div>
+
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
               <input
                 type="text"
+                v-model="logInEmail"
                 class="form-input"
                 placeholder="Email"
                 autofocus
@@ -88,6 +90,7 @@
             <div class="form-input-group">
               <input
                 type="password"
+                v-model="logInPassword"
                 class="form-input"
                 placeholder="Password"
               />
@@ -95,7 +98,7 @@
             </div>
 
             <!--submit and links-->
-            <button type="submit" class="form-button">Continue</button>
+            <button type="submit" v-on:click="logInUser" class="form-button">Continue</button>
             <p class="form-text">
               <a href="#" class="form-link">Forgot your password?</a>
             </p>
@@ -108,14 +111,24 @@
                 >Dont have an account? Sign up here</a
               >
             </p>
-          </form>
+          </div>
 
           <!--ANCHOR-->
           <!--*create account COMPANY form-->
-          <form class="form" id="createAccount" v-if="page=='signUpCompany'">
+          <div class="form" id="createAccount" v-if="page=='signUpCompany'">
             <h1 class="form-title">Create Account</h1>
             <div class="form-message form-message-error"></div>
             <!--* error message-->
+            <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
+
+            <div v-if="signUpCompanyErrors.length > 0" class="sign-up-company-errors-wrapper">
+              <ul>
+                <li v-for="error in signUpCompanyErrors">
+                  {{error}}
+                </li>
+              </ul>
+            </div>
+
 
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
@@ -175,12 +188,48 @@
                 >Already Have an Account? Sign In Here</a
               >
             </p>
-          </form>
+          </div>
+        </div>
 
-          <!--ANCHOR-->
+        <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
+        <!--! ADMIN LANDING success on login/signup-->
+        <div v-if="page=='adminLanding'" class="align-content-page-container">
+          <button
+            class="input-button"
+            v-on:click="changePageDisplay('allDrivers')"
+          >
+            All Drivers
+          </button>
+          <button
+            class="input-button"
+            v-on:click="changePageDisplay('addDriver')"
+          >
+            Add New Driver
+          </button>
+        </div>
+
+        <div v-if="page=='allDrivers'">
+          <h1>NOTHING IS PERMANENT</h1>
+        </div>
+        <!--! NEW DRIVER FORM FOR ADMINS-->
+        <div class="form-container" v-if="page=='addDriver'">
           <!--*create account USER form-->
-          <form class="form" id="createAccount" v-if="page=='signUpUser'">
-            <h1 class="form-title">Create Account</h1>
+          <div class="form" id="createAccount">
+            <span class="form-menu-selection">
+              <img
+                class="hamburger-menu"
+                src="/icons/navigation-menu.svg"
+                alt="menu"
+              />
+              <button
+                class="cancel-button"
+                v-on:click="changePageDisplay('adminLanding')"
+              >
+                Cancel
+              </button>
+            </span>
+
+            <h1 class="form-title">New Driver</h1>
             <div class="form-message form-message-error"></div>
             <!--* error message-->
 
@@ -238,21 +287,58 @@
             </div>
 
             <div class="form-input-group">
+<<<<<<< HEAD
               <input
                 type="text"
                 class="form-input"
                 placeholder="Confirm Password"
                 v-model="confirm_password"
               />
+=======
+              <input type="text" class="form-input" placeholder="password" />
+>>>>>>> login-functionality
               <div class="form-input-error-message"></div>
             </div>
 
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="confirm password"
+              />
+              <div class="form-input-error-message"></div>
+              <p class="subscript-gray">Give this password to your driver</p>
+            </div>
+
             <!--submit and links-->
+<<<<<<< HEAD
             <button type="submit" class="form-button" v-on:click="addNewUser">
+=======
+            <button class="form-button" v-on:click="addNewUser()">
+>>>>>>> login-functionality
               Continue
             </button>
-          </form>
+          </div>
         </div>
+
+        <!--* DRIVER PAGE---------------------------------------------------------------------------------------------------------------------------->
+        <!--! DRIVER LANDING success on login-->
+        <div v-if="page=='driverLanding'" class="align-content-page-container">
+          <button
+            class="input-button"
+            v-on:click="changePageDisplay('allRoutes')"
+          >
+            My Routes
+          </button>
+          <button
+            class="input-button"
+            v-on:click="changePageDisplay('newRoute')"
+          >
+            New Route
+          </button>
+        </div>
+        <!--! My Routes *DISPLAY ALL ROUTES* -->
+        <div v-if="page=='allRoutes'"></div>
       </div>
     </div>
 
