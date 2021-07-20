@@ -194,6 +194,7 @@
         <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! ADMIN LANDING success on login/signup-->
         <div v-if="page=='adminLanding'" class="align-content-page-container">
+          <h1>Welcome {{currentUser.company.company_name}}</h1>
           <button
             class="input-button"
             v-on:click="changePageDisplay('allDrivers')"
@@ -280,6 +281,7 @@
         <!--* DRIVER PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! DRIVER LANDING success on login-->
         <div v-if="page=='driverLanding'" class="align-content-page-container">
+          <h1>Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}</h1>
           <button
             class="input-button"
             v-on:click="changePageDisplay('allRoutes')"
