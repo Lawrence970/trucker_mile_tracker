@@ -11,15 +11,15 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- TODO 
+    <!-- TODO
         - Continue Button Logic
             - from sign up >  redirect to login page if successful
                 - if unsuccessful > display error and stay on same page and clear input fields
             - from login > redirect to home /driver or /admin if successful
                 - if unsuccessful > display error and stay on same page and clear input fields
-        
+
         -
-        - 
+        -
     -->
 
     <div id="vue-app-wrapper">
@@ -108,6 +108,16 @@
             <h1 class="form-title">Create Account</h1>
             <div class="form-message form-message-error"></div>
             <!--* error message-->
+            <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
+
+            <div v-if="signUpCompanyErrors.length > 0" class="sign-up-company-errors-wrapper">
+              <ul>
+                <li v-for="error in signUpCompanyErrors">
+                  {{error}}
+                </li>
+              </ul>
+            </div>
+
 
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
