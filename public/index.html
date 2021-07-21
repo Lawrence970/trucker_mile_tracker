@@ -233,6 +233,16 @@
             <h1 class="form-title">New Driver</h1>
             <div class="form-message form-message-error"></div>
             <!--* error message-->
+            <!-- DIV TO DISPLAY ERRORS IF USER DOESN'T FILL ALL THEM OUT -->
+
+            <div
+              v-if="signUpUserErrors.length > 0"
+              class="sign-up-user-errors-wrapper"
+            >
+              <ul>
+                <li v-for="error in signUpUserErrors">{{error}}</li>
+              </ul>
+            </div>
 
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
@@ -298,7 +308,9 @@
         <!--* DRIVER PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! DRIVER LANDING success on login-->
         <div v-if="page=='driverLanding'" class="align-content-page-container">
-          <h1>Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}</h1>
+          <h1>
+            Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}
+          </h1>
           <button
             class="input-button"
             v-on:click="changePageDisplay('allRoutes')"

@@ -80,7 +80,8 @@ var app = new Vue({
 
     addNewUser: function (e) {
       e.preventDefault();
-      if ((this.type_role = "company")) {
+      console.log("type_role is ", this.type_role);
+      if (this.type_role == "company") {
         if (this.new_company_password != this.new_company_confirm_password) {
           alert("Passwords don't match");
 
@@ -101,7 +102,7 @@ var app = new Vue({
           companyPlainPassword: this.new_company_password,
         };
         console.log("This is the request body", request_body);
-      } else if ((this.type_role = "user")) {
+      } else if (this.type_role == "user") {
         if (this.password != this.confirm_password) {
           alert("Passwords don't match");
           return;
@@ -120,7 +121,6 @@ var app = new Vue({
           firstName: this.first_name,
           lastName: this.last_name,
           email: this.email,
-          role: "driver",
           plainPassword: this.password,
         };
         console.log("This is the request body", request_body);
@@ -289,10 +289,6 @@ var app = new Vue({
       }
       if (this.email.length == 0) {
         this.signUpUserErrors.push("Please Enter Email");
-      }
-      //This will eventually be obsolete because we will set the role when the admin clicks on "Add Driver" button
-      if (this.role.length == 0) {
-        this.signUpUserErrors.push("Please Enter User Role");
       }
 
       if (this.password.length == 0) {

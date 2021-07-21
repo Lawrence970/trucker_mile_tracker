@@ -385,7 +385,8 @@ passport.serializeUser(function (user, done) {
 
 //3. DESERIALIZED USER FROM SESSION
 passport.deserializeUser(function (userId, done) {
-  User.findOne({ _id: userId }).populate("company")
+  User.findOne({ _id: userId })
+    .populate("company")
     .then(function (user) {
       done(null, user);
     })
