@@ -294,7 +294,7 @@ app.post("/user", function (req, res) {
           last_name: req.body.lastName,
           email: req.body.email,
           role: "driver",
-          //company: req.user.company,
+          company: req.user.company,
         });
         // storing the plain password
         var plainPassword = req.body.plainPassword;
