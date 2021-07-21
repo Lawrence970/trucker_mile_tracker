@@ -197,13 +197,13 @@
           <h1>Welcome {{currentUser.company.company_name}}</h1>
           <button
             class="input-button"
-            v-on:click="changePageDisplay('allDrivers')"
+            v-on:click="goToDisplayAllDrivers"
           >
             All Drivers
           </button>
           <button
             class="input-button"
-            v-on:click="goToDisplayAllDrivers"
+            v-on:click="changePageDisplay('addDriver', type_role='user')"
           >
             Add New Driver
           </button>
