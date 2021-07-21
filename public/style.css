@@ -18,7 +18,7 @@ body {
   --color-secondary-dark: #2f2f33;
   --color-error: #cc3333;
   --color-success: #4bb544;
-  --border-radius: 4px;
+  --border-radius: 8px;
 
   margin: 0;
   height: 100vh;
@@ -30,6 +30,14 @@ body {
   background-size: cover;
   font-family: Roboto;
 }
+
+/* global classes >>> */
+.display-flex-col-align-center {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+/* <<< global classes */
 
 .hamburger-menu {
   height: 35px;
@@ -141,7 +149,6 @@ body {
 
 .container {
   width: 400px;
-  max-width: 400px;
   height: 100vh;
   background: var(--color-secondary-dark);
   padding: 1.2rem;
@@ -269,5 +276,9 @@ body {
     color: #8d8c80;
     text-align: center;
     margin: 2px;
+  }
+
+  .container {
+    width: 100vw;
   }
 }

@@ -18,7 +18,10 @@
           </button>
         </div>
 
-        <div v-if="page=='landingContainer'">
+        <div
+          class="display-flex-col-align-center"
+          v-if="page=='landingContainer'"
+        >
           <h1 class="app-name-header-one">TRUCKER MILES</h1>
           <p class="subscript-yellow">Keeping Track of Miles for You</p>
           <button
@@ -27,7 +30,7 @@
             id="redirect-form-login"
             v-on:click="changePageDisplay('signIn')"
           >
-            <a>Sign In</a>
+            Login
           </button>
           <button
             type="button"
@@ -40,7 +43,6 @@
         </div>
 
         <!--! SIGN UP / LOGIN FORMs-->
-
         <!--*login form-->
         <div class="form" v-if="page=='signIn'">
           <!--action="POST"-->
@@ -134,7 +136,7 @@
 
         <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! ADMIN LANDING success on login/signup-->
-        <div v-if="page=='adminLanding'">
+        <div class="display-flex-col-align-center" v-if="page=='adminLanding'">
           <button
             class="input-button"
             v-on:click="changePageDisplay('allDrivers')"
@@ -210,7 +212,13 @@
 
         <!--* DRIVER PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! DRIVER LANDING success on login-->
-        <div v-if="page=='driverLanding'">
+        <div class="display-flex-col-align-center" v-if="page=='driverLanding'">
+          <button
+            class="input-button"
+            v-on:click="changePageDisplay('newRoute')"
+          >
+            New Route
+          </button>
           <button
             class="input-button"
             v-on:click="changePageDisplay('allRoutes')"
@@ -219,14 +227,54 @@
           </button>
           <button
             class="input-button"
-            v-on:click="changePageDisplay('newRoute')"
+            v-on:click="changePageDisplay('pastRoutes')"
           >
-            New Route
+            My Past Routes
           </button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'"></div>
         <!--! Start A new Route *New route form*-->
+        <div v-if="page=='newRoute'">
+          <div class="form">
+            <span class="form-menu-selection">
+              <img
+                class="hamburger-menu"
+                src="/icons/navigation-menu.svg"
+                alt="menu"
+              />
+              <button
+                class="cancel-button"
+                v-on:click="changePageDisplay('driverLanding')"
+              >
+                Cancel
+              </button>
+            </span>
+
+            <h1 class="form-title">New Route</h1>
+
+            <!-- START LOCATION INPUT FIELD-->
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Start"
+                autofocus
+              />
+            </div>
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="End"
+                autofocus
+              />
+            </div>
+            <button class="form-button">Continue</button>
+          </div>
+        </div>
+        <!--! View past routes-->
+        <div v-if="page=='pastRoutes'"></div>
       </div>
     </div>
 
