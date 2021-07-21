@@ -138,6 +138,7 @@ app.post("/route", function (req, res) {
 
   res.setHeader("Content-Type", "application/json");
   console.log("Creating a new route");
+  console.log("This is the user that is logged in:" ,req.user);
 
   let creatingRoute = {
     from_location: req.body.from_location,
@@ -145,6 +146,7 @@ app.post("/route", function (req, res) {
     start_mileage: req.body.start_mileage || 0,
     end_mileage: req.body.end_mileage || 0,
     user: req.user,
+    company: req.user.company
   };
   Route.create(creatingRoute, (err, route) => {
     if (err) {
