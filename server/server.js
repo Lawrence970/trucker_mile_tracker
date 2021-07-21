@@ -276,7 +276,7 @@ app.post("/user", function (req, res) {
   } else {
     // -------CREATING AN ACCOUNT FOR AN EMPLOYEE DRIVER---------------
     // CHECKING IF THE COMPANY IS LOGGED IN
-    if (!req.user && !req.user.role == "admin") {
+    if (!req.user || !req.user.role == "admin") {
       res.sendStatus(401);
       return;
     }
@@ -323,11 +323,22 @@ app.post("/user", function (req, res) {
   }
 });
 
-app.get("/user", (req, res, next) => {
-  res.setHeader("Content-Type", "application/json");
-  console.log("getting all users");
+// GETTING THE DRIVERS FOR AN ADMIN(COMPANY) USER
+app.get("/drivers", (req, res, next) => {
 
-  let findQuery = {};
+  if (!req.user || !req.user.role == "admin"){
+    res.sendStatus(401);
+    return;
+  }
+
+  res.setHeader("Content-Type", "application/json");
+
+  console.log("This is the user: ", req.user);
+
+  var companyID = req.user.company._id;
+  console.log("This is the Company id", companyID);
+
+  let findQuery = {company: companyID, role: "driver"};
 
   User.find(findQuery, function (err, users) {
     if (err) {
@@ -405,6 +416,7 @@ app.post("/session", passport.authenticate("local"), function (req, res) {
 app.get("/session", function (req, res) {
   if (req.user) {
     // send user details
+    console.log("This is the user we are sending back: " ,req.user);
     res.json(req.user);
   } else {
     res.sendStatus(401);

@@ -19,6 +19,15 @@ function getUser(){
   });
 }
 
+//GETTING ALL THE DRIVERS FOR AN ADMIN (COMPANY)
+function getDriversFromServer(){
+  return fetch(`${url}/drivers`,{
+    credentials: "same-origin"
+  })
+}
+
+
+
 var app = new Vue({
   el: "#vue-app-wrapper",
 
@@ -48,6 +57,9 @@ var app = new Vue({
     currentUser : {},
 
     users: [],
+
+    // DRIVERS OF A COMPANY
+    drivers: [],
 
     routes: [{
       from_location: "",
@@ -141,22 +153,7 @@ var app = new Vue({
       verifyUserAccountOnServer(user).then((response)=>{
         console.log("This is the logIn status code: ", response.status);
         if (response.status == 201){
-          getUser().then((response)=>{
-            console.log("THis is the session response: ", response);
-            response.json().then((user)=>{
-              console.log("This is the session json data: ", user);
-              if (user.role == "admin"){
-                this.currentUser = user
-                this.page = "adminLanding"
-                console.log('This is the current user', this.currentUser)
-              }
-              else if(user.role == "driver"){
-                this.currentUser = user;
-                this.page = "driverLanding"
-                console.log("This is the current user", this.currentUser);
-              }
-            })
-          })
+          this.checkGetUser();
         }
         else{
           console.log("Error login in");
@@ -235,6 +232,46 @@ var app = new Vue({
         }
       });
     },
+    checkGetUser: function(){
+      getUser().then((response)=>{
+        if (response.status == 401){
+          console.log("Not Authorized");
+          return;
+
+        }
+        response.json().then((user)=>{
+          console.log("THis is the user who just logged in", user);
+          if (user){
+            if(user.role == "admin"){
+              this.currentUser = user;
+              this.page = "adminLanding";
+            }
+            else if (user.role == "driver"){
+              this.currentUser = user;
+              this.page = "driverLanding";
+            }
+            console.log("This is the current User: ", this.currentUser);
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
+      })
+    },
+    // GET ALL DRIVERS METHODS
+    goToDisplayAllDrivers: function(){
+      this.page == 'addDriver';
+      loadDrivers();
+    },
+    loadDrivers: function(){
+      getDriversFromServer().then((response)=>{
+        response.json().then((data)=>{
+          console.log("This is the data from drivers: ", data);
+        })
+      })
+    }
+
   },
   computed: {
     validateNewCompanyInputs: function() {
@@ -264,5 +301,8 @@ var app = new Vue({
       }
       return this.logInUserErrors == 0;
     }
+  },
+  created: function(){
+    this.checkGetUser();
   }
 });
