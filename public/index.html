@@ -325,7 +325,11 @@
           </button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
-        <div v-if="page=='allRoutes'"></div>
+        <div v-if="page=='allRoutes'">
+          <ul>
+            <li v-for="route in routes"></li>
+          </ul>
+        </div>
       </div>
     </div>
 
