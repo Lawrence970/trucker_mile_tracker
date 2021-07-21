@@ -132,23 +132,11 @@ body {
   align-items: center;
 }
 
-.align-content-page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 #form-login {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 200px;
-}
-
-#login-btn-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .container {
