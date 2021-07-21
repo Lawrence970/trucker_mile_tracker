@@ -138,6 +138,7 @@ app.post("/route", function (req, res) {
 
   res.setHeader("Content-Type", "application/json");
   console.log("Creating a new route");
+  console.log("This is the user that is logged in:" ,req.user);
 
   let creatingRoute = {
     from_location: req.body.from_location,
@@ -145,6 +146,7 @@ app.post("/route", function (req, res) {
     start_mileage: req.body.start_mileage || 0,
     end_mileage: req.body.end_mileage || 0,
     user: req.user,
+    company: req.user.company
   };
   Route.create(creatingRoute, (err, route) => {
     if (err) {
@@ -276,7 +278,11 @@ app.post("/user", function (req, res) {
   } else {
     // -------CREATING AN ACCOUNT FOR AN EMPLOYEE DRIVER---------------
     // CHECKING IF THE COMPANY IS LOGGED IN
+<<<<<<< HEAD
     /*if (!req.user && !req.user.role == "admin") {
+=======
+    if (!req.user || !req.user.role == "admin") {
+>>>>>>> login-functionality
       res.sendStatus(401);
       return;
     }*/
@@ -323,11 +329,22 @@ app.post("/user", function (req, res) {
   }
 });
 
-app.get("/user", (req, res, next) => {
-  res.setHeader("Content-Type", "application/json");
-  console.log("getting all users");
+// GETTING THE DRIVERS FOR AN ADMIN(COMPANY) USER
+app.get("/drivers", (req, res, next) => {
 
-  let findQuery = {};
+  if (!req.user || !req.user.role == "admin"){
+    res.sendStatus(401);
+    return;
+  }
+
+  res.setHeader("Content-Type", "application/json");
+
+  console.log("This is the user: ", req.user);
+
+  var companyID = req.user.company._id;
+  console.log("This is the Company id", companyID);
+
+  let findQuery = {company: companyID, role: "driver"};
 
   User.find(findQuery, function (err, users) {
     if (err) {
@@ -406,6 +423,7 @@ app.post("/session", passport.authenticate("local"), function (req, res) {
 app.get("/session", function (req, res) {
   if (req.user) {
     // send user details
+    console.log("This is the user we are sending back: " ,req.user);
     res.json(req.user);
   } else {
     res.sendStatus(401);

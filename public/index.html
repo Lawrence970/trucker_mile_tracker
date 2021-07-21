@@ -201,16 +201,18 @@
           >
             All Drivers
           </button>
-          <button
-            class="input-button"
-            v-on:click="changePageDisplay('addDriver'), type_role =`user`"
-          >
+          <button class="input-button" v-on:click="goToDisplayAllDrivers">
             Add New Driver
           </button>
         </div>
 
         <div v-if="page=='allDrivers'">
           <h1>NOTHING IS PERMANENT</h1>
+          <div class="all-drivers-wrapper">
+            <ul>
+              <li v-for></li>
+            </ul>
+          </div>
         </div>
         <!--! NEW DRIVER FORM FOR ADMINS-->
         <div class="form-container" v-if="page=='addDriver'">
