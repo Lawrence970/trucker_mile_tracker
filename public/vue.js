@@ -127,11 +127,12 @@ var app = new Vue({
         },
         body: JSON.stringify(request_body),
       }).then(function(response) {
-        response.json().then(function(data) {
-          console.log(data);
-          if (data.error && response.status == 422) {
+        response.json().then(function(user) {
+          console.log("This is the response of the creating a company", user);
+          if (user.error && response.status == 422) {
             alert("Email already registered");
           } else if (response.status == 201) {
+            app.currentUser = user;
             app.page = "adminLanding";
           }
         });
@@ -261,13 +262,14 @@ var app = new Vue({
     },
     // GET ALL DRIVERS METHODS
     goToDisplayAllDrivers: function(){
-      this.page == 'addDriver';
-      loadDrivers();
+      this.page = 'allDrivers';
+      this.loadDrivers();
     },
     loadDrivers: function(){
       getDriversFromServer().then((response)=>{
         response.json().then((data)=>{
           console.log("This is the data from drivers: ", data);
+          this.drivers = data;
         })
       })
     }
