@@ -17,7 +17,7 @@ const { setTotalMileageOfRoutes } = require("./server-helper-functions");
 const app = express();
 
 app.use(cors());
-app.use(express.static("static"));
+app.use(express.static("public"));
 
 // tell our app to use json
 app.use(express.json({}));
@@ -48,7 +48,9 @@ app.use((req, res, next) => {
     "- Path",
     req.originalUrl,
     "- Body",
-    req.body
+    req.body,
+    "--cookies",
+    req.cookies
   );
   next();
 });
@@ -136,6 +138,7 @@ app.post("/route", function (req, res) {
 
   res.setHeader("Content-Type", "application/json");
   console.log("Creating a new route");
+  console.log("This is the user that is logged in:" ,req.user);
 
   let creatingRoute = {
     from_location: req.body.from_location,
@@ -143,6 +146,7 @@ app.post("/route", function (req, res) {
     start_mileage: req.body.start_mileage || 0,
     end_mileage: req.body.end_mileage || 0,
     user: req.user,
+    company: req.user.company
   };
   Route.create(creatingRoute, (err, route) => {
     if (err) {
@@ -274,7 +278,7 @@ app.post("/user", function (req, res) {
   } else {
     // -------CREATING AN ACCOUNT FOR AN EMPLOYEE DRIVER---------------
     // CHECKING IF THE COMPANY IS LOGGED IN
-    if (!req.user && !req.user.role == "admin") {
+    if (!req.user || !req.user.role == "admin") {
       res.sendStatus(401);
       return;
     }
@@ -321,11 +325,22 @@ app.post("/user", function (req, res) {
   }
 });
 
-app.get("/user", (req, res, next) => {
-  res.setHeader("Content-Type", "application/json");
-  console.log("getting all users");
+// GETTING THE DRIVERS FOR AN ADMIN(COMPANY) USER
+app.get("/drivers", (req, res, next) => {
 
-  let findQuery = {};
+  if (!req.user || !req.user.role == "admin"){
+    res.sendStatus(401);
+    return;
+  }
+
+  res.setHeader("Content-Type", "application/json");
+
+  console.log("This is the user: ", req.user);
+
+  var companyID = req.user.company._id;
+  console.log("This is the Company id", companyID);
+
+  let findQuery = {company: companyID, role: "driver"};
 
   User.find(findQuery, function (err, users) {
     if (err) {
@@ -383,7 +398,7 @@ passport.serializeUser(function (user, done) {
 
 //3. DESERIALIZED USER FROM SESSION
 passport.deserializeUser(function (userId, done) {
-  User.findOne({ _id: userId })
+  User.findOne({ _id: userId }).populate("company")
     .then(function (user) {
       done(null, user);
     })
@@ -403,6 +418,7 @@ app.post("/session", passport.authenticate("local"), function (req, res) {
 app.get("/session", function (req, res) {
   if (req.user) {
     // send user details
+    console.log("This is the user we are sending back: " ,req.user);
     res.json(req.user);
   } else {
     res.sendStatus(401);

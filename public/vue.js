@@ -1,5 +1,33 @@
 var url = "http://localhost:8080";
 
+// LOG IN A USER
+function verifyUserAccountOnServer(user){
+  return fetch(`${url}/session`,{
+    method: "POST",
+    body: JSON.stringify(user),
+    // credentials: 'include',
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+}
+
+// GETTING THE USER THAT IS LOGGED IN
+function getUser(){
+  return fetch(`${url}/session`,{
+    credentials: "same-origin"
+  });
+}
+
+//GETTING ALL THE DRIVERS FOR AN ADMIN (COMPANY)
+function getDriversFromServer(){
+  return fetch(`${url}/drivers`,{
+    credentials: "same-origin"
+  })
+}
+
+
+
 var app = new Vue({
   el: "#vue-app-wrapper",
 
@@ -16,17 +44,29 @@ var app = new Vue({
     new_company_email: "",
     new_company_password: "",
     new_company_confirm_password: "",
+    //validation for signing up company
+    signUpCompanyErrors: [],
+
+    // LOGIN A USER
+    logInEmail: "",
+    logInPassword: "",
+    // LOGIN USER VALIDATION
+    logInUserErrors: [],
+
+    // LOGGED IN USER
+    currentUser : {},
 
     users: [],
 
-    routes: [
-      {
-        from_location: "",
-        to_location: "",
-        start_mileage: "",
-        end_mileage: "",
-      },
-    ],
+    // DRIVERS OF A COMPANY
+    drivers: [],
+
+    routes: [{
+      from_location: "",
+      to_location: "",
+      start_mileage: "",
+      end_mileage: "",
+    }, ],
 
     new_from_location: "",
     new_start_mileage: "",
@@ -37,23 +77,32 @@ var app = new Vue({
   components: {},
 
   methods: {
-    changePageDisplay: function (e) {
+    changePageDisplay: function(e) {
       e.preventDefault;
       this.page = e;
     },
-    submitForm: function () {},
+    submitForm: function() {},
+
 
     //Untested.
 
-    addNewUser: function (e) {
+    addNewUser: function(e) {
       e.preventDefault();
-      console.log("This is the type role:", this.type_role);
-      if (this.new_company_password != this.new_company_confirm_password) {
-        alert("Passwords don't match");
+      if ((this.type_role = "company")) {
+        if (this.new_company_password != this.new_company_confirm_password) {
+          alert("Passwords don't match");
 
-        return;
-      } else if ((this.type_role = "company")) {
-        console.log("Ready to send the request body");
+          return;
+        }
+
+        // MAKING SURE ALL THE FIELDS ARE FILLED OUT
+        var valid = this.validateNewCompanyInputs;
+
+        if(!valid){
+          console.log("This is the errors array", this.signUpCompanyErrors);
+          return;
+        }
+
         var request_body = {
           companyName: this.new_company_name,
           companyEmail: this.new_company_email,
@@ -79,59 +128,86 @@ var app = new Vue({
           "Content-Type": "application/json",
         },
         body: JSON.stringify(request_body),
-      }).then(function (response) {
-        response.json().then(function (data) {
-          console.log(data);
-          if (data.error && response.status == 422) {
+      }).then(function(response) {
+        response.json().then(function(user) {
+          console.log("This is the response of the creating a company", user);
+          if (user.error && response.status == 422) {
             alert("Email already registered");
           } else if (response.status == 201) {
+            app.currentUser = user;
             app.page = "adminLanding";
           }
         });
       });
     },
 
-    getRoutes: function () {
-      fetch(`${url}/routes`).then(function (response) {
-        response.json().then(function (data) {
+    logInUser: function(e){
+      e.preventDefault();
+      var valid = this.validateLogInInputs;
+      if (!valid){
+        console.log(this.logInUserErrors);
+        return;
+      }
+      var user = {
+        email: this.logInEmail,
+        plainPassword: this.logInPassword
+      }
+
+      verifyUserAccountOnServer(user).then((response)=>{
+        console.log("This is the logIn status code: ", response.status);
+        if (response.status == 201){
+          this.checkGetUser();
+        }
+        else{
+          console.log("Error login in");
+          this.logInUserErrors.push("Error Login In");
+        }
+      })
+
+
+    },
+
+    getRoutes: function() {
+      fetch(`${url}/routes`).then(function(response) {
+        response.json().then(function(data) {
           console.log(data);
           app.routes = data;
         });
       });
     },
 
-    deleteRoutes: function (route) {
+    deleteRoutes: function(route) {
       fetch(`${url}/route/` + route, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-      }).then(function () {
+      }).then(function() {
         app.getRoutes();
       });
     },
 
-    getUsers: function () {
-      fetch(`${url}/users`).then(function (response) {
-        response.json().then(function (data) {
+    getUsers: function() {
+      fetch(`${url}/users`).then(function(response) {
+        response.json().then(function(data) {
           console.log(data);
           app.users = data;
         });
       });
     },
 
-    deleteUser: function (user) {
+    deleteUser: function(user) {
       fetch(`${url}/user/` + user, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-      }).then(function () {
+      }).then(function() {
         app.getUsers();
       });
     },
 
-    addNewRoute: function () {
+    addNewRoute: function() {
       var request_body = {
         from_location: this.new_from_location,
         start_mileage: this.new_start_mileage,
@@ -144,20 +220,93 @@ var app = new Vue({
           "Content-Type": "application/json",
         },
         body: JSON.stringify(request_body),
-      }).then(function (response) {
+      }).then(function(response) {
         console.log(request_body);
         if (response.status == 400) {
-          response.json().then(function (data) {
+          response.json().then(function(data) {
             alert(data.msg);
           });
         } else if (response.status == 201) {
           (app.new_from_location = ""),
-            (app.new_start_mileage = ""),
-            (app.new_to_location = ""),
-            (app.new_end_mileage = "");
+          (app.new_start_mileage = ""),
+          (app.new_to_location = ""),
+          (app.new_end_mileage = "");
           app.getRoutes();
         }
       });
     },
+    checkGetUser: function(){
+      getUser().then((response)=>{
+        if (response.status == 401){
+          console.log("Not Authorized");
+          return;
+
+        }
+        response.json().then((user)=>{
+          console.log("THis is the user who just logged in", user);
+          if (user){
+            if(user.role == "admin"){
+              this.currentUser = user;
+              this.page = "adminLanding";
+            }
+            else if (user.role == "driver"){
+              this.currentUser = user;
+              this.page = "driverLanding";
+            }
+            console.log("This is the current User: ", this.currentUser);
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
+      })
+    },
+    // GET ALL DRIVERS METHODS
+    goToDisplayAllDrivers: function(){
+      this.page = 'allDrivers';
+      this.loadDrivers();
+    },
+    loadDrivers: function(){
+      getDriversFromServer().then((response)=>{
+        response.json().then((data)=>{
+          console.log("This is the data from drivers: ", data);
+          this.drivers = data;
+        })
+      })
+    }
+
   },
+  computed: {
+    validateNewCompanyInputs: function() {
+      this.signUpCompanyErrors = [];
+      if (this.new_company_name.length == 0) {
+        this.signUpCompanyErrors.push("Please Enter Company Name");
+      }
+      if (this.new_company_email.length == 0) {
+        this.signUpCompanyErrors.push("Please Enter Company Email");
+      }
+      if (this.new_company_password.length == 0) {
+        this.signUpCompanyErrors.push("Please Enter Company Password");
+      }
+      if (this.new_company_confirm_password.length == 0) {
+        this.signUpCompanyErrors.push("Please Enter Company Confirm Password");
+      }
+      return this.signUpCompanyErrors == 0;
+    },
+
+    validateLogInInputs: function(){
+      this.logInUserErrors = [];
+      if (this.logInEmail.length == 0){
+        this.logInUserErrors.push("Please Enter an Email");
+      }
+      if (this.logInPassword == 0){
+        this.logInUserErrors.push("Please Enter a Password");
+      }
+      return this.logInUserErrors == 0;
+    }
+  },
+  created: function(){
+    this.checkGetUser();
+  }
 });
