@@ -62,11 +62,11 @@ app.get("/route", (req, res, next) => {
     res.sendStatus(401);
     return;
   }
-
   console.log("This is the user: ", req.user);
-
   res.setHeader("Content-Type", "application/json");
-  role = "driver"; //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
+  //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
+  // role = "driver";
+
   let findQuery = {};
 
   //Check role if role == admin look at all Queries, don't add filter
