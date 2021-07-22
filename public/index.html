@@ -9,37 +9,38 @@
   </head>
   <body>
     <div id="vue-app-wrapper">
-      <div class="container">
-        <!--! LANDING PAGE-->
-        <div class="test-nav">
-          <button v-on:click="changePageDisplay('adminLanding')">admin</button>
-          <button v-on:click="changePageDisplay('driverLanding')">
-            driver
-          </button>
-        </div>
-        <div class="display-flex-col-align-center" v-if="page=='landingContainer'">
-          <h1 class="app-name-header-one">TRACK THE TRUCK</h1>
-          <p class="subscript-yellow">Keeping Track of Miles for You</p>
-          <button
-            type="button"
-            class="input-button"
-            id="redirect-form-login"
-            v-on:click="changePageDisplay('signIn')"
-          >
-            <a>Sign In</a>
-          </button>
-          <button
-            type="button"
-            class="input-button"
-            id="redirect-form-signUp"
-            v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
-          >
-            Sign Up
-          </button>
-        </div>
+      <!--! LANDING PAGE-->
+      <div class="test-nav">
+        <button v-on:click="changePageDisplay('adminLanding')">admin</button>
+        <button v-on:click="changePageDisplay('driverLanding')">driver</button>
+      </div>
+      <div
+        class="display-flex-col-align-center"
+        v-if="page=='landingContainer'"
+      >
+        <h1 class="app-name-header-one">TRACK THE TRUCK</h1>
+        <p class="subscript-yellow">Keeping Track of Miles for You</p>
+        <button
+          type="button"
+          class="input-button"
+          id="redirect-form-login"
+          v-on:click="changePageDisplay('signIn')"
+        >
+          <a>Sign In</a>
+        </button>
+        <button
+          type="button"
+          class="input-button"
+          id="redirect-form-signUp"
+          v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
+        >
+          Sign Up
+        </button>
+      </div>
 
-        <!--! SIGN UP / LOGIN FORMs-->
-        <div id="form-container">
+      <!--! SIGN UP / LOGIN FORMs-->
+      <div class="container">
+        <div class="form-container">
           <!--*login form-->
           <div class="form" v-if="page=='signIn'">
             <!--action="POST"-->
@@ -111,67 +112,72 @@
             </div>
           </div>
 
+          <!--*create account COMPANY form-->
+          <div class="form" v-if="page=='signUpCompany'">
+            <h1 class="form-title">Create Account</h1>
 
-        <!--*create account COMPANY form-->
-        <div class="form" v-if="page=='signUpCompany'">
-          <h1 class="form-title">Create Account</h1>
+            <!-- EMAIL INPUT FIELD-->
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Email"
+                autofocus
+                v-model="new_company_email"
+              />
+            </div>
 
-          <!-- EMAIL INPUT FIELD-->
-          <div class="form-input-group">
-            <input
-              type="text"
-              class="form-input"
-              placeholder="Email"
-              autofocus
-              v-model="new_company_email"
-            />
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Company Name"
+                v-model="new_company_name"
+              />
+            </div>
+
+            <!-- PASSWORD input field-->
+            <div class="form-input-group">
+              <input
+                type="password"
+                class="form-input"
+                placeholder="Password"
+                v-model="new_company_password"
+              />
+            </div>
+
+            <!--confirm password field-->
+            <div class="form-input-group">
+              <input
+                type="password"
+                class="form-input"
+                placeholder="Confirm Password"
+                v-model="new_company_confirm_password"
+              />
+            </div>
+
+            <!--submit and links-->
+            <button class="form-button" v-on:click="addNewUser">
+              Continue
+            </button>
+            <p class="form-text">
+              <a
+                href="#"
+                class="form-link"
+                v-on:click="changePageDisplay('signIn')"
+                >Already Have an Account? Sign In Here</a
+              >
+            </p>
           </div>
-
-          <div class="form-input-group">
-            <input
-              type="text"
-              class="form-input"
-              placeholder="Company Name"
-              v-model="new_company_name"
-            />
-          </div>
-
-          <!-- PASSWORD input field-->
-          <div class="form-input-group">
-            <input
-              type="password"
-              class="form-input"
-              placeholder="Password"
-              v-model="new_company_password"
-            />
-          </div>
-
-          <!--confirm password field-->
-          <div class="form-input-group">
-            <input
-              type="password"
-              class="form-input"
-              placeholder="Confirm Password"
-              v-model="new_company_confirm_password"
-            />
-          </div>
-
-          <!--submit and links-->
-          <button class="form-button" v-on:click="addNewUser">Continue</button>
-          <p class="form-text">
-            <a
-              href="#"
-              class="form-link"
-              v-on:click="changePageDisplay('signIn')"
-              >Already Have an Account? Sign In Here</a
-            >
-          </p>
         </div>
 
         <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! ADMIN LANDING success on login/signup-->
         <div v-if="page=='adminLanding'" class="display-flex-col-align-center">
-          <h1>Welcome {{currentUser.company.company_name}}</h1>
+          <h1 class="subscript-yellow">
+            Welcome {{currentUser.company.company_name}}
+          </h1>
+
           <button class="input-button" v-on:click="goToDisplayAllDrivers">
             All Drivers
           </button>
@@ -181,25 +187,27 @@
           >
             Add New Driver
           </button>
+          <button class="logout-button">logout</button>
         </div>
 
-        <div v-if="page=='allDrivers'">
+        <!--! ALL Drivers-->
+        <div v-if="page=='allDrivers'" class="display-flex-col-align-center">
           <h1 class="subscript-yellow">All Drivers</h1>
           <div id="all-drivers-wrapper">
             <ul>
               <li v-for="driver in drivers">
                 <div v-on:click="goToDriver(driver)" class="driver-wrapper">
                   <span>{{driver.first_name}} {{driver.last_name}}</span>
-                  <span>{{ driver.id }}</span>
+                  <span class="subscript-gray"
+                    >{{ driver._id.slice(driver._id.length - 5) }}</span
+                  >
                 </div>
               </li>
             </ul>
           </div>
         </div>
 
-        <div v-if="page=='oneDriver'">
-
-        </div>
+        <div v-if="page=='oneDriver'"></div>
 
         <!--! NEW DRIVER FORM FOR ADMINS-->
         <div class="form-container" v-if="page=='addDriver'">
@@ -294,7 +302,9 @@
         <!--* DRIVER PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! DRIVER LANDING success on login-->
         <div v-if="page=='driverLanding'" class="display-flex-col-align-center">
-          <h1>Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}</h1>
+          <h1>
+            Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}
+          </h1>
           <button
             class="input-button"
             v-on:click="changePageDisplay('newRoute')"
@@ -344,7 +354,7 @@
               <input
                 type="text"
                 class="form-input"
-                placeholder="Start"
+                placeholder="Start Location"
                 autofocus
               />
             </div>
@@ -352,7 +362,7 @@
               <input
                 type="text"
                 class="form-input"
-                placeholder="End"
+                placeholder="Starting Mileage"
                 autofocus
               />
             </div>
@@ -363,7 +373,6 @@
         <div v-if="page=='pastRoutes'"></div>
       </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="vue.js"></script>
   </body>
