@@ -68,9 +68,7 @@
             <!-- DISPLAYING THE FIELDS THAT NEED TO BE DISPLAYED: VALIDATION -->
             <div class="logInErrors">
               <ul>
-                <li v-for="error in logInUserErrors">
-                  {{error}}
-                </li>
+                <li v-for="error in logInUserErrors">{{error}}</li>
               </ul>
             </div>
 
@@ -98,7 +96,9 @@
             </div>
 
             <!--submit and links-->
-            <button type="submit" v-on:click="logInUser" class="form-button">Continue</button>
+            <button type="submit" v-on:click="logInUser" class="form-button">
+              Continue
+            </button>
             <p class="form-text">
               <a href="#" class="form-link">Forgot your password?</a>
             </p>
@@ -121,14 +121,14 @@
             <!--* error message-->
             <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
 
-            <div v-if="signUpCompanyErrors.length > 0" class="sign-up-company-errors-wrapper">
+            <div
+              v-if="signUpCompanyErrors.length > 0"
+              class="sign-up-company-errors-wrapper"
+            >
               <ul>
-                <li v-for="error in signUpCompanyErrors">
-                  {{error}}
-                </li>
+                <li v-for="error in signUpCompanyErrors">{{error}}</li>
               </ul>
             </div>
-
 
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
@@ -195,10 +195,7 @@
         <!--! ADMIN LANDING success on login/signup-->
         <div v-if="page=='adminLanding'" class="align-content-page-container">
           <h1>Welcome {{currentUser.company.company_name}}</h1>
-          <button
-            class="input-button"
-            v-on:click="goToDisplayAllDrivers"
-          >
+          <button class="input-button" v-on:click="goToDisplayAllDrivers">
             All Drivers
           </button>
           <button
@@ -247,6 +244,16 @@
             <h1 class="form-title">New Driver</h1>
             <div class="form-message form-message-error"></div>
             <!--* error message-->
+            <!-- DIV TO DISPLAY ERRORS IF USER DOESN'T FILL ALL THEM OUT -->
+
+            <div
+              v-if="signUpUserErrors.length > 0"
+              class="sign-up-user-errors-wrapper"
+            >
+              <ul>
+                <li v-for="error in signUpUserErrors">{{error}}</li>
+              </ul>
+            </div>
 
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
@@ -255,23 +262,39 @@
                 id="signUpEmail"
                 class="form-input"
                 placeholder="Email"
+                v-model="email"
                 autofocus
               />
               <div class="form-input-error-message"></div>
             </div>
 
             <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="First Name" />
+              <input
+                type="text"
+                class="form-input"
+                placeholder="First Name"
+                v-model="first_name"
+              />
               <div class="form-input-error-message"></div>
             </div>
 
             <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="Last Name" />
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Last Name"
+                v-model="last_name"
+              />
               <div class="form-input-error-message"></div>
             </div>
 
             <div class="form-input-group">
-              <input type="text" class="form-input" placeholder="password" />
+              <input
+                type="text"
+                class="form-input"
+                placeholder="password"
+                v-model="password"
+              />
               <div class="form-input-error-message"></div>
             </div>
 
@@ -280,13 +303,14 @@
                 type="text"
                 class="form-input"
                 placeholder="confirm password"
+                v-model="confirm_password"
               />
               <div class="form-input-error-message"></div>
               <p class="subscript-gray">Give this password to your driver</p>
             </div>
 
             <!--submit and links-->
-            <button class="form-button" v-on:click="addNewUser()">
+            <button class="form-button" v-on:click="addNewUser">
               Continue
             </button>
           </div>
@@ -295,7 +319,9 @@
         <!--* DRIVER PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! DRIVER LANDING success on login-->
         <div v-if="page=='driverLanding'" class="align-content-page-container">
-          <h1>Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}</h1>
+          <h1>
+            Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}
+          </h1>
           <button
             class="input-button"
             v-on:click="changePageDisplay('allRoutes')"
@@ -310,7 +336,11 @@
           </button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
-        <div v-if="page=='allRoutes'"></div>
+        <div v-if="page=='allRoutes'">
+          <ul>
+            <li v-for="route in routes"></li>
+          </ul>
+        </div>
       </div>
     </div>
 
