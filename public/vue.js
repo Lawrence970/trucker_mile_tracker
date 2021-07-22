@@ -26,6 +26,13 @@ function getDriversFromServer() {
   });
 }
 
+// GETTING ALL ROUTES OF A SPECIFIC DRIVER IF YOU ARE AN ADMIN
+function getDriverRoutesFromCompany(driverID){
+  return fetch(`${url}/route/${driverID}`,{
+    credentials: "same-origin"
+  });
+}
+
 var app = new Vue({
   el: "#vue-app-wrapper",
 
@@ -77,6 +84,9 @@ var app = new Vue({
     new_start_mileage: "",
     new_to_location: "",
     new_end_mileage: "",
+    // ROUTES OF DRIVER
+    currentDriver: {},
+    driverRoutes: []
   },
 
   components: {},
@@ -288,6 +298,15 @@ var app = new Vue({
     // specific driver clicked
     goToDriver: function (driver) {
       console.log("This is the specific driver clicked: ", driver);
+      this.currentDriver = driver;
+      this.page = "oneDriver";
+      var driverID = driver._id;
+      getDriverRoutesFromCompany(driverID).then((response)=>{
+        response.json().then((routes)=>{
+          console.log("THis are the routes: ", routes);
+          this.driverRoutes = routes;
+        })
+      })
     },
   },
   computed: {
