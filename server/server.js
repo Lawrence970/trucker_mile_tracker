@@ -56,35 +56,88 @@ app.use((req, res, next) => {
 });
 
 // METHODS
+
+// GET METHOD FOR ADMIN TO SEE THEIR DRIVERS ROUTE INFO
+app.get("/route/:driverID", (req, res)=>{
+  console.log("route got hit");
+  console.log("This is the driver id: ", req.params.driverID);
+  if (!req.user || req.user.role != "admin"){
+    res.sendStatus(401);
+    return
+  }
+  res.setHeader("Content-Type", "application/json");
+
+  var driverID = req.params.driverID;
+  var companyID = req.user.company._id;
+
+  User.findById(driverID, (err, user)=>{
+    if (user){
+      // get all the routes from the user
+      console.log("User exists: ", user);
+      var findQuery = {
+        user: driverID,
+        company: companyID
+      }
+
+      Route.find(findQuery, function(err, routes){
+        if (err){
+          res.status(500).json({
+            message: "Unable to list routes",
+            error: err
+          })
+          return;
+        }
+        var calculatedRoutes = setTotalMileageOfRoutes(routes);
+        res.status(200).json(calculatedRoutes);
+      })
+    }
+    else{
+      res.status(422).json({
+        error: "User does not exist"
+      })
+    }
+  })
+
+
+  var findQuery = {};
+
+
+})
+
+
+
+
 //Get - gets all of the Routes based on role
 app.get("/route", (req, res, next) => {
   if (!req.user) {
     res.sendStatus(401);
     return;
   }
-  console.log("This is the user: ", req.user);
   res.setHeader("Content-Type", "application/json");
   //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
   // role = "driver";
+  var driverID = req.user._id
+  var companyID = req.user.company._id
 
   let findQuery = {};
 
   //Check role if role == admin look at all Queries, don't add filter
 
   // THIS NEEDS WORK
-  if (req.body.role === constants.UserRoles.admin) {
-    findQuery = {};
-  }
-
-  //if role == driver add that user's id to the filter
-  // IF THE USER IS A DRIVER, HE CAN SEE JUST HIS ROUTES
-  else if (req.user.role === constants.UserRoles.driver) {
+  if (req.user.role === constants.UserRoles.admin) {
     findQuery = {
-      user: req.user._id,
+      company: companyID
     };
   }
 
-  console.log("getting all the routes");
+  // IF THE USER IS A DRIVER, HE CAN SEE JUST HIS ROUTES
+  else if (req.user.role === constants.UserRoles.driver) {
+    findQuery = {
+      user: driverID,
+    };
+  }
+  console.log("This is the find query: ", findQuery );
+  //
   Route.find(findQuery, function (err, routes) {
     if (err) {
       res.status(500).json({ message: `unable to list routes`, error: err });
@@ -140,13 +193,15 @@ app.post("/route", function (req, res) {
   console.log("Creating a new route");
   console.log("This is the user that is logged in:", req.user);
 
+  console.log("THis is the user when creating a route: ", req.user);
+
   let creatingRoute = {
     from_location: req.body.from_location,
     to_location: req.body.to_location || "",
     start_mileage: req.body.start_mileage || 0,
     end_mileage: req.body.end_mileage || 0,
     user: req.user,
-    company: req.user.company,
+    company: req.user.company._id,
   };
   Route.create(creatingRoute, (err, route) => {
     if (err) {
