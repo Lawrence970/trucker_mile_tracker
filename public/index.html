@@ -192,15 +192,15 @@
 
         <!--! ALL Drivers-->
         <div v-if="page=='allDrivers'" class="display-flex-col-align-center">
-          <h1 class="subscript-yellow">All Drivers</h1>
+          <h1 class="form-title">All Drivers</h1>
           <div id="all-drivers-wrapper">
             <ul>
               <li v-for="driver in drivers">
                 <div v-on:click="goToDriver(driver)" class="driver-wrapper">
                   <span>{{driver.first_name}} {{driver.last_name}}</span>
-                  <span class="subscript-gray"
-                    >{{ driver._id.slice(driver._id.length - 5) }}</span
-                  >
+                  <span class="subscript-gray" class="driver-id-display">
+                    {{ "___" + driver._id.slice(driver._id.length - 5) }}
+                  </span>
                 </div>
               </li>
             </ul>
