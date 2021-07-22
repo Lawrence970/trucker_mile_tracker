@@ -79,6 +79,8 @@ var app = new Vue({
     new_end_mileage: "",
   },
 
+  components: {},
+
   methods: {
     changePageDisplay: function (e) {
       e.preventDefault;

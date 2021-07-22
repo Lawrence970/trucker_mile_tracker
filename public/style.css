@@ -18,7 +18,7 @@ body {
   --color-secondary-dark: #2f2f33;
   --color-error: #cc3333;
   --color-success: #4bb544;
-  --border-radius: 4px;
+  --border-radius: 8px;
 
   margin: 0;
   height: 100vh;
@@ -30,6 +30,14 @@ body {
   background-size: cover;
   font-family: Roboto;
 }
+
+/* global classes >>> */
+.display-flex-col-align-center {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+/* <<< global classes */
 
 .hamburger-menu {
   height: 35px;
@@ -126,16 +134,33 @@ body {
 /* styles index.html*/
 /* styles index.html*/
 
+#all-drivers-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+}
+
+#all-drivers-wrapper ul {
+  padding: 0;
+  margin: 0;
+}
+
+#all-drivers-wrapper li {
+  list-style-type: none;
+  background-color: #ffffff;
+  margin: 15px;
+  height: 140px;
+  width: 300px;
+  padding: 14px;
+  border-radius: var(--border-radius);
+  font-size: 1.5em;
+}
+
 /* ! for testing purposes >>> */
 .test-nav {
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-.align-content-page-container {
-  display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
@@ -146,36 +171,17 @@ body {
   margin: 200px;
 }
 
-#login-btn-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .container {
   width: 400px;
-  max-width: 400px;
   height: 100vh;
   background: var(--color-secondary-dark);
-  margin: 1rem;
   padding: 1.2rem;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
-  border-radius: var(--border-radius);
 }
 
 .container,
 .form-input,
 .form-button {
   font: 500 1rem Roboto, sans-serif;
-}
-
-/* this is what i want, adding the form hidden class to an element with js hides the element */
-.form-hidden {
-  display: none;
-}
-
-.container-hidden {
-  display: none;
 }
 
 .form > *:first-child {
@@ -278,13 +284,6 @@ body {
   justify-content: space-between;
 }
 
-/* CSS FOR THE ALL DRIVERS BUTTONS */
-.driver-wrapper{
-  width: 100px;
-  height: 70px;
-  background-color: gray;
-}
-
 /* media query at width of 700px */
 @media screen and (max-width: 700px) {
   .subscript-gray {
@@ -292,5 +291,9 @@ body {
     color: #8d8c80;
     text-align: center;
     margin: 2px;
+  }
+
+  .container {
+    width: 100vw;
   }
 }

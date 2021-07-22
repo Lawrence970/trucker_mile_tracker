@@ -1,31 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- this page home -->
-    <!-- this page home -->
-    <!-- this page home -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Title</title>
+    <title>Trucker Mile Tracker</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- TODO
-        - Continue Button Logic
-            - from sign up >  redirect to login page if successful
-                - if unsuccessful > display error and stay on same page and clear input fields
-            - from login > redirect to home /driver or /admin if successful
-                - if unsuccessful > display error and stay on same page and clear input fields
-
-        -
-        -
-    -->
-
     <div id="vue-app-wrapper">
       <div class="container">
-        <!--this container wraps landing page & signUp/login-->
-
         <!--! LANDING PAGE-->
         <div class="test-nav">
           <button v-on:click="changePageDisplay('adminLanding')">admin</button>
@@ -33,33 +17,31 @@
             driver
           </button>
         </div>
-        <div id="landing-container" v-if="page=='landingContainer'">
-          <div id="login-btn-container">
-            <h1 class="app-name-header-one">TRACK THE TRUCK</h1>
-            <p class="subscript-yellow">Keeping Track of Miles for You</p>
-            <button
-              type="button"
-              class="input-button"
-              id="redirect-form-login"
-              v-on:click="changePageDisplay('signIn')"
-            >
-              <a>Sign In</a>
-            </button>
-            <button
-              type="button"
-              class="input-button"
-              id="redirect-form-signUp"
-              v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
-            >
-              Sign Up
-            </button>
-          </div>
+        <div class="display-flex-col-align-center" v-if="page=='landingContainer'">
+          <h1 class="app-name-header-one">TRACK THE TRUCK</h1>
+          <p class="subscript-yellow">Keeping Track of Miles for You</p>
+          <button
+            type="button"
+            class="input-button"
+            id="redirect-form-login"
+            v-on:click="changePageDisplay('signIn')"
+          >
+            <a>Sign In</a>
+          </button>
+          <button
+            type="button"
+            class="input-button"
+            id="redirect-form-signUp"
+            v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
+          >
+            Sign Up
+          </button>
         </div>
 
         <!--! SIGN UP / LOGIN FORMs-->
         <div id="form-container">
           <!--*login form-->
-          <div class="form" id="login" v-if="page=='signIn'">
+          <div class="form" v-if="page=='signIn'">
             <!--action="POST"-->
             <h1 class="form-title">Login</h1>
             <div class="form-message form-message-error"></div>
@@ -113,11 +95,9 @@
             </p>
           </div>
 
-          <!--ANCHOR-->
           <!--*create account COMPANY form-->
           <div class="form" id="createAccount" v-if="page=='signUpCompany'">
             <h1 class="form-title">Create Account</h1>
-            <div class="form-message form-message-error"></div>
             <!--* error message-->
             <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
 
@@ -129,71 +109,68 @@
                 <li v-for="error in signUpCompanyErrors">{{error}}</li>
               </ul>
             </div>
-
-            <!-- EMAIL INPUT FIELD-->
-            <div class="form-input-group">
-              <input
-                type="text"
-                id="signUpEmail"
-                class="form-input"
-                placeholder="Email"
-                autofocus
-                v-model="new_company_email"
-              />
-              <div class="form-input-error-message"></div>
-            </div>
-
-            <div class="form-input-group">
-              <input
-                type="text"
-                class="form-input"
-                placeholder="Company Name"
-                v-model="new_company_name"
-              />
-              <div class="form-input-error-message"></div>
-            </div>
-
-            <!-- PASSWORD input field-->
-            <div class="form-input-group">
-              <input
-                type="password"
-                class="form-input"
-                placeholder="Password"
-                v-model="new_company_password"
-              />
-              <div class="form-input-error-message"></div>
-            </div>
-
-            <!--confirm password field-->
-            <div class="form-input-group">
-              <input
-                type="password"
-                class="form-input"
-                placeholder="Confirm Password"
-                v-model="new_company_confirm_password"
-              />
-              <div class="form-input-error-message"></div>
-            </div>
-
-            <!--submit and links-->
-            <button class="form-button" v-on:click="addNewUser">
-              Continue
-            </button>
-            <p class="form-text">
-              <a
-                href="#"
-                id="linkLogin"
-                class="form-link"
-                v-on:click="changePageDisplay('signIn')"
-                >Already Have an Account? Sign In Here</a
-              >
-            </p>
           </div>
+
+
+        <!--*create account COMPANY form-->
+        <div class="form" v-if="page=='signUpCompany'">
+          <h1 class="form-title">Create Account</h1>
+
+          <!-- EMAIL INPUT FIELD-->
+          <div class="form-input-group">
+            <input
+              type="text"
+              class="form-input"
+              placeholder="Email"
+              autofocus
+              v-model="new_company_email"
+            />
+          </div>
+
+          <div class="form-input-group">
+            <input
+              type="text"
+              class="form-input"
+              placeholder="Company Name"
+              v-model="new_company_name"
+            />
+          </div>
+
+          <!-- PASSWORD input field-->
+          <div class="form-input-group">
+            <input
+              type="password"
+              class="form-input"
+              placeholder="Password"
+              v-model="new_company_password"
+            />
+          </div>
+
+          <!--confirm password field-->
+          <div class="form-input-group">
+            <input
+              type="password"
+              class="form-input"
+              placeholder="Confirm Password"
+              v-model="new_company_confirm_password"
+            />
+          </div>
+
+          <!--submit and links-->
+          <button class="form-button" v-on:click="addNewUser">Continue</button>
+          <p class="form-text">
+            <a
+              href="#"
+              class="form-link"
+              v-on:click="changePageDisplay('signIn')"
+              >Already Have an Account? Sign In Here</a
+            >
+          </p>
         </div>
 
         <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! ADMIN LANDING success on login/signup-->
-        <div v-if="page=='adminLanding'" class="align-content-page-container">
+        <div v-if="page=='adminLanding'" class="display-flex-col-align-center">
           <h1>Welcome {{currentUser.company.company_name}}</h1>
           <button class="input-button" v-on:click="goToDisplayAllDrivers">
             All Drivers
@@ -207,12 +184,13 @@
         </div>
 
         <div v-if="page=='allDrivers'">
-          <h1>NOTHING IS PERMANENT</h1>
-          <div class="all-drivers-wrapper">
+          <h1 class="subscript-yellow">All Drivers</h1>
+          <div id="all-drivers-wrapper">
             <ul>
               <li v-for="driver in drivers">
                 <div v-on:click="goToDriver(driver)" class="driver-wrapper">
-                  Name: {{driver.first_name}} {{driver.last_name}}
+                  <span>{{driver.first_name}} {{driver.last_name}}</span>
+                  <span>{{ driver.id }}</span>
                 </div>
               </li>
             </ul>
@@ -226,7 +204,7 @@
         <!--! NEW DRIVER FORM FOR ADMINS-->
         <div class="form-container" v-if="page=='addDriver'">
           <!--*create account USER form-->
-          <div class="form" id="createAccount">
+          <div class="form">
             <span class="form-menu-selection">
               <img
                 class="hamburger-menu"
@@ -259,13 +237,11 @@
             <div class="form-input-group">
               <input
                 type="text"
-                id="signUpEmail"
                 class="form-input"
                 placeholder="Email"
                 v-model="email"
                 autofocus
               />
-              <div class="form-input-error-message"></div>
             </div>
 
             <div class="form-input-group">
@@ -305,7 +281,6 @@
                 placeholder="confirm password"
                 v-model="confirm_password"
               />
-              <div class="form-input-error-message"></div>
               <p class="subscript-gray">Give this password to your driver</p>
             </div>
 
@@ -318,10 +293,14 @@
 
         <!--* DRIVER PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! DRIVER LANDING success on login-->
-        <div v-if="page=='driverLanding'" class="align-content-page-container">
-          <h1>
-            Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}
-          </h1>
+        <div v-if="page=='driverLanding'" class="display-flex-col-align-center">
+          <h1>Welcome Driver {{currentUser.first_name}} {{currentUser.last_name}}</h1>
+          <button
+            class="input-button"
+            v-on:click="changePageDisplay('newRoute')"
+          >
+            New Route
+          </button>
           <button
             class="input-button"
             v-on:click="changePageDisplay('allRoutes')"
@@ -330,9 +309,9 @@
           </button>
           <button
             class="input-button"
-            v-on:click="changePageDisplay('newRoute')"
+            v-on:click="changePageDisplay('pastRoutes')"
           >
-            New Route
+            My Past Routes
           </button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
@@ -341,11 +320,51 @@
             <li v-for="route in routes"></li>
           </ul>
         </div>
+        <!--! Start A new Route *New route form*-->
+        <div v-if="page=='newRoute'">
+          <div class="form">
+            <span class="form-menu-selection">
+              <img
+                class="hamburger-menu"
+                src="/icons/navigation-menu.svg"
+                alt="menu"
+              />
+              <button
+                class="cancel-button"
+                v-on:click="changePageDisplay('driverLanding')"
+              >
+                Cancel
+              </button>
+            </span>
+
+            <h1 class="form-title">New Route</h1>
+
+            <!-- START LOCATION INPUT FIELD-->
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Start"
+                autofocus
+              />
+            </div>
+            <div class="form-input-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="End"
+                autofocus
+              />
+            </div>
+            <button class="form-button">Continue</button>
+          </div>
+        </div>
+        <!--! View past routes-->
+        <div v-if="page=='pastRoutes'"></div>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-
     <script src="vue.js"></script>
   </body>
 </html>
