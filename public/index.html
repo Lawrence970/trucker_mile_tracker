@@ -210,7 +210,11 @@
           <h1>NOTHING IS PERMANENT</h1>
           <div class="all-drivers-wrapper">
             <ul>
-              <li v-for="driver in drivers">{{driver}}</li>
+              <li v-for="driver in drivers">
+                <div v-on:click="goToDriver(driver)" class="driver-wrapper">
+                  Name: {{driver.first_name}} {{driver.last_name}}
+                </div>
+              </li>
             </ul>
           </div>
         </div>

@@ -91,7 +91,7 @@ var app = new Vue({
     addNewUser: function (e) {
       e.preventDefault();
       console.log("type_role is ", this.type_role);
-      if (this.type_role == "company") {
+      if (this.type_role === "company") {
         if (this.new_company_password != this.new_company_confirm_password) {
           alert("Passwords don't match");
 
@@ -112,7 +112,7 @@ var app = new Vue({
           companyPlainPassword: this.new_company_password,
         };
         console.log("This is the request body", request_body);
-      } else if (this.type_role == "user") {
+      } else if (this.type_role === "user") {
         if (this.password != this.confirm_password) {
           alert("Passwords don't match");
           return;
@@ -283,6 +283,10 @@ var app = new Vue({
         });
       });
     },
+    // specific driver clicked
+    goToDriver: function (driver) {
+      console.log("This is the specific driver clicked: ", driver);
+    },
   },
   computed: {
     validateNewCompanyInputs: function () {
@@ -300,6 +304,26 @@ var app = new Vue({
         this.signUpCompanyErrors.push("Please Enter Company Confirm Password");
       }
       return this.signUpCompanyErrors == 0;
+    },
+
+    validateNewUserInputs: function () {
+      this.signUpUserErrors = [];
+      if (this.first_name.length == 0) {
+        this.signUpUserErrors.push("Please Enter User First Name");
+      }
+      if (this.last_name.length == 0) {
+        this.signUpUserErrors.push("Please Enter User Last Name");
+      }
+      if (this.email.length == 0) {
+        this.signUpUserErrors.push("Please Enter User Email");
+      }
+      if (this.password.length == 0) {
+        this.signUpUserErrors.push("Please Enter User Password");
+      }
+      if (this.confirm_password.length == 0) {
+        this.signUpUserErrors.push("Please Enter User Confirm Password");
+      }
+      return this.signUpUserErrors == 0;
     },
 
     validateLogInInputs: function () {
