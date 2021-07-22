@@ -274,6 +274,10 @@ var app = new Vue({
           this.drivers = data;
         })
       })
+    },
+    // specific driver clicked
+    goToDriver: function(driver){
+      console.log("This is the specific driver clicked: ", driver);
     }
 
   },

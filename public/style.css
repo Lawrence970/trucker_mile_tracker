@@ -270,6 +270,13 @@ body {
   justify-content: space-between;
 }
 
+/* CSS FOR THE ALL DRIVERS BUTTONS */
+.driver-wrapper{
+  width: 100px;
+  height: 70px;
+  background-color: gray;
+}
+
 /* media query at width of 700px */
 @media screen and (max-width: 700px) {
   .subscript-gray {
