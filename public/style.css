@@ -134,6 +134,29 @@ body {
 /* styles index.html*/
 /* styles index.html*/
 
+#all-drivers-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+}
+
+#all-drivers-wrapper ul {
+  padding: 0;
+  margin: 0;
+}
+
+#all-drivers-wrapper li {
+  list-style-type: none;
+  background-color: #ffffff;
+  margin: 15px;
+  height: 140px;
+  width: 300px;
+  padding: 14px;
+  border-radius: var(--border-radius);
+  font-size: 1.5em;
+}
+
 /* ! for testing purposes >>> */
 .test-nav {
   display: flex;
@@ -159,15 +182,6 @@ body {
 .form-input,
 .form-button {
   font: 500 1rem Roboto, sans-serif;
-}
-
-/* this is what i want, adding the form hidden class to an element with js hides the element */
-.form-hidden {
-  display: none;
-}
-
-.container-hidden {
-  display: none;
 }
 
 .form > *:first-child {
@@ -268,13 +282,6 @@ body {
 .form-menu-selection {
   display: flex;
   justify-content: space-between;
-}
-
-/* CSS FOR THE ALL DRIVERS BUTTONS */
-.driver-wrapper{
-  width: 100px;
-  height: 70px;
-  background-color: gray;
 }
 
 /* media query at width of 700px */

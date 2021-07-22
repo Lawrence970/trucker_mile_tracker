@@ -17,27 +17,25 @@
             driver
           </button>
         </div>
-        <div id="landing-container" v-if="page=='landingContainer'">
-          <div id="login-btn-container">
-            <h1 class="app-name-header-one">TRACK THE TRUCK</h1>
-            <p class="subscript-yellow">Keeping Track of Miles for You</p>
-            <button
-              type="button"
-              class="input-button"
-              id="redirect-form-login"
-              v-on:click="changePageDisplay('signIn')"
-            >
-              <a>Sign In</a>
-            </button>
-            <button
-              type="button"
-              class="input-button"
-              id="redirect-form-signUp"
-              v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
-            >
-              Sign Up
-            </button>
-          </div>
+        <div class="display-flex-col-align-center" v-if="page=='landingContainer'">
+          <h1 class="app-name-header-one">TRACK THE TRUCK</h1>
+          <p class="subscript-yellow">Keeping Track of Miles for You</p>
+          <button
+            type="button"
+            class="input-button"
+            id="redirect-form-login"
+            v-on:click="changePageDisplay('signIn')"
+          >
+            <a>Sign In</a>
+          </button>
+          <button
+            type="button"
+            class="input-button"
+            id="redirect-form-signUp"
+            v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
+          >
+            Sign Up
+          </button>
         </div>
 
         <!--! SIGN UP / LOGIN FORMs-->
@@ -188,12 +186,13 @@
         </div>
 
         <div v-if="page=='allDrivers'">
-          <h1>NOTHING IS PERMANENT</h1>
-          <div class="all-drivers-wrapper">
+          <h1 class="subscript-yellow">All Drivers</h1>
+          <div id="all-drivers-wrapper">
             <ul>
               <li v-for="driver in drivers">
                 <div v-on:click="goToDriver(driver)" class="driver-wrapper">
-                  Name: {{driver.first_name}} {{driver.last_name}}
+                  <span>{{driver.first_name}} {{driver.last_name}}</span>
+                  <span>{{ driver.id }}</span>
                 </div>
               </li>
             </ul>
