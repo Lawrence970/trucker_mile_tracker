@@ -65,7 +65,8 @@ var app = new Vue({
 
     // LOGGED IN USER
     currentUser: {},
-
+    // LOGING OUT
+    loggedIn: false,
     //users: [],
 
     // DRIVERS OF A COMPANY
@@ -325,6 +326,7 @@ var app = new Vue({
           console.log("Not Authorized");
           return;
         }
+        this.loggedIn = true;
         response.json().then((user) => {
           console.log("THis is the user who just logged in", user);
           if (user) {
@@ -341,6 +343,7 @@ var app = new Vue({
             return false;
           }
         });
+
       });
     },
     // GET ALL DRIVERS METHODS
@@ -369,6 +372,11 @@ var app = new Vue({
         })
       })
     },
+    // LOGING OUT
+    logout: function(){
+      console.log("Log out button clicked");
+      this.page = 'landingContainer';
+    }
   },
   computed: {
     validateNewCompanyInputs: function () {
