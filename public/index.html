@@ -44,7 +44,11 @@
           <!--*login form-->
           <div class="form" v-if="page=='signIn'">
             <!--action="POST"-->
-            <h1 class="form-title">Login</h1>
+            <span class="display-flex-space-between">
+              <h1 class="form-title">Login</h1>
+              <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
+            </span>
+            
             <div class="form-message form-message-error"></div>
             <!--* error message-->
 
@@ -98,7 +102,6 @@
 
           <!--*create account COMPANY form-->
           <div class="form" v-if="page=='signUpCompany'">
-            <h1 class="form-title">Create Account</h1>
 
             <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
             <div
@@ -113,7 +116,11 @@
 
           <!--*create account COMPANY form-->
           <div class="form" v-if="page=='signUpCompany'">
-            <h1 class="form-title">Create Account</h1>
+            <span class="display-flex-space-between">
+              <h1 class="form-title">Create Account</h1>
+              <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
+            </span>
+            
 
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">

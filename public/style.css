@@ -40,6 +40,12 @@ body {
   align-items: center;
   flex-direction: column;
 }
+
+.display-flex-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 /* <<< global classes */
 
 .hamburger-menu {
@@ -98,11 +104,14 @@ body {
   cursor: pointer;
   color: var(--color-white);
   background-color: var(--color-error);
-  width: 80px;
+  width: 60px;
   height: 35px;
 }
 
 .logout-button {
+  position: absolute;
+  top: 45px;
+  right: 35px;
   border: none;
   border-radius: var(--border-radius);
   font-size: 16px;
@@ -110,7 +119,19 @@ body {
   cursor: pointer;
   color: var(--color-white);
   background-color: var(--color-error);
-  width: 80px;
+  width: 60px;
+  height: 35px;
+}
+
+.back-button {
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  margin: 0px;
+  cursor: pointer;
+  color: var(--color-white);
+  background-color: var(--color-error);
+  width: 60px;
   height: 35px;
 }
 
@@ -307,6 +328,10 @@ body {
     margin: 2px;
   }
 
+  .subscript-yellow {
+    font-size: 1.1em;
+  }
+
   .container {
     width: 100vw;
   }
@@ -314,5 +339,14 @@ body {
   .form-container {
     margin-left: 35px;
     margin-right: 35px;
+  }
+
+  .app-name-header-one {
+    font-size: 1.8em;
+    margin-top: 40px;
+  }
+
+  .input-button {
+    margin: 40px;
   }
 }
