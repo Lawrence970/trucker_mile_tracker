@@ -14,6 +14,7 @@ function setTotalMileageOfRoutes(routes){
       start_mileage: route.start_mileage,
       end_mileage: route.end_mileage,
       user: route.user,
+      company: route.company._id,
       total_miles: total,
     };
     completeRoutes.push(route);
