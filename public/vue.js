@@ -26,6 +26,13 @@ function getDriversFromServer() {
   });
 }
 
+// GETTING ALL ROUTES OF A SPECIFIC DRIVER IF YOU ARE AN ADMIN
+function getDriverRoutesFromCompany(driverID){
+  return fetch(`${url}/route/${driverID}`,{
+    credentials: "same-origin"
+  });
+}
+
 var app = new Vue({
   el: "#vue-app-wrapper",
 
@@ -77,6 +84,9 @@ var app = new Vue({
     new_start_mileage: "",
     new_to_location: "",
     new_end_mileage: "",
+    // ROUTES OF DRIVER
+    currentDriver: {},
+    driverRoutes: []
   },
 
   components: {},
@@ -181,7 +191,7 @@ var app = new Vue({
     },
 
     getRoutes: function () {
-      fetch(`${url}/routes`).then(function (response) {
+      fetch(`${url}/route`).then(function (response) {
         response.json().then(function (data) {
           console.log(data);
           app.routes = data;
@@ -220,14 +230,15 @@ var app = new Vue({
       });
     },
 
-    addNewRoute: function () {
+    startNewRoute: function () {
       var request_body = {
         from_location: this.new_from_location,
         start_mileage: this.new_start_mileage,
-        to_location: this.new_start_location,
-        end_mileage: this.new_end_location,
+        to_location: this.new_to_location,
+        end_mileage: this.new_end_mileage,
       };
-      fetch(`${url}/routes`, {
+      console.log("Reached the request body");
+      fetch(`${url}/route`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -240,6 +251,7 @@ var app = new Vue({
             alert(data.msg);
           });
         } else if (response.status == 201) {
+          console.log("Succesfully added route");
           (app.new_from_location = ""),
             (app.new_start_mileage = ""),
             (app.new_to_location = ""),
@@ -248,6 +260,37 @@ var app = new Vue({
         }
       });
     },
+    /*
+    endNewRoute: function () {
+      //patch
+      var request_body = {
+        to_location: this.new_to_location,
+        end_mileage: this.new_end_mileage,
+      };
+      fetch(`${url}/route/:id`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request_body),
+      }).then(function (response) {
+        console.log(request_body);
+        if (response.status == 400) {
+          response.json().then(function (data) {
+            alert(data.msg);
+          });
+        } else if (response.status == 201) {
+          console.log("Succesfully added END route");
+          (app.new_from_location = ""),
+            (app.new_start_mileage = ""),
+            (app.new_to_location = ""),
+            (app.new_end_mileage = "");
+          app.getRoutes();
+        }
+      });
+	},
+	*/
+
     checkGetUser: function () {
       getUser().then((response) => {
         if (response.status == 401) {
@@ -288,6 +331,15 @@ var app = new Vue({
     // specific driver clicked
     goToDriver: function (driver) {
       console.log("This is the specific driver clicked: ", driver);
+      this.currentDriver = driver;
+      this.page = "oneDriver";
+      var driverID = driver._id;
+      getDriverRoutesFromCompany(driverID).then((response)=>{
+        response.json().then((routes)=>{
+          console.log("THis are the routes: ", routes);
+          this.driverRoutes = routes;
+        })
+      })
     },
   },
   computed: {
