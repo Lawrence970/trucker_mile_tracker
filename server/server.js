@@ -329,6 +329,7 @@ app.post("/user", function (req, res) {
   } else {
     // -------CREATING AN ACCOUNT FOR AN EMPLOYEE DRIVER---------------
     // CHECKING IF THE COMPANY IS LOGGED IN
+    console.log("This is the request user that want to create the driver");
     if (!req.user || !req.user.role == "admin") {
       res.sendStatus(401);
       return;

@@ -155,13 +155,41 @@ var app = new Vue({
         },
         body: JSON.stringify(request_body),
       }).then(function (response) {
+        console.log("THis is the response", response)
         response.json().then(function (user) {
           console.log("This is the response of the creating a company", user);
           if (user.error && response.status == 422) {
             alert("Email already registered");
-          } else if (response.status == 201) {
-            app.currentUser = user;
-            app.page = "adminLanding";
+          }
+          else if (response.status == 201 && user.role == "admin") {
+            var user = {
+              email: request_body.companyEmail,
+              plainPassword: request_body.companyPlainPassword
+            }
+            verifyUserAccountOnServer(user).then((response)=>{
+              if (response.status == 201){
+                getUser().then((response)=>{
+                  if (response.status == 401){
+                    console.log("Not authorized");
+                    return;
+                  }
+                  response.json().then((user)=>{
+                    if (user){
+                      app.currentUser = user;
+                      app.page = "adminLanding"
+                    }
+                  })
+                })
+              }
+              else{
+                console.log("Error loging in ");
+              }
+            })
+            // app.currentUser = user;
+            // app.page = "adminLanding";
+          }
+          else if(response.status == 201 && user.role == "driver"){
+            app.page = "adminLanding"
           }
         });
       });
