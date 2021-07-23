@@ -155,6 +155,17 @@ body {
   font-size: 26px;
 }
 
+.driver-card {
+  display: flex;
+  justify-content: space-between;
+}
+
+.driver-card-relative-span {
+  position: relative;
+  top: 65px;
+  left: 240px;
+}
+
 /* use this wherever TRUCKER MILES h1 is used */
 .app-name-header-one {
   font-family: Staatliches;

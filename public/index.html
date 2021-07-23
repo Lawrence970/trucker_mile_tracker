@@ -201,13 +201,16 @@
           <h1 class="form-title">All Drivers</h1>
           <div id="all-drivers-wrapper">
             <ul>
-              <li v-for="driver in drivers">
-                <div v-on:click="goToDriver(driver)" class="driver-wrapper">
+              <li v-for="driver in drivers" v-on:click="goToDriver(driver)">
+                <div  class="driver-card">
                   <span>{{driver.first_name}} {{driver.last_name}}</span>
                   <span class="subscript-gray" class="driver-id-display">
-                    {{ "___" + driver._id.slice(driver._id.length - 5) }}
+                    {{ "_" + driver._id.slice(driver._id.length - 5) }}
                   </span>
                 </div>
+                <span class="driver-card-relative-span">
+                  <p>arrow</p>
+                </span>
               </li>
             </ul>
           </div>
