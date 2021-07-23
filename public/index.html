@@ -99,155 +99,16 @@
           </div>
 
           <!--*create account COMPANY form-->
-          <div class="form" id="createAccount" v-if="page=='signUpCompany'">
+          <div class="form" v-if="page=='signUpCompany'">
             <h1 class="form-title">Create Account</h1>
-            <!--* error message-->
-            <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
 
+            <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
             <div
               v-if="signUpCompanyErrors.length > 0"
               class="sign-up-company-errors-wrapper"
             >
               <ul>
                 <li v-for="error in signUpCompanyErrors">{{error}}</li>
-              </ul>
-            </div>
-          </div>
-
-
-        <!--*create account COMPANY form-->
-        <div class="form" v-if="page=='signUpCompany'">
-          <h1 class="form-title">Create Account</h1>
-
-          <!-- EMAIL INPUT FIELD-->
-          <div class="form-input-group">
-            <input
-              type="text"
-              class="form-input"
-              placeholder="Email"
-              autofocus
-              v-model="new_company_email"
-            />
-          </div>
-
-          <div class="form-input-group">
-            <input
-              type="text"
-              class="form-input"
-              placeholder="Company Name"
-              v-model="new_company_name"
-            />
-          </div>
-
-          <!-- PASSWORD input field-->
-          <div class="form-input-group">
-            <input
-              type="password"
-              class="form-input"
-              placeholder="Password"
-              v-model="new_company_password"
-            />
-          </div>
-
-          <!--confirm password field-->
-          <div class="form-input-group">
-            <input
-              type="password"
-              class="form-input"
-              placeholder="Confirm Password"
-              v-model="new_company_confirm_password"
-            />
-          </div>
-
-          <!--submit and links-->
-          <button class="form-button" v-on:click="addNewUser">Continue</button>
-          <p class="form-text">
-            <a
-              href="#"
-              class="form-link"
-              v-on:click="changePageDisplay('signIn')"
-              >Already Have an Account? Sign In Here</a
-            >
-          </p>
-        </div>
-
-        <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
-        <!--! ADMIN LANDING success on login/signup-->
-        <div v-if="page=='adminLanding'" class="display-flex-col-align-center">
-          <h1>Welcome {{currentUser.company.company_name}}</h1>
-          <button class="input-button" v-on:click="goToDisplayAllDrivers">
-            All Drivers
-          </button>
-          <button
-            class="input-button"
-            v-on:click="changePageDisplay('addDriver', type_role='user')"
-          >
-            Add New Driver
-          </button>
-        </div>
-
-        <div v-if="page=='allDrivers'">
-          <h1 class="subscript-yellow">All Drivers</h1>
-          <div id="all-drivers-wrapper">
-            <ul>
-              <li v-for="driver in drivers">
-                <div v-on:click="goToDriver(driver)" class="driver-wrapper">
-                  <span>{{driver.first_name}} {{driver.last_name}}</span>
-                  <span>{{ driver.id }}</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div v-if="page=='oneDriver'">
-          <h1>Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h1>
-          <div v-if="driverRoutes.length == 0" class="no-routes">
-            <h1>THERE ARE NO ROUTES </h1>
-          </div>
-          <div class="all-routes-of-driver">
-            <ul>
-              <li v-for="route in driverRoutes">
-                <h3>ID: {{route._id}}</h3>
-                <h3>FROM: {{route.from_location}}</h3>
-                <h3>TO: {{route.to_location}}</h3>
-                <h3>TOTAL: {{route.total_miles}} miles covered</h3>
-                <button>EDIT</button>
-                <button>DELETE</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!--! NEW DRIVER FORM FOR ADMINS-->
-        <div class="form-container" v-if="page=='addDriver'">
-          <!--*create account USER form-->
-          <div class="form">
-            <span class="form-menu-selection">
-              <img
-                class="hamburger-menu"
-                src="/icons/navigation-menu.svg"
-                alt="menu"
-              />
-              <button
-                class="cancel-button"
-                v-on:click="changePageDisplay('adminLanding')"
-              >
-                Cancel
-              </button>
-            </span>
-
-            <h1 class="form-title">New Driver</h1>
-            <div class="form-message form-message-error"></div>
-            <!--* error message-->
-            <!-- DIV TO DISPLAY ERRORS IF USER DOESN'T FILL ALL THEM OUT -->
-
-            <div
-              v-if="signUpUserErrors.length > 0"
-              class="sign-up-user-errors-wrapper"
-            >
-              <ul>
-                <li v-for="error in signUpUserErrors">{{error}}</li>
               </ul>
             </div>
 
