@@ -98,10 +98,6 @@ app.get("/route/:driverID", (req, res)=>{
     }
   })
 
-
-  var findQuery = {};
-
-
 })
 
 
