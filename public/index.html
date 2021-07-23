@@ -198,7 +198,22 @@
             </div>
           </div>
 
-          <div v-if="page=='oneDriver'"></div>
+          <div v-if="page=='oneDriver'">
+            <h1>Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h1>
+            <div v-if="driverRoutes.length == 0" class="no-routes">
+              <h1>THERE ARE NO ROUTES </h1>
+            </div>
+            <div class="all-routes-of-driver">
+              <ul>
+                <li v-for="route in driverRoutes">
+                  <h3>ID: {{route._id}}</h3>
+                  <h3>FROM: {{route.from_location}}</h3>
+                  <h3>TO: {{route.to_location}}</h3>
+                  <h3>TOTAL: {{route.total_miles}} miles covered</h3>
+                </li>
+              </ul>
+            </div>
+          </div>
 
           <!--! NEW DRIVER FORM FOR ADMINS-->
           <div class="form-container" v-if="page=='addDriver'">
