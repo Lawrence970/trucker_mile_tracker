@@ -308,7 +308,7 @@
             </button>
             <button
               class="input-button"
-              v-on:click="changePageDisplay('allRoutes')"
+              v-on:click="changePageDisplay('allRoutes'), getRoutes()"
             >
               My Routes
             </button>
@@ -321,8 +321,15 @@
           </div>
           <!--! My Routes *DISPLAY ALL ROUTES* -->
           <div v-if="page=='allRoutes'">
+			  <h1>MY ROUTES</h1>
             <ul>
-              <li v-for="route in routes"></li>
+              <li v-for="route in routes">
+				  Starting City: {{route.from_location}}<br>
+				  Starting Mileage: {{route.start_mileage}}<br>
+				  Ending City: {{route.to_location}}<br>
+				  Ending Mileage: {{route.end_mileage}}<br>
+				  Total Mileage: {{route.total_miles}}<br>
+			  </li>
             </ul>
           </div>
           <!--! Start A new Route *New route form*-->

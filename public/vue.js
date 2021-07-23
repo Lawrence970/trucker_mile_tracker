@@ -27,9 +27,9 @@ function getDriversFromServer() {
 }
 
 // GETTING ALL ROUTES OF A SPECIFIC DRIVER IF YOU ARE AN ADMIN
-function getDriverRoutesFromCompany(driverID){
-  return fetch(`${url}/route/${driverID}`,{
-    credentials: "same-origin"
+function getDriverRoutesFromCompany(driverID) {
+  return fetch(`${url}/route/${driverID}`, {
+    credentials: "same-origin",
   });
 }
 
@@ -73,10 +73,10 @@ var app = new Vue({
 
     routes: [
       {
-        from_location: "",
+        /*from_location: "",
         to_location: "",
         start_mileage: "",
-        end_mileage: "",
+        end_mileage: "",*/
       },
     ],
 
@@ -86,7 +86,7 @@ var app = new Vue({
     new_end_mileage: "",
     // ROUTES OF DRIVER
     currentDriver: {},
-    driverRoutes: []
+    driverRoutes: [],
   },
 
   components: {},
@@ -191,6 +191,7 @@ var app = new Vue({
     },
 
     getRoutes: function () {
+      console.log("hit getRoute function");
       fetch(`${url}/route`).then(function (response) {
         response.json().then(function (data) {
           console.log(data);
@@ -260,7 +261,7 @@ var app = new Vue({
         }
       });
     },
-    /*
+    /* This was going to be the patch before we changed it. Keeping it until finalized
     endNewRoute: function () {
       //patch
       var request_body = {
@@ -334,12 +335,12 @@ var app = new Vue({
       this.currentDriver = driver;
       this.page = "oneDriver";
       var driverID = driver._id;
-      getDriverRoutesFromCompany(driverID).then((response)=>{
-        response.json().then((routes)=>{
+      getDriverRoutesFromCompany(driverID).then((response) => {
+        response.json().then((routes) => {
           console.log("THis are the routes: ", routes);
           this.driverRoutes = routes;
-        })
-      })
+        });
+      });
     },
   },
   computed: {
