@@ -388,7 +388,9 @@ var app = new Vue({
       logOutOnServer().then(response => {
         if (response.status == 200) {
           this.page = "landingContainer";
-          localStorage.removeItem("route");
+          if (localStorage.route) {
+            localStorage.removeItem("route");
+          }
           window.location.reload();
         } else {
           alert("Error logging out");
