@@ -335,9 +335,17 @@
             Welcome Driver {{currentUser.first_name}}
             {{currentUser.last_name}}
           </h1>
+          <!-- ACTIVE ROUTE -->
+          <div v-if="activeRoutes==true" class="active-route-wrapper">
+            <h4>Active route</h4>
+            <h3>From Location: {{activeRoute.fromLocation}}</h3>
+            <h3>Start Mileage: {{activeRoute.startMileage}}</h3>
+            <button v-on:click="changePageDisplay('endRoute')">Finish Route</button>
+          </div>
           <button
             class="input-button"
-            v-on:click="changePageDisplay('newRoute')"
+            :disabled="activeRoutes"
+            v-on:click="goToNewRoute"
           >
             New Route
           </button>
@@ -353,6 +361,7 @@
           >
             My Past Routes
           </button>
+          <button v-on:click="logOut" class="logout-button">logout</button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'">
@@ -407,7 +416,7 @@
             </div>
             <button
               class="form-button"
-              v-on:click="changePageDisplay('endRoute')"
+              v-on:click="newRouteFirstHalf"
             >
               Continue
             </button>

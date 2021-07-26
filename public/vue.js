@@ -94,7 +94,10 @@ var app = new Vue({
     new_end_mileage: "",
     // ROUTES OF DRIVER
     currentDriver: {},
-    driverRoutes: []
+    driverRoutes: [],
+    // ACTIVE ROUTES ON ROUTES THAT HAVE NOT BEEN SAVED
+    activeRoutes: false,
+    activeRoute: {}
   },
 
   components: {},
@@ -285,7 +288,12 @@ var app = new Vue({
           });
         } else if (response.status == 201) {
           console.log("Succesfully added route");
-          (app.new_from_location = ""),
+          localStorage.removeItem("route");
+          app.activeRoutes = false;
+          // this.activeRoute = {};
+          response.json().then(route => {
+            console.log("This is the route saved", route);
+          })((app.new_from_location = "")),
             (app.new_start_mileage = ""),
             (app.new_to_location = ""),
             (app.new_end_mileage = "");
@@ -380,10 +388,33 @@ var app = new Vue({
       logOutOnServer().then(response => {
         if (response.status == 200) {
           this.page = "landingContainer";
+          localStorage.removeItem("route");
+          window.location.reload();
         } else {
           alert("Error logging out");
         }
       });
+    },
+    newRouteFirstHalf: function() {
+      console.log("FIrst save hit");
+      this.page = "endRoute";
+      // this.activeRoute = true;
+      // console.log("The route is active: ", this.activeRoute);
+      var newRoute = {
+        fromLocation: this.new_from_location,
+        startMileage: this.new_start_mileage
+      };
+      if (newRoute) {
+        // storing the new route into local storage
+        localStorage.route = JSON.stringify(newRoute);
+        this.activeRoute = JSON.parse(localStorage.route);
+        this.activeRoutes = true;
+      }
+    },
+    goToNewRoute: function() {
+      this.page = "newRoute";
+      this.new_from_location = "";
+      this.new_start_mileage = "";
     }
   },
   computed: {
@@ -437,5 +468,14 @@ var app = new Vue({
   },
   created: function() {
     this.checkGetUser();
+  },
+  mounted: function() {
+    if (localStorage.route) {
+      this.activeRoutes = true;
+      this.activeRoute = JSON.parse(localStorage.route);
+      this.new_from_location = this.activeRoute.fromLocation;
+      this.new_start_mileage = this.activeRoute.startMileage;
+    }
+    console.log("THis is the active routes state: ", this.activeRoutes);
   }
 });
