@@ -7,6 +7,7 @@
     <title>Trucker Mile Tracker</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+  <!--! USING webpack-simple for vue CLI -->
   <body>
     <div id="vue-app-wrapper">
       <!--! LANDING PAGE-->
@@ -23,7 +24,6 @@
         <button
           type="button"
           class="input-button"
-          id="redirect-form-login"
           v-on:click="changePageDisplay('signIn')"
         >
           <a>Sign In</a>
@@ -31,7 +31,6 @@
         <button
           type="button"
           class="input-button"
-          id="redirect-form-signUp"
           v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
         >
           Sign Up
