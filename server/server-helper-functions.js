@@ -1,8 +1,7 @@
-
 // FUNCTION TO CALCULATE AND SET THE TOTAL MILEAGE OF EACH ROUTE
-function setTotalMileageOfRoutes(routes){
+function setTotalMileageOfRoutes(routes) {
   var completeRoutes = [];
-  for (index in routes){
+  for (index in routes) {
     var route = routes[index];
     // CALCULATING THE TOTAL OF MILEAGE COVERED
     var total = route.end_mileage - route.start_mileage;
@@ -15,7 +14,7 @@ function setTotalMileageOfRoutes(routes){
       end_mileage: route.end_mileage,
       user: route.user,
       company: route.company._id,
-      total_miles: total,
+      total_miles: total
     };
     completeRoutes.push(route);
   }
@@ -24,4 +23,4 @@ function setTotalMileageOfRoutes(routes){
 
 module.exports = {
   setTotalMileageOfRoutes: setTotalMileageOfRoutes
-}
+};

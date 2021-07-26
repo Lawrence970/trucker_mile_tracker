@@ -7,28 +7,35 @@ function verifyUserAccountOnServer(user) {
     body: JSON.stringify(user),
     // credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   });
 }
 
 // GETTING THE USER THAT IS LOGGED IN
 function getUser() {
   return fetch(`${url}/session`, {
-    credentials: "same-origin",
+    credentials: "same-origin"
   });
 }
 
 //GETTING ALL THE DRIVERS FOR AN ADMIN (COMPANY)
 function getDriversFromServer() {
   return fetch(`${url}/drivers`, {
-    credentials: "same-origin",
+    credentials: "same-origin"
   });
 }
 
 // GETTING ALL ROUTES OF A SPECIFIC DRIVER IF YOU ARE AN ADMIN
-function getDriverRoutesFromCompany(driverID){
-  return fetch(`${url}/route/${driverID}`,{
+function getDriverRoutesFromCompany(driverID) {
+  return fetch(`${url}/route/${driverID}`, {
+    credentials: "same-origin"
+  });
+}
+
+//LOGING OUT ON SERVER
+function logOutOnServer() {
+  return fetch(`${url}/logout`, {
     credentials: "same-origin"
   });
 }
@@ -77,8 +84,8 @@ var app = new Vue({
         from_location: "",
         to_location: "",
         start_mileage: "",
-        end_mileage: "",
-      },
+        end_mileage: ""
+      }
     ],
 
     new_from_location: "",
@@ -93,15 +100,15 @@ var app = new Vue({
   components: {},
 
   methods: {
-    changePageDisplay: function (e) {
+    changePageDisplay: function(e) {
       e.preventDefault;
       this.page = e;
     },
-    submitForm: function () {},
+    submitForm: function() {},
 
     //Untested.
 
-    addNewUser: function (e) {
+    addNewUser: function(e) {
       e.preventDefault();
       console.log("type_role is ", this.type_role);
       if (this.type_role === "company") {
@@ -122,7 +129,7 @@ var app = new Vue({
         var request_body = {
           companyName: this.new_company_name,
           companyEmail: this.new_company_email,
-          companyPlainPassword: this.new_company_password,
+          companyPlainPassword: this.new_company_password
         };
         console.log("This is the request body", request_body);
       } else if (this.type_role === "user") {
@@ -144,7 +151,7 @@ var app = new Vue({
           firstName: this.first_name,
           lastName: this.last_name,
           email: this.email,
-          plainPassword: this.password,
+          plainPassword: this.password
         };
         console.log("This is the request body", request_body);
       }
@@ -152,51 +159,48 @@ var app = new Vue({
       fetch(`${url}/user`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(request_body),
-      }).then(function (response) {
-        console.log("THis is the response", response)
-        response.json().then(function (user) {
+        body: JSON.stringify(request_body)
+      }).then(function(response) {
+        console.log("THis is the response", response);
+        response.json().then(function(user) {
           console.log("This is the response of the creating a company", user);
           if (user.error && response.status == 422) {
             alert("Email already registered");
-          }
-          else if (response.status == 201 && user.role == "admin") {
+          } else if (response.status == 201 && user.role == "admin") {
             var user = {
               email: request_body.companyEmail,
               plainPassword: request_body.companyPlainPassword
-            }
-            verifyUserAccountOnServer(user).then((response)=>{
-              if (response.status == 201){
-                getUser().then((response)=>{
-                  if (response.status == 401){
+            };
+            verifyUserAccountOnServer(user).then(response => {
+              if (response.status == 201) {
+                getUser().then(response => {
+                  if (response.status == 401) {
                     console.log("Not authorized");
                     return;
                   }
-                  response.json().then((user)=>{
-                    if (user){
+                  response.json().then(user => {
+                    if (user) {
                       app.currentUser = user;
-                      app.page = "adminLanding"
+                      app.page = "adminLanding";
                     }
-                  })
-                })
-              }
-              else{
+                  });
+                });
+              } else {
                 console.log("Error loging in ");
               }
-            })
+            });
             // app.currentUser = user;
             // app.page = "adminLanding";
-          }
-          else if(response.status == 201 && user.role == "driver"){
-            app.page = "adminLanding"
+          } else if (response.status == 201 && user.role == "driver") {
+            app.page = "adminLanding";
           }
         });
       });
     },
 
-    logInUser: function (e) {
+    logInUser: function(e) {
       e.preventDefault();
       var valid = this.validateLogInInputs;
       if (!valid) {
@@ -205,10 +209,10 @@ var app = new Vue({
       }
       var user = {
         email: this.logInEmail,
-        plainPassword: this.logInPassword,
+        plainPassword: this.logInPassword
       };
 
-      verifyUserAccountOnServer(user).then((response) => {
+      verifyUserAccountOnServer(user).then(response => {
         console.log("This is the logIn status code: ", response.status);
         if (response.status == 201) {
           this.checkGetUser();
@@ -219,64 +223,64 @@ var app = new Vue({
       });
     },
 
-    getRoutes: function () {
-      fetch(`${url}/route`).then(function (response) {
-        response.json().then(function (data) {
+    getRoutes: function() {
+      fetch(`${url}/route`).then(function(response) {
+        response.json().then(function(data) {
           console.log(data);
           app.routes = data;
         });
       });
     },
 
-    deleteRoutes: function (route) {
+    deleteRoutes: function(route) {
       fetch(`${url}/route/` + route, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
-        },
-      }).then(function () {
+          "Content-Type": "application/json"
+        }
+      }).then(function() {
         app.getRoutes();
       });
     },
 
-    getUsers: function () {
-      fetch(`${url}/users`).then(function (response) {
-        response.json().then(function (data) {
+    getUsers: function() {
+      fetch(`${url}/users`).then(function(response) {
+        response.json().then(function(data) {
           console.log(data);
           app.users = data;
         });
       });
     },
 
-    deleteUser: function (user) {
+    deleteUser: function(user) {
       fetch(`${url}/user/` + user, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
-        },
-      }).then(function () {
+          "Content-Type": "application/json"
+        }
+      }).then(function() {
         app.getUsers();
       });
     },
 
-    startNewRoute: function () {
+    startNewRoute: function() {
       var request_body = {
         from_location: this.new_from_location,
         start_mileage: this.new_start_mileage,
         to_location: this.new_to_location,
-        end_mileage: this.new_end_mileage,
+        end_mileage: this.new_end_mileage
       };
       console.log("Reached the request body");
       fetch(`${url}/route`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(request_body),
-      }).then(function (response) {
+        body: JSON.stringify(request_body)
+      }).then(function(response) {
         console.log(request_body);
         if (response.status == 400) {
-          response.json().then(function (data) {
+          response.json().then(function(data) {
             alert(data.msg);
           });
         } else if (response.status == 201) {
@@ -320,14 +324,14 @@ var app = new Vue({
 	},
 	*/
 
-    checkGetUser: function () {
-      getUser().then((response) => {
+    checkGetUser: function() {
+      getUser().then(response => {
         if (response.status == 401) {
           console.log("Not Authorized");
           return;
         }
         this.loggedIn = true;
-        response.json().then((user) => {
+        response.json().then(user => {
           console.log("THis is the user who just logged in", user);
           if (user) {
             if (user.role == "admin") {
@@ -343,43 +347,47 @@ var app = new Vue({
             return false;
           }
         });
-
       });
     },
     // GET ALL DRIVERS METHODS
-    goToDisplayAllDrivers: function () {
+    goToDisplayAllDrivers: function() {
       this.page = "allDrivers";
       this.loadDrivers();
     },
-    loadDrivers: function () {
-      getDriversFromServer().then((response) => {
-        response.json().then((data) => {
+    loadDrivers: function() {
+      getDriversFromServer().then(response => {
+        response.json().then(data => {
           console.log("This is the data from drivers: ", data);
           this.drivers = data;
         });
       });
     },
     // specific driver clicked
-    goToDriver: function (driver) {
+    goToDriver: function(driver) {
       console.log("This is the specific driver clicked: ", driver);
       this.currentDriver = driver;
       this.page = "oneDriver";
       var driverID = driver._id;
-      getDriverRoutesFromCompany(driverID).then((response)=>{
-        response.json().then((routes)=>{
+      getDriverRoutesFromCompany(driverID).then(response => {
+        response.json().then(routes => {
           console.log("THis are the routes: ", routes);
           this.driverRoutes = routes;
-        })
-      })
+        });
+      });
     },
     // LOGING OUT
-    logout: function(){
-      console.log("Log out button clicked");
-      this.page = 'landingContainer';
+    logOut: function() {
+      logOutOnServer().then(response => {
+        if (response.status == 200) {
+          this.page = "landingContainer";
+        } else {
+          alert("Error logging out");
+        }
+      });
     }
   },
   computed: {
-    validateNewCompanyInputs: function () {
+    validateNewCompanyInputs: function() {
       this.signUpCompanyErrors = [];
       if (this.new_company_name.length == 0) {
         this.signUpCompanyErrors.push("Please Enter Company Name");
@@ -396,7 +404,7 @@ var app = new Vue({
       return this.signUpCompanyErrors == 0;
     },
 
-    validateNewUserInputs: function () {
+    validateNewUserInputs: function() {
       this.signUpUserErrors = [];
       if (this.first_name.length == 0) {
         this.signUpUserErrors.push("Please Enter User First Name");
@@ -416,7 +424,7 @@ var app = new Vue({
       return this.signUpUserErrors == 0;
     },
 
-    validateLogInInputs: function () {
+    validateLogInInputs: function() {
       this.logInUserErrors = [];
       if (this.logInEmail.length == 0) {
         this.logInUserErrors.push("Please Enter an Email");
@@ -425,9 +433,9 @@ var app = new Vue({
         this.logInUserErrors.push("Please Enter a Password");
       }
       return this.logInUserErrors == 0;
-    },
+    }
   },
-  created: function () {
+  created: function() {
     this.checkGetUser();
-  },
+  }
 });

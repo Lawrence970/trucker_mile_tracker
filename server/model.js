@@ -18,7 +18,7 @@ const routeSchema = mongoose.Schema(
     //every route will have a user_id, so pass through user_id as object
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     //When we implement company/employer schema:
-    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
+    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" }
   },
   { timestamp: true }
 );
@@ -27,20 +27,20 @@ const userSchema = mongoose.Schema(
   {
     first_name: {
       type: String,
-      required: false,
+      required: false
     },
     last_name: {
       type: String,
-      required: false,
+      required: false
     },
     email: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     encrypted_password: {
       type: String,
-      required: true,
+      required: true
     },
     role: {
       type: String,
@@ -48,7 +48,7 @@ const userSchema = mongoose.Schema(
     },
     //DON'T pass route schema through here, because it will give access to all routes.
     //When we implement company_id schema:
-    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
+    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" }
   },
   { timestamp: true }
 );
@@ -59,51 +59,47 @@ const companySchema = mongoose.Schema(
   {
     company_name: {
       type: String,
-      required: true,
+      required: true
     },
     company_email: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     encrypted_password: {
       type: String,
-      required: true,
+      required: true
     }
   },
   { timestamp: true }
 );
 
 // METHODS TO ENCRYPT PASSWORD OF USERS
-userSchema.methods.setEncryptedPassword = function (plainPassword, callback) {
-  bcrypt.hash(plainPassword, 12).then((hash) => {
+userSchema.methods.setEncryptedPassword = function(plainPassword, callback) {
+  bcrypt.hash(plainPassword, 12).then(hash => {
     this.encrypted_password = hash;
     callback();
   });
 };
 
-userSchema.methods.verifyPassword = function(plainPassword, callback){
-  bcrypt.compare(plainPassword, this.encrypted_password).then(result =>{
+userSchema.methods.verifyPassword = function(plainPassword, callback) {
+  bcrypt.compare(plainPassword, this.encrypted_password).then(result => {
     callback(result);
-  })
-}
+  });
+};
 // METHODS TO ENCRYPT PASSWORD OF COMPANY
-companySchema.methods.setEncryptedPassword = function (plainPassword, callback) {
-  bcrypt.hash(plainPassword, 12).then((hash) => {
+companySchema.methods.setEncryptedPassword = function(plainPassword, callback) {
+  bcrypt.hash(plainPassword, 12).then(hash => {
     this.encrypted_password = hash;
     callback();
   });
 };
 
-companySchema.methods.verifyPassword = function(plainPassword, callback){
-  bcrypt.compare(plainPassword, this.encrypted_password).then(result =>{
+companySchema.methods.verifyPassword = function(plainPassword, callback) {
+  bcrypt.compare(plainPassword, this.encrypted_password).then(result => {
     callback(result);
-  })
-}
-
-
-
-
+  });
+};
 
 const Route = mongoose.model("Route", routeSchema);
 const User = mongoose.model("User", userSchema);
@@ -111,5 +107,5 @@ const Company = mongoose.model("Company", companySchema);
 module.exports = {
   Route,
   User,
-  Company,
+  Company
 };

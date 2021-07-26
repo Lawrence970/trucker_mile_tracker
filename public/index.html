@@ -48,7 +48,7 @@
               <h1 class="form-title">Login</h1>
               <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
             </span>
-            
+
             <div class="form-message form-message-error"></div>
             <!--* error message-->
 
@@ -120,7 +120,7 @@
               <h1 class="form-title">Create Account</h1>
               <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
             </span>
-            
+
 
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
@@ -193,7 +193,7 @@
           >
             Add New Driver
           </button>
-          <button class="logout-button">logout</button>
+          <button v-on:click="logOut" class="logout-button">logout</button>
         </div>
 
         <!--! ALL Drivers-->
@@ -233,7 +233,7 @@
             </div>
           </div>
 
-         
+
 
         <!--! NEW DRIVER FORM FOR ADMINS-->
         <div class="form-container" v-if="page=='addDriver'">
