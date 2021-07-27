@@ -57,6 +57,35 @@ app.use((req, res, next) => {
 
 // METHODS
 
+// GET THE ACTIVE ROUTE
+app.get("/route/active", (req, res) => {
+  console.log("THis si the user: -------------------", req.user);
+  if (!req.user) {
+    res.sendStatus(401);
+    return;
+  }
+  var driverID = req.user._id;
+  let findQuery = {};
+  if (req.user.role == constants.UserRoles.driver) {
+    findQuery = {
+      user: driverID,
+      to_location: ""
+    };
+  }
+  Route.findOne(findQuery, function(err, route) {
+    if (err) {
+      res.status(500).json({
+        message: `unable to list routes`,
+        error: err
+      });
+      return;
+    }
+    if (route) {
+      res.status(200).json(route);
+    }
+  });
+});
+
 // GET METHOD FOR ADMIN TO SEE THEIR DRIVERS ROUTE INFO
 app.get("/route/:driverID", (req, res) => {
   console.log("route got hit");
@@ -117,14 +146,16 @@ app.get("/route", (req, res, next) => {
   // THIS NEEDS WORK
   if (req.user.role === constants.UserRoles.admin) {
     findQuery = {
-      company: companyID
+      company: companyID,
+      to_location: { $ne: "" }
     };
   }
 
   // IF THE USER IS A DRIVER, HE CAN SEE JUST HIS ROUTES
   else if (req.user.role === constants.UserRoles.driver) {
     findQuery = {
-      user: driverID
+      user: driverID,
+      to_location: { $ne: "" }
     };
   }
   console.log("This is the find query: ", findQuery);
@@ -206,6 +237,30 @@ app.post("/route", function(req, res) {
 
     res.status(201).json(route);
     console.log("successfully created route");
+  });
+});
+
+app.put("/route/:routeID", function(req, res) {
+  if (!req.user) {
+    res.sendStatus(401);
+    return;
+  }
+  res.setHeader("Content-Type", "application/json");
+  Route.findOne({ _id: req.params.routeID }).then(function(route) {
+    if (route) {
+      route.to_location = req.body.to_location;
+      route.end_mileage = req.body.end_mileage;
+      route
+        .save()
+        .then(function() {
+          res.status(201).json(route);
+        })
+        .catch(function(err) {
+          res.sendStatus(500);
+        });
+    } else {
+      res.sendStatus(404);
+    }
   });
 });
 

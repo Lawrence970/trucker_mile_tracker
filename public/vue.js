@@ -40,6 +40,24 @@ function logOutOnServer() {
   });
 }
 
+// POSTING FIRST HALF OF ROUTE ON SERVER
+function postFirstHalfOfRouteOnServer(route) {
+  return fetch(`${url}/route`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(route)
+  });
+}
+
+//GET ACTIVE ROUTE FROM SERVER
+function getActiveRouteFromServer() {
+  return fetch(`${url}/route/active`, {
+    credentials: "same-origin"
+  });
+}
+
 var app = new Vue({
   el: "#vue-app-wrapper",
 
@@ -94,7 +112,11 @@ var app = new Vue({
     new_end_mileage: "",
     // ROUTES OF DRIVER
     currentDriver: {},
-    driverRoutes: []
+    driverRoutes: [],
+    // ACTIVE ROUTE
+    currentRouteID: "",
+    activeRoutes: false,
+    activeRoute: {}
   },
 
   components: {},
@@ -262,36 +284,59 @@ var app = new Vue({
         app.getUsers();
       });
     },
-
-    startNewRoute: function() {
-      var request_body = {
+    beginNewRoute: function() {
+      var route = {
         from_location: this.new_from_location,
-        start_mileage: this.new_start_mileage,
+        start_mileage: this.new_start_mileage
+      };
+      postFirstHalfOfRouteOnServer(route).then(response => {
+        response.json().then(route => {
+          console.log(
+            "This is the response when posting the first half of route: ",
+            route
+          );
+          if (response.status == 400) {
+            alert("Error trying to post the first half of route");
+          } else if (response.status == 201) {
+            app.currentRouteID = route._id;
+            app.page = "driverLanding";
+            window.location.reload();
+            app.new_from_location = "";
+            app.new_start_mileage = "";
+          }
+        });
+      });
+    },
+
+    finishNewRoute: function() {
+      var request_body = {
         to_location: this.new_to_location,
         end_mileage: this.new_end_mileage
       };
-      console.log("Reached the request body");
-      fetch(`${url}/route`, {
-        method: "POST",
+      fetch(`${url}/route/${this.activeRoute._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(request_body)
       }).then(function(response) {
-        console.log(request_body);
         if (response.status == 400) {
           response.json().then(function(data) {
-            alert(data.msg);
+            alert("Error trying to send the data");
           });
         } else if (response.status == 201) {
-          console.log("Succesfully added route");
-          (app.new_from_location = ""),
-            (app.new_start_mileage = ""),
-            (app.new_to_location = ""),
-            (app.new_end_mileage = "");
-          app.getRoutes();
+          // app.checkGetUser();
+          app.page = "driverLanding";
+          window.location.reload();
+          app.currentRouteID = "";
+          app.new_to_location = "";
+          app.new_end_mileage = "";
         }
       });
+    },
+
+    goToFinishRoute: function() {
+      this.page = "endRoute";
     },
     /*
     endNewRoute: function () {
@@ -340,6 +385,16 @@ var app = new Vue({
             } else if (user.role == "driver") {
               this.currentUser = user;
               this.page = "driverLanding";
+              getActiveRouteFromServer().then(response => {
+                console.log(response);
+                if (response.status == 200) {
+                  this.activeRoutes = true;
+                  response.json().then(route => {
+                    console.log(route);
+                    this.activeRoute = route;
+                  });
+                }
+              });
             }
             console.log("This is the current User: ", this.currentUser);
             return true;
@@ -384,6 +439,10 @@ var app = new Vue({
           alert("Error logging out");
         }
       });
+    },
+    clearLogInInputs: function() {
+      this.logInEmail = "";
+      this.logInPassword = "";
     }
   },
   computed: {

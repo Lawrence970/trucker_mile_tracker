@@ -24,7 +24,7 @@
           type="button"
           class="input-button"
           id="redirect-form-login"
-          v-on:click="changePageDisplay('signIn')"
+          v-on:click="changePageDisplay('signIn'), clearLogInInputs() "
         >
           <a>Sign In</a>
         </button>
@@ -335,8 +335,16 @@
             Welcome Driver {{currentUser.first_name}}
             {{currentUser.last_name}}
           </h1>
+          <!-- ACTIVE ROUTE -->
+          <div v-if="activeRoutes == true" class="active-route-wrapper">
+            <h4>Active Route</h4>
+            <h3>From Location: {{activeRoute.from_location}}</h3>
+            <h3>Start Mileage: {{activeRoute.start_mileage}}</h3>
+            <button v-on:click="goToFinishRoute">Finish Route</button>
+          </div>
           <button
             class="input-button"
+            :disabled="activeRoutes"
             v-on:click="changePageDisplay('newRoute')"
           >
             New Route
@@ -353,6 +361,7 @@
           >
             My Past Routes
           </button>
+          <button v-on:click="logOut" class="logout-button">logout</button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'">
@@ -407,7 +416,7 @@
             </div>
             <button
               class="form-button"
-              v-on:click="changePageDisplay('endRoute')"
+              v-on:click="beginNewRoute"
             >
               Continue
             </button>
@@ -453,7 +462,7 @@
             </div>
             <button
               class="form-button"
-              v-on:click="changePageDisplay('driverLanding'), startNewRoute()"
+              v-on:click="changePageDisplay('driverLanding'), finishNewRoute()"
             >
               Continue
             </button>
