@@ -341,7 +341,7 @@
           <div v-if="activeRoutes == true" class="active-route-wrapper">
             <h4>Active Route</h4>
             <h3>From Location: {{activeRoute.from_location}}</h3>
-            <h3>Start Mileage: {{activeRoute.start_mileage}}</h3>
+            <h3>Start Mileage: {{activeRoute.start_mileage}} miles</h3>
             <button v-on:click="goToFinishRoute">Finish Route</button>
           </div>
           <button
@@ -420,6 +420,7 @@
                 v-model="new_start_mileage"
                 autofocus
               />
+              {{new_start_mileage}}
             </div>
             <button
               class="form-button"
