@@ -27,9 +27,9 @@ function getDriversFromServer() {
 }
 
 // GETTING ALL ROUTES OF A SPECIFIC DRIVER IF YOU ARE AN ADMIN
-function getDriverRoutesFromCompany(driverID){
-  return fetch(`${url}/route/${driverID}`,{
-    credentials: "same-origin"
+function getDriverRoutesFromCompany(driverID) {
+  return fetch(`${url}/route/${driverID}`, {
+    credentials: "same-origin",
   });
 }
 
@@ -38,6 +38,7 @@ var app = new Vue({
 
   data: {
     page: "landingContainer",
+    filterBy: "",
     isActive: true,
     type_role: "",
     first_name: "",
@@ -81,13 +82,15 @@ var app = new Vue({
       },
     ],
 
+    filteredRoutes: [],
+
     new_from_location: "",
     new_start_mileage: "",
     new_to_location: "",
     new_end_mileage: "",
     // ROUTES OF DRIVER
     currentDriver: {},
-    driverRoutes: []
+    driverRoutes: [],
   },
 
   components: {},
@@ -156,41 +159,38 @@ var app = new Vue({
         },
         body: JSON.stringify(request_body),
       }).then(function (response) {
-        console.log("THis is the response", response)
+        console.log("THis is the response", response);
         response.json().then(function (user) {
           console.log("This is the response of the creating a company", user);
           if (user.error && response.status == 422) {
             alert("Email already registered");
-          }
-          else if (response.status == 201 && user.role == "admin") {
+          } else if (response.status == 201 && user.role == "admin") {
             var user = {
               email: request_body.companyEmail,
-              plainPassword: request_body.companyPlainPassword
-            }
-            verifyUserAccountOnServer(user).then((response)=>{
-              if (response.status == 201){
-                getUser().then((response)=>{
-                  if (response.status == 401){
+              plainPassword: request_body.companyPlainPassword,
+            };
+            verifyUserAccountOnServer(user).then((response) => {
+              if (response.status == 201) {
+                getUser().then((response) => {
+                  if (response.status == 401) {
                     console.log("Not authorized");
                     return;
                   }
-                  response.json().then((user)=>{
-                    if (user){
+                  response.json().then((user) => {
+                    if (user) {
                       app.currentUser = user;
-                      app.page = "adminLanding"
+                      app.page = "adminLanding";
                     }
-                  })
-                })
-              }
-              else{
+                  });
+                });
+              } else {
                 console.log("Error loging in ");
               }
-            })
+            });
             // app.currentUser = user;
             // app.page = "adminLanding";
-          }
-          else if(response.status == 201 && user.role == "driver"){
-            app.page = "adminLanding"
+          } else if (response.status == 201 && user.role == "driver") {
+            app.page = "adminLanding";
           }
         });
       });
@@ -265,7 +265,9 @@ var app = new Vue({
         start_mileage: this.new_start_mileage,
         to_location: this.new_to_location,
         end_mileage: this.new_end_mileage,
+        route_Date: new Date(),
       };
+      console.log("tilder", request_body);
       console.log("Reached the request body");
       fetch(`${url}/route`, {
         method: "POST",
@@ -343,7 +345,6 @@ var app = new Vue({
             return false;
           }
         });
-
       });
     },
     // GET ALL DRIVERS METHODS
@@ -365,18 +366,18 @@ var app = new Vue({
       this.currentDriver = driver;
       this.page = "oneDriver";
       var driverID = driver._id;
-      getDriverRoutesFromCompany(driverID).then((response)=>{
-        response.json().then((routes)=>{
+      getDriverRoutesFromCompany(driverID).then((response) => {
+        response.json().then((routes) => {
           console.log("THis are the routes: ", routes);
           this.driverRoutes = routes;
-        })
-      })
+        });
+      });
     },
     // LOGING OUT
-    logout: function(){
+    logout: function () {
       console.log("Log out button clicked");
-      this.page = 'landingContainer';
-    }
+      this.page = "landingContainer";
+    },
   },
   computed: {
     validateNewCompanyInputs: function () {
@@ -426,8 +427,56 @@ var app = new Vue({
       }
       return this.logInUserErrors == 0;
     },
-  },
-  created: function () {
-    this.checkGetUser();
+
+    filterByDate: function () {
+      console.log("Hit filterByDate");
+      let currentDate = Date.parse(new Date());
+      console.log("Current Date:", currentDate);
+      this.filteredRoutes = [];
+      /*
+      console.log(this.filterBy);
+      for (route in this.routes) {
+        console.log("----route: ", this.routes[route]);
+        console.log("----filerby: ", this.filterBy);
+        if (this.filterBy == "Month") {
+          console.log("TRUEE");
+        }
+	  }
+	  */
+      console.log("routes list", this.routes);
+      for (route in this.routes) {
+        //this.routes.forEach(function (routes) {
+        console.log(this.filterBy);
+        // console.log("----route created: ", route.)
+        let oldDate = Date.parse(this.routes[route].created_at);
+        if (this.filterBy == "Month") {
+          console.log("Hit Month", this.filterBy);
+          console.log("old Date", oldDate);
+          if (oldDate < currentDate && oldDate > currentDate - 2592000000) {
+            this.filteredRoutes.push(this.routes[route]);
+          }
+        } else if (this.filterBy == "Week") {
+          console.log("Hit Week");
+          if (oldDate < currentDate && oldDate > currentDate - 604800000) {
+            this.filteredRoutes.push(this.routes[route]);
+          }
+          //filter by week
+        } else if (this.filterBy == "Day") {
+          console.log("Day Hit");
+          if (
+            oldDate !== undefined &&
+            oldDate < currentDate &&
+            oldDate > currentDate - 86400000
+          ) {
+            this.filteredRoutes.push(this.routes[route]);
+          }
+        }
+      }
+      console.log("filtered Routes", this.filteredRoutes);
+      return this.filteredRoutes;
+    },
+    created: function () {
+      this.checkGetUser();
+    },
   },
 });

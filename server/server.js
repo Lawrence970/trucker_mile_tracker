@@ -58,51 +58,45 @@ app.use((req, res, next) => {
 // METHODS
 
 // GET METHOD FOR ADMIN TO SEE THEIR DRIVERS ROUTE INFO
-app.get("/route/:driverID", (req, res)=>{
+app.get("/route/:driverID", (req, res) => {
   console.log("route got hit");
   console.log("This is the driver id: ", req.params.driverID);
-  if (!req.user || req.user.role != "admin"){
+  if (!req.user || req.user.role != "admin") {
     res.sendStatus(401);
-    return
+    return;
   }
   res.setHeader("Content-Type", "application/json");
 
   var driverID = req.params.driverID;
   var companyID = req.user.company._id;
 
-  User.findById(driverID, (err, user)=>{
-    if (user){
+  User.findById(driverID, (err, user) => {
+    if (user) {
       // get all the routes from the user
       console.log("User exists: ", user);
       var findQuery = {
         user: driverID,
-        company: companyID
-      }
+        company: companyID,
+      };
 
-      Route.find(findQuery, function(err, routes){
-        if (err){
+      Route.find(findQuery, function (err, routes) {
+        if (err) {
           res.status(500).json({
             message: "Unable to list routes",
-            error: err
-          })
+            error: err,
+          });
           return;
         }
         var calculatedRoutes = setTotalMileageOfRoutes(routes);
         res.status(200).json(calculatedRoutes);
-      })
-    }
-    else{
+      });
+    } else {
       res.status(422).json({
-        error: "User does not exist"
-      })
+        error: "User does not exist",
+      });
     }
-  })
-
-})
-
-
-
-
+  });
+});
 //Get - gets all of the Routes based on role
 app.get("/route", (req, res, next) => {
   if (!req.user) {
@@ -112,8 +106,8 @@ app.get("/route", (req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   //THIS LINE IS FOR TESTING PURPOSES AND CAN BE DELETED WHEN CONNECTED TO AUTHORIZATION
   // role = "driver";
-  var driverID = req.user._id
-  var companyID = req.user.company._id
+  var driverID = req.user._id;
+  var companyID = req.user.company._id;
 
   let findQuery = {};
 
@@ -122,7 +116,7 @@ app.get("/route", (req, res, next) => {
   // THIS NEEDS WORK
   if (req.user.role === constants.UserRoles.admin) {
     findQuery = {
-      company: companyID
+      company: companyID,
     };
   }
 
@@ -132,16 +126,17 @@ app.get("/route", (req, res, next) => {
       user: driverID,
     };
   }
-  console.log("This is the find query: ", findQuery );
+  console.log("This is the find query: ", findQuery);
   //
   Route.find(findQuery, function (err, routes) {
     if (err) {
       res.status(500).json({ message: `unable to list routes`, error: err });
       return;
     }
+    console.log("routes", routes);
     var calculatedRoutes = setTotalMileageOfRoutes(routes);
     res.status(200).json(calculatedRoutes);
-    console.log("Getting Routes Successful");
+    console.log("calculated routes:", calculatedRoutes);
   });
 });
 
@@ -171,7 +166,9 @@ app.get("/route/:id", (req, res, next) => {
       start_mileage: route.start_mileage,
       end_mileage: route.end_mileage,
       total_miles: total,
+      created_at: route.createdAt,
     };
+
     res.status(200).json(route);
     console.log("Getting Routes Successful");
   });
@@ -196,6 +193,7 @@ app.post("/route", function (req, res) {
     to_location: req.body.to_location || "",
     start_mileage: req.body.start_mileage || 0,
     end_mileage: req.body.end_mileage || 0,
+    route_Date: new Date(req.body.route_Date),
     user: req.user,
     company: req.user.company._id,
   };
@@ -476,5 +474,19 @@ app.get("/session", function (req, res) {
     res.sendStatus(401);
   }
 });
+
+/*
+appTime.pre("save", function (next) {
+  var time = this;
+  app.createdAt = app.createdAt || newDate();
+  next();
+});
+
+routeDate=createdAt();
+	if (req.query.??!==null && req.query.???!==undefined)
+	{
+		findQuery.month = {$gt:}
+	}
+	*/
 
 module.exports = app; // export app variables
