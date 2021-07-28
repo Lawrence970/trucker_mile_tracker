@@ -24,14 +24,16 @@
         <button
           type="button"
           class="input-button"
-          v-on:click="changePageDisplay('signIn')"
+          id="redirect-form-login"
+          v-on:click="changePageDisplay('signIn'), clearLogInInputs() "
         >
           <a>Sign In</a>
         </button>
         <button
           type="button"
           class="input-button"
-          v-on:click="changePageDisplay('signUpCompany'), type_role=`company`"
+          id="redirect-form-signUp"
+          v-on:click="changePageDisplay('signUpCompany'), type_role=`company`, clearSignUpButtonInputs()"
         >
           Sign Up
         </button>
@@ -47,7 +49,7 @@
               <h1 class="form-title">Login</h1>
               <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
             </span>
-            
+
             <div class="form-message form-message-error"></div>
             <!--* error message-->
 
@@ -102,6 +104,16 @@
           <!--*create account COMPANY form-->
           <div class="form" v-if="page=='signUpCompany'">
 
+            
+          </div>
+
+          <!--*create account COMPANY form-->
+          <div class="form" v-if="page=='signUpCompany'">
+            <span class="display-flex-space-between">
+              <h1 class="form-title">Create Account</h1>
+              <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
+            </span>
+
             <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
             <div
               v-if="signUpCompanyErrors.length > 0"
@@ -111,15 +123,6 @@
                 <li v-for="error in signUpCompanyErrors">{{error}}</li>
               </ul>
             </div>
-          </div>
-
-          <!--*create account COMPANY form-->
-          <div class="form" v-if="page=='signUpCompany'">
-            <span class="display-flex-space-between">
-              <h1 class="form-title">Create Account</h1>
-              <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
-            </span>
-            
 
             <!-- EMAIL INPUT FIELD-->
             <div class="form-input-group">
@@ -192,7 +195,7 @@
           >
             Add New Driver
           </button>
-          <button class="logout-button">logout</button>
+          <button v-on:click="logOut" class="logout-button">logout</button>
         </div>
 
         <!--! ALL Drivers-->
@@ -232,7 +235,7 @@
           </div>
         </div>
 
-         
+
 
         <!--! NEW DRIVER FORM FOR ADMINS-->
         <div class="form-container" v-if="page=='addDriver'">
@@ -334,9 +337,17 @@
             Welcome Driver {{currentUser.first_name}}
             {{currentUser.last_name}}
           </h1>
+          <!-- ACTIVE ROUTE -->
+          <div v-if="activeRoutes == true" class="active-route-wrapper">
+            <h4>Active Route</h4>
+            <h3>From Location: {{activeRoute.from_location}}</h3>
+            <h3>Start Mileage: {{activeRoute.start_mileage}}</h3>
+            <button v-on:click="goToFinishRoute">Finish Route</button>
+          </div>
           <button
             class="input-button"
-            v-on:click="changePageDisplay('newRoute')"
+            :disabled="activeRoutes"
+            v-on:click="changePageDisplay('newRoute'), clearStartingRouteInputs()"
           >
             New Route
           </button>
@@ -346,6 +357,7 @@
           >
             My Routes
           </button>
+          <button v-on:click="logOut" class="logout-button">logout</button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'">
@@ -381,6 +393,15 @@
 
             <h1 class="form-title">New Route</h1>
 
+            <div
+              v-if="newStartRouteErrors.length > 0"
+              class="begin-route-errors-wrapper"
+            >
+              <ul>
+                <li v-for="error in newStartRouteErrors">{{error}}</li>
+              </ul>
+            </div>
+
             <!-- START LOCATION INPUT FIELD-->
             <div class="form-input-group">
               <input
@@ -402,7 +423,7 @@
             </div>
             <button
               class="form-button"
-              v-on:click="changePageDisplay('endRoute')"
+              v-on:click="beginNewRoute"
             >
               Continue
             </button>
@@ -427,6 +448,15 @@
 
             <h1 class="form-title">End Route</h1>
 
+            <div
+              v-if="newEndRouteErrors.length > 0"
+              class="end-route-errors-wrapper"
+            >
+              <ul>
+                <li v-for="error in newEndRouteErrors">{{error}}</li>
+              </ul>
+            </div>
+
             <!-- END LOCATION INPUT FIELD-->
             <div class="form-input-group">
               <input
@@ -448,7 +478,7 @@
             </div>
             <button
               class="form-button"
-              v-on:click="changePageDisplay('driverLanding'), startNewRoute()"
+              v-on:click="finishNewRoute"
             >
               Continue
             </button>
