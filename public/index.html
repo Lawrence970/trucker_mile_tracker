@@ -179,7 +179,7 @@
         <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! ADMIN LANDING success on login/signup-->
         <div v-if="page=='adminLanding'" class="display-flex-col-align-center">
-          <h1 class="subscript-yellow">
+          <h1>
             Welcome {{currentUser.company.company_name}}
           </h1>
 
@@ -215,22 +215,22 @@
           </div>
         </div>
 
-          <div v-if="page=='oneDriver'">
-            <h1>Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h1>
-            <div v-if="driverRoutes.length == 0" class="no-routes">
-              <h1>THERE ARE NO ROUTES </h1>
-            </div>
-            <div class="all-routes-of-driver">
-              <ul>
-                <li v-for="route in driverRoutes">
-                  <h3>ID: {{route._id}}</h3>
-                  <h3>FROM: {{route.from_location}}</h3>
-                  <h3>TO: {{route.to_location}}</h3>
-                  <h3>TOTAL: {{route.total_miles}} miles covered</h3>
-                </li>
-              </ul>
-            </div>
+        <div v-if="page=='oneDriver'">
+          <h1>Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h1>
+          <div v-if="driverRoutes.length == 0" class="no-routes">
+            <h1>THERE ARE NO ROUTES </h1>
           </div>
+          <div class="all-routes-of-driver">
+            <ul>
+              <li v-for="route in driverRoutes">
+                <h3>ID: {{route._id}}</h3>
+                <h3>FROM: {{route.from_location}}</h3>
+                <h3>TO: {{route.to_location}}</h3>
+                <h3>TOTAL: {{route.total_miles}} miles covered</h3>
+              </li>
+            </ul>
+          </div>
+        </div>
 
          
 
@@ -346,25 +346,21 @@
           >
             My Routes
           </button>
-          <button
-            class="input-button"
-            v-on:click="changePageDisplay('pastRoutes')"
-          >
-            My Past Routes
-          </button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'">
-			<h1>MY ROUTES</h1>
-          <ul>
-            <li v-for="route in routes">
-				Starting City: {{route.from_location}}<br>
-				Starting Mileage: {{route.start_mileage}}<br>
-				Ending City: {{route.to_location}}<br>
-				Ending Mileage: {{route.end_mileage}}<br>
-				Total Mileage: {{route.total_miles}}<br>
-			</li>
-          </ul>
+          <h1>MY ROUTES</h1>
+          <div id="all-routes-wrapper">
+            <ul>
+              <li v-for="route in routes">
+                Starting City: {{route.from_location}}<br>
+                Starting Mileage: {{route.start_mileage}}<br>
+                Ending City: {{route.to_location}}<br>
+                Ending Mileage: {{route.end_mileage}}<br>
+                Total Mileage: {{route.total_miles}}<br>
+              </li>
+            </ul>
+          </div>
         </div>
         <!--! Start A new Route *New route form*-->
         <div v-if="page=='newRoute'">
