@@ -252,8 +252,19 @@ var app = new Vue({
     getRoutes: function() {
       fetch(`${url}/route`).then(function(response) {
         response.json().then(function(data) {
-          console.log(data);
           app.routes = data;
+          for (route in app.routes) {
+            console.log("THIS IS A ROUTE", app.routes[route]);
+            app.routes[route].start_mileage = app.routes[
+              route
+            ].start_mileage.toLocaleString("en-US");
+            app.routes[route].end_mileage = app.routes[
+              route
+            ].end_mileage.toLocaleString("en-US");
+            app.routes[route].total_miles = app.routes[
+              route
+            ].total_miles.toLocaleString("en-US");
+          }
         });
       });
     },
@@ -296,7 +307,7 @@ var app = new Vue({
 
       var route = {
         from_location: this.new_from_location,
-        start_mileage: this.new_start_mileage
+        start_mileage: this.new_start_mileage.replace(/\,/g, "")
       };
       postFirstHalfOfRouteOnServer(route).then(response => {
         response.json().then(route => {
@@ -325,7 +336,7 @@ var app = new Vue({
       console.log("FInsish route hits this-----------------");
       var request_body = {
         to_location: this.new_to_location,
-        end_mileage: this.new_end_mileage
+        end_mileage: this.new_end_mileage.replace(/\,/g, "")
       };
       fetch(`${url}/route/${this.activeRoute._id}`, {
         method: "PUT",
@@ -408,6 +419,10 @@ var app = new Vue({
                   response.json().then(route => {
                     console.log(route);
                     this.activeRoute = route;
+                    console.log("----", this.activeRoute.start_mileage);
+                    this.activeRoute.start_mileage = this.activeRoute.start_mileage.toLocaleString(
+                      "en-US"
+                    );
                   });
                 }
               });
@@ -443,6 +458,11 @@ var app = new Vue({
         response.json().then(routes => {
           console.log("THis are the routes: ", routes);
           this.driverRoutes = routes;
+          for (route in this.driverRoutes) {
+            this.driverRoutes[route].total_miles = this.driverRoutes[
+              route
+            ].total_miles.toLocaleString("en-US");
+          }
         });
       });
     },
@@ -541,6 +561,20 @@ var app = new Vue({
         this.newEndRouteErrors.push("Please Enter Ending Mileage Of Truck");
       }
       return this.newEndRouteErrors == 0;
+    }
+  },
+  watch: {
+    new_start_mileage: function(newValue) {
+      const result = newValue
+        .replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      Vue.nextTick(() => (this.new_start_mileage = result));
+    },
+    new_end_mileage: function(newValue) {
+      const result = newValue
+        .replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      Vue.nextTick(() => (this.new_end_mileage = result));
     }
   },
   created: function() {
