@@ -82,6 +82,10 @@ var app = new Vue({
     //validation for signing up user
     signUpUserErrors: [],
 
+    //Vallidation for creating routes
+    newStartRouteErrors: [],
+    newEndRouteErrors: [],
+
     // LOGIN A USER
     logInEmail: "",
     logInPassword: "",
@@ -285,6 +289,11 @@ var app = new Vue({
       });
     },
     beginNewRoute: function() {
+      var valid = this.validateStartingOfRoute;
+      if (!valid) {
+        return;
+      }
+
       var route = {
         from_location: this.new_from_location,
         start_mileage: this.new_start_mileage
@@ -309,6 +318,11 @@ var app = new Vue({
     },
 
     finishNewRoute: function() {
+      var valid = this.validateEndingOfRoute;
+      if (!valid) {
+        return;
+      }
+      console.log("FInsish route hits this-----------------");
       var request_body = {
         to_location: this.new_to_location,
         end_mileage: this.new_end_mileage
@@ -325,7 +339,6 @@ var app = new Vue({
             alert("Error trying to send the data");
           });
         } else if (response.status == 201) {
-          // app.checkGetUser();
           app.page = "driverLanding";
           window.location.reload();
           app.currentRouteID = "";
@@ -337,6 +350,9 @@ var app = new Vue({
 
     goToFinishRoute: function() {
       this.page = "endRoute";
+      this.newEndRouteErrors = [];
+      this.new_to_location = "";
+      this.new_end_mileage = "";
     },
     /*
     endNewRoute: function () {
@@ -443,6 +459,18 @@ var app = new Vue({
     clearLogInInputs: function() {
       this.logInEmail = "";
       this.logInPassword = "";
+    },
+    clearStartingRouteInputs: function() {
+      this.newStartRouteErrors = [];
+      this.new_from_location = "";
+      this.new_start_mileage = "";
+    },
+    clearSignUpButtonInputs: function() {
+      this.signUpCompanyErrors = [];
+      this.new_company_email = "";
+      this.new_company_name = "";
+      this.new_company_password = "";
+      this.new_company_confirm_password = "";
     }
   },
   computed: {
@@ -492,6 +520,27 @@ var app = new Vue({
         this.logInUserErrors.push("Please Enter a Password");
       }
       return this.logInUserErrors == 0;
+    },
+
+    validateStartingOfRoute: function() {
+      this.newStartRouteErrors = [];
+      if (this.new_from_location.length == 0) {
+        this.newStartRouteErrors.push("Please Enter a Starting Location");
+      }
+      if (this.new_start_mileage.length == 0) {
+        this.newStartRouteErrors.push("Please Enter Starting Mileage Of Truck");
+      }
+      return this.newStartRouteErrors == 0;
+    },
+    validateEndingOfRoute: function() {
+      this.newEndRouteErrors = [];
+      if (this.new_to_location.length == 0) {
+        this.newEndRouteErrors.push("Please Enter an Ending Location");
+      }
+      if (this.new_end_mileage.length == 0) {
+        this.newEndRouteErrors.push("Please Enter Ending Mileage Of Truck");
+      }
+      return this.newEndRouteErrors == 0;
     }
   },
   created: function() {
