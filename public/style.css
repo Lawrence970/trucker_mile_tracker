@@ -144,6 +144,18 @@ body {
   height: 35px;
 }
 
+.finish-button {
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  margin: 0px;
+  cursor: pointer;
+  color: var(--color-white);
+  background-color: var(--color-success);
+  width: 60px;
+  height: 35px;
+}
+
 .subscript-gray {
   font-size: 16px;
   color: #8d8c80;
@@ -205,7 +217,7 @@ body {
   font-size: 1.5em;
 }
 
-#all-routes-wrapper li {
+.all-routes-wrapper li {
   list-style-type: none;
   background-color: var(--color-secondary);
   color: var(--color-white);
@@ -215,7 +227,6 @@ body {
   width: 300px;
   padding: 14px;
   border-radius: 8px;
-  font-size: 1.5em;
 }
 
 /* ! for testing purposes >>> */
@@ -223,6 +234,20 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.active-route-wrapper {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--color-secondary);
+  border-radius: 8px;
+  padding: 20px;
+  color: var(--color-white);
+  box-shadow: 4px 6px 8px 2px rgb(0 0 0 / 10%);
+}
+
+.active-route-wrapper span {
+  margin-right: 50px;
 }
 
 #form-login {

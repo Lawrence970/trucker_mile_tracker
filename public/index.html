@@ -199,9 +199,14 @@
         </div>
 
         <!--! ALL Drivers-->
-        <div v-if="page=='allDrivers'" class="display-flex-col-align-center">
-          <h1 class="form-title">All Drivers</h1>
-          <div id="all-drivers-wrapper">
+        <div v-if="page=='allDrivers'">
+          <span class="display-flex-space-between">
+            <h1 class="form-title">All Drivers</h1>
+            <button class="back-button" v-on:click="changePageDisplay('adminLanding')">Back</button>
+          </span>
+          
+
+          <div id="all-drivers-wrapper" class="display-flex-col-align-center">
             <ul>
               <li v-for="driver in drivers" v-on:click="goToDriver(driver)">
                 <div  class="driver-card">
@@ -219,11 +224,15 @@
         </div>
 
         <div v-if="page=='oneDriver'">
-          <h1>Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h1>
+          <span class="display-flex-space-between">
+            <h1 class="form-title">Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h1>
+            <button class="back-button" v-on:click="changePageDisplay('adminLanding')">Back</button>
+          </span>
+          
           <div v-if="driverRoutes.length == 0" class="no-routes">
-            <h1>THERE ARE NO ROUTES </h1>
+            <h1>This Driver Has No Routes</h1>
           </div>
-          <div class="all-routes-of-driver">
+          <div class="all-routes-of-driver all-routes-wrapper">
             <ul>
               <li v-for="route in driverRoutes">
                 <h3>ID: {{route._id}}</h3>
@@ -339,10 +348,13 @@
           </h1>
           <!-- ACTIVE ROUTE -->
           <div v-if="activeRoutes == true" class="active-route-wrapper">
-            <h4>Active Route</h4>
-            <h3>From Location: {{activeRoute.from_location}}</h3>
-            <h3>Start Mileage: {{activeRoute.start_mileage}}</h3>
-            <button v-on:click="goToFinishRoute">Finish Route</button>
+            <span>
+              <h3>Active Route</h3>
+              <h4>From Location: {{activeRoute.from_location}}</h4>
+              <h4>Start Mileage: {{activeRoute.start_mileage}}</h4>
+            </span>
+            
+            <button v-on:click="goToFinishRoute" class="finish-button">END</button>
           </div>
           <button
             class="input-button"
@@ -362,7 +374,8 @@
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'">
           <h1>MY ROUTES</h1>
-          <div id="all-routes-wrapper">
+          <button class="back-button" v-on:click="changePageDisplay('driverLanding')">back</button>
+          <div class="all-routes-wrapper">
             <ul>
               <li v-for="route in routes">
                 Starting City: {{route.from_location}}<br>
