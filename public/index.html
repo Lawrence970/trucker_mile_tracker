@@ -11,10 +11,6 @@
   <body>
     <div id="vue-app-wrapper">
       <!--! LANDING PAGE-->
-      <div class="test-nav">
-        <button v-on:click="changePageDisplay('adminLanding')">admin</button>
-        <button v-on:click="changePageDisplay('driverLanding')">driver</button>
-      </div>
       <div
         class="display-flex-col-align-center"
         v-if="page=='landingContainer'"
@@ -373,8 +369,11 @@
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'">
-          <h1>MY ROUTES</h1>
-          <button class="back-button" v-on:click="changePageDisplay('driverLanding')">back</button>
+          <span class="display-flex-space-between">
+            <h1 class="large-text-h1">MY ROUTES</h1>
+            <button class="back-button" v-on:click="changePageDisplay('driverLanding')">back</button>
+          </span>
+          
           <div class="all-routes-wrapper">
             <ul>
               <li v-for="route in routes">

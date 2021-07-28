@@ -118,9 +118,6 @@ body {
 }
 
 .logout-button {
-  position: absolute;
-  top: 45px;
-  right: 35px;
   border: none;
   border-radius: var(--border-radius);
   font-size: 16px;
@@ -383,6 +380,14 @@ body {
     color: #8d8c80;
     text-align: center;
     margin: 2px;
+  }
+
+  .large-text-h1 {
+    margin-left: 22px;
+  }
+
+  .back-button {
+    margin-right: 22px;
   }
 
   .subscript-yellow {
