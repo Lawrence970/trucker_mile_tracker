@@ -125,7 +125,9 @@ var app = new Vue({
     // ACTIVE ROUTE
     currentRouteID: "",
     activeRoutes: false,
-    activeRoute: {}
+    activeRoute: {},
+    // TOTALING ALL MILES
+    finalTotal: 0
   },
 
   components: {},
@@ -259,7 +261,9 @@ var app = new Vue({
         response.json().then(function(data) {
           data.reverse();
           app.routes = data;
+
           for (route in app.routes) {
+            app.finalTotal += app.routes[route].total_miles;
             console.log("THIS IS A ROUTE", app.routes[route]);
             app.routes[route].start_mileage = app.routes[
               route
@@ -271,6 +275,7 @@ var app = new Vue({
               route
             ].total_miles.toLocaleString("en-US");
           }
+          console.log("This is the total", app.finalTotal);
         });
       });
     },
@@ -466,6 +471,7 @@ var app = new Vue({
           routes.reverse();
           this.driverRoutes = routes;
           for (route in this.driverRoutes) {
+            app.finalTotal += app.driverRoutes[route].total_miles;
             this.driverRoutes[route].total_miles = this.driverRoutes[
               route
             ].total_miles.toLocaleString("en-US");
@@ -570,6 +576,7 @@ var app = new Vue({
       return this.newEndRouteErrors == 0;
     },
     filterByDate: function() {
+      this.finalTotal = 0;
       console.log("Hit filterByDate");
       let currentDate = Date.parse(new Date());
       console.log("Current Date:", currentDate);
@@ -596,6 +603,8 @@ var app = new Vue({
         rightarray = this.routes;
       }
       for (route in rightarray) {
+        console.log("----", rightarray[route]);
+        this.finalTotal += parseInt(rightarray[route].total_miles);
         //this.routes.forEach(function (routes) {
         console.log(this.filterBy);
         // console.log("----route created: ", route.)

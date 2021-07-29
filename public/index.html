@@ -224,7 +224,7 @@
             <button class="back-button" v-on:click="changePageDisplay('adminLanding')">Back</button>
             <h3 class="form-title">Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h3>  
           </span>
-          
+          <h1>TOTAL: {{finalTotal}}</h1>
           <div v-if="driverRoutes.length == 0" class="no-routes">
             <h1>This Driver Has No Routes</h1>
 		  </div>
@@ -233,7 +233,7 @@
 			<button v-on:click="filterBy='Month', filterByDate">30 Days</button>
 			<button v-on:click="filterBy='Week', filterByDate">7 Days </button>
 			<button v-on:click="filterBy='Day', filterByDate">24 Hours</button>
-			<button v-on:click="filterBy=''">Reset</button>
+			<button v-on:click="filterBy='',goToDriver()">Reset</button>
 			<input type = "date" v-model = "filterDateStart">
 			<input type = "date" v-model = "filterDateEnd">
 			<button v-on:click= "filterBy = 'custom', filterByDate">Search</button>
@@ -377,7 +377,7 @@
           </button>
           <button
             class="input-button"
-			v-on:click="changePageDisplay('allRoutes'), getRoutes(), filterBy = '' "
+			v-on:click="changePageDisplay('allRoutes'), getRoutes(), filterBy = ''"
           >
             My Routes
           </button>
@@ -393,11 +393,12 @@
 			<button v-on:click="filterBy='Month', filterByDate">30 Days</button>
 			<button v-on:click="filterBy='Week', filterByDate">7 Days </button>
 			<button v-on:click="filterBy='Day', filterByDate">24 Hours</button>
-			<button v-on:click="filterBy=''">Reset</button>
+			<button v-on:click="filterBy='', getRoutes()">Reset</button>
 			<input type = "date" v-model = "filterDateStart">
 			<input type = "date" v-model = "filterDateEnd">
 			<button v-on:click= "filterBy = 'custom', filterByDate">Search</button>
 			<div class="all-routes-wrapper">
+        <h1>Routes Total{{finalTotal}}</h1>
         <ul>
           <li v-show = "filterBy.length==0 " v-for="route in routes">
             <span class="display-flex-space-between">
