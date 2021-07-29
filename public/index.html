@@ -235,6 +235,7 @@
                 <h3>FROM: {{route.from_location}}</h3>
                 <h3>TO: {{route.to_location}}</h3>
                 <h3>TOTAL: {{route.total_miles}} miles covered</h3>
+                <h4>Created: {{route.time_ago}}</h4>
               </li>
             </ul>
           </div>
@@ -379,7 +380,7 @@
 			<button v-on:click= "filterBy = 'custom', filterByDate">Search</button>
 			<div class="all-routes-wrapper">
         <ul>
-          <li v-for="route in routes">
+          <li v-show = "filterBy.length==0 " v-for="route in routes">
             <span class="display-flex-space-between">
               <h3>{{route.from_location}}</h3> 
               <h3>{{route.start_mileage}}<br></h3>
@@ -390,6 +391,7 @@
               <h3> {{route.end_mileage}}<br></h3>
             </span>
             <h2 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h2>
+            Created: {{route.time_ago}}<br>
           </li>
         </ul>
 		  
@@ -400,7 +402,8 @@
 					Starting Mileage: {{route.start_mileage}}<br>
 					Ending City: {{route.to_location}}<br>
 					Ending Mileage: {{route.end_mileage}}<br>
-					Total Mileage: {{route.total_miles}}<br>
+          Total Mileage: {{route.total_miles}}<br>
+          Created: {{route.time_ago}}<br>
 			  </ul>
 			  </div>
 		  </div>
