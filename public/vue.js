@@ -33,12 +33,36 @@ function getDriverRoutesFromCompany(driverID) {
   });
 }
 
+//LOGING OUT ON SERVER
+function logOutOnServer() {
+  return fetch(`${url}/logout`, {
+    credentials: "same-origin",
+  });
+}
+
+// POSTING FIRST HALF OF ROUTE ON SERVER
+function postFirstHalfOfRouteOnServer(route) {
+  return fetch(`${url}/route`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(route),
+  });
+}
+
+//GET ACTIVE ROUTE FROM SERVER
+function getActiveRouteFromServer() {
+  return fetch(`${url}/route/active`, {
+    credentials: "same-origin",
+  });
+}
+
 var app = new Vue({
   el: "#vue-app-wrapper",
 
   data: {
     page: "landingContainer",
-    filterBy: "",
     isActive: true,
     type_role: "",
     first_name: "",
@@ -47,6 +71,7 @@ var app = new Vue({
     role: "",
     password: "",
     confirm_password: "",
+    filterBy: "",
     filterDateStart: "",
     filterDateEnd: "",
     // Creating a new company account
@@ -59,6 +84,10 @@ var app = new Vue({
 
     //validation for signing up user
     signUpUserErrors: [],
+
+    //Vallidation for creating routes
+    newStartRouteErrors: [],
+    newEndRouteErrors: [],
 
     // LOGIN A USER
     logInEmail: "",
@@ -93,6 +122,10 @@ var app = new Vue({
     // ROUTES OF DRIVER
     currentDriver: {},
     driverRoutes: [],
+    // ACTIVE ROUTE
+    currentRouteID: "",
+    activeRoutes: false,
+    activeRoute: {},
   },
 
   components: {},
@@ -224,8 +257,19 @@ var app = new Vue({
     getRoutes: function () {
       fetch(`${url}/route`).then(function (response) {
         response.json().then(function (data) {
-          console.log(data);
           app.routes = data;
+          for (route in app.routes) {
+            console.log("THIS IS A ROUTE", app.routes[route]);
+            app.routes[route].start_mileage = app.routes[
+              route
+            ].start_mileage.toLocaleString("en-US");
+            app.routes[route].end_mileage = app.routes[
+              route
+            ].end_mileage.toLocaleString("en-US");
+            app.routes[route].total_miles = app.routes[
+              route
+            ].total_miles.toLocaleString("en-US");
+          }
         });
       });
     },
@@ -260,38 +304,71 @@ var app = new Vue({
         app.getUsers();
       });
     },
+    beginNewRoute: function () {
+      var valid = this.validateStartingOfRoute;
+      if (!valid) {
+        return;
+      }
 
-    startNewRoute: function () {
-      var request_body = {
+      var route = {
         from_location: this.new_from_location,
-        start_mileage: this.new_start_mileage,
-        to_location: this.new_to_location,
-        end_mileage: this.new_end_mileage,
-        route_Date: new Date(),
+        start_mileage: this.new_start_mileage.replace(/\,/g, ""),
       };
-      console.log("tilder", request_body);
-      console.log("Reached the request body");
-      fetch(`${url}/route`, {
-        method: "POST",
+      postFirstHalfOfRouteOnServer(route).then((response) => {
+        response.json().then((route) => {
+          console.log(
+            "This is the response when posting the first half of route: ",
+            route
+          );
+          if (response.status == 400) {
+            alert("Error trying to post the first half of route");
+          } else if (response.status == 201) {
+            app.currentRouteID = route._id;
+            app.page = "driverLanding";
+            window.location.reload();
+            app.new_from_location = "";
+            app.new_start_mileage = "";
+          }
+        });
+      });
+    },
+
+    finishNewRoute: function () {
+      var valid = this.validateEndingOfRoute;
+      if (!valid) {
+        return;
+      }
+      console.log("FInsish route hits this-----------------");
+      var request_body = {
+        to_location: this.new_to_location,
+        end_mileage: this.new_end_mileage.replace(/\,/g, ""),
+      };
+      fetch(`${url}/route/${this.activeRoute._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(request_body),
       }).then(function (response) {
-        console.log(request_body);
         if (response.status == 400) {
           response.json().then(function (data) {
-            alert(data.msg);
+            alert("Error trying to send the data");
           });
         } else if (response.status == 201) {
-          console.log("Succesfully added route");
-          (app.new_from_location = ""),
-            (app.new_start_mileage = ""),
-            (app.new_to_location = ""),
-            (app.new_end_mileage = "");
-          app.getRoutes();
+          app.page = "driverLanding";
+          window.location.reload();
+          app.currentRouteID = "";
+          app.new_to_location = "";
+          app.new_end_mileage = "";
         }
       });
+    },
+
+    goToFinishRoute: function () {
+      this.page = "endRoute";
+      this.newEndRouteErrors = [];
+      this.new_to_location = "";
+      this.new_end_mileage = "";
     },
     /*
     endNewRoute: function () {
@@ -340,6 +417,20 @@ var app = new Vue({
             } else if (user.role == "driver") {
               this.currentUser = user;
               this.page = "driverLanding";
+              getActiveRouteFromServer().then((response) => {
+                console.log(response);
+                if (response.status == 200) {
+                  this.activeRoutes = true;
+                  response.json().then((route) => {
+                    console.log(route);
+                    this.activeRoute = route;
+                    console.log("----", this.activeRoute.start_mileage);
+                    this.activeRoute.start_mileage = this.activeRoute.start_mileage.toLocaleString(
+                      "en-US"
+                    );
+                  });
+                }
+              });
             }
             console.log("This is the current User: ", this.currentUser);
             return true;
@@ -372,13 +463,39 @@ var app = new Vue({
         response.json().then((routes) => {
           console.log("THis are the routes: ", routes);
           this.driverRoutes = routes;
+          for (route in this.driverRoutes) {
+            this.driverRoutes[route].total_miles = this.driverRoutes[
+              route
+            ].total_miles.toLocaleString("en-US");
+          }
         });
       });
     },
     // LOGING OUT
-    logout: function () {
-      console.log("Log out button clicked");
-      this.page = "landingContainer";
+    logOut: function () {
+      logOutOnServer().then((response) => {
+        if (response.status == 200) {
+          this.page = "landingContainer";
+        } else {
+          alert("Error logging out");
+        }
+      });
+    },
+    clearLogInInputs: function () {
+      this.logInEmail = "";
+      this.logInPassword = "";
+    },
+    clearStartingRouteInputs: function () {
+      this.newStartRouteErrors = [];
+      this.new_from_location = "";
+      this.new_start_mileage = "";
+    },
+    clearSignUpButtonInputs: function () {
+      this.signUpCompanyErrors = [];
+      this.new_company_email = "";
+      this.new_company_name = "";
+      this.new_company_password = "";
+      this.new_company_confirm_password = "";
     },
   },
   computed: {
@@ -430,6 +547,26 @@ var app = new Vue({
       return this.logInUserErrors == 0;
     },
 
+    validateStartingOfRoute: function () {
+      this.newStartRouteErrors = [];
+      if (this.new_from_location.length == 0) {
+        this.newStartRouteErrors.push("Please Enter a Starting Location");
+      }
+      if (this.new_start_mileage.length == 0) {
+        this.newStartRouteErrors.push("Please Enter Starting Mileage Of Truck");
+      }
+      return this.newStartRouteErrors == 0;
+    },
+    validateEndingOfRoute: function () {
+      this.newEndRouteErrors = [];
+      if (this.new_to_location.length == 0) {
+        this.newEndRouteErrors.push("Please Enter an Ending Location");
+      }
+      if (this.new_end_mileage.length == 0) {
+        this.newEndRouteErrors.push("Please Enter Ending Mileage Of Truck");
+      }
+      return this.newEndRouteErrors == 0;
+    },
     filterByDate: function () {
       console.log("Hit filterByDate");
       let currentDate = Date.parse(new Date());
@@ -440,15 +577,15 @@ var app = new Vue({
       let filterDateE = Date.parse(this.filterDateEnd);
       console.log("parsed dates:", filterDateS, filterDateE);
       /*
-      console.log(this.filterBy);
-      for (route in this.routes) {
-        console.log("----route: ", this.routes[route]);
-        console.log("----filerby: ", this.filterBy);
-        if (this.filterBy == "Month") {
-          console.log("TRUEE");
-        }
-	  }
-	  */
+		console.log(this.filterBy);
+		for (route in this.routes) {
+		  console.log("----route: ", this.routes[route]);
+		  console.log("----filerby: ", this.filterBy);
+		  if (this.filterBy == "Month") {
+			console.log("TRUEE");
+		  }
+		}
+		*/
       console.log("routes list", this.routes);
       for (route in this.routes) {
         //this.routes.forEach(function (routes) {
@@ -486,8 +623,22 @@ var app = new Vue({
       console.log("filtered Routes", this.filteredRoutes);
       return this.filteredRoutes;
     },
-    created: function () {
-      this.checkGetUser();
+  },
+  watch: {
+    new_start_mileage: function (newValue) {
+      const result = newValue
+        .replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      Vue.nextTick(() => (this.new_start_mileage = result));
     },
+    new_end_mileage: function (newValue) {
+      const result = newValue
+        .replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      Vue.nextTick(() => (this.new_end_mileage = result));
+    },
+  },
+  created: function () {
+    this.checkGetUser();
   },
 });

@@ -2,7 +2,4 @@
 
 const { schema } = require("./model");
 
-
-module.exports = {
-    
-}
+module.exports = {};

@@ -13,9 +13,9 @@ function connect(callback) {
   mongoose
     .connect(connectionString, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     })
-    .catch((err) => {
+    .catch(err => {
       console.log("there was an error connecting to mongo: ", err);
     });
 }
@@ -29,5 +29,5 @@ function onConnect(callback) {
 // export as an object
 module.exports = {
   connect: connect,
-  onConnect: onConnect,
+  onConnect: onConnect
 };

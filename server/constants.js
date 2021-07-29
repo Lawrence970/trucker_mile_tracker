@@ -1,6 +1,6 @@
 const UserRoles = {
   admin: "admin",
-  driver: "driver",
+  driver: "driver"
 };
 
 module.exports = { UserRoles };

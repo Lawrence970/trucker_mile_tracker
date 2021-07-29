@@ -11,14 +11,13 @@
 
 body {
   /* !GLOBAL custom styles */
-  --color-primary: #fffa6b;
-  --color-primary-dark: #f5ef54;
-  --color-secondary: #282a35;
-  --color-white: #dddddd;
-  --color-secondary-dark: #2f2f33;
+  --color-primary: #008cff;
+  --color-primary-dark: #007adf;
+  --color-secondary: #1c1c1c;
   --color-error: #cc3333;
   --color-success: #4bb544;
-  --border-radius: 8px;
+  --color-white: #ffffff;
+  --border-radius: 50px;
 
   margin: 0;
   display: flex;
@@ -68,7 +67,7 @@ body {
   text-align: center;
   font-size: 1.2em;
   border: none;
-  background-color: #ffffff;
+  background-color: var(--color-white);
   border-radius: var(--border-radius);
   margin: 25px;
   font-family: Roboto;
@@ -90,10 +89,20 @@ body {
   font-size: 27px;
   margin: 20px;
   cursor: pointer;
-  color: var(--color-secondary);
+  color: var(--color-white);
   background-color: var(--color-primary);
   width: 310px;
-  height: 64px;
+  height: 60px;
+  box-shadow: 4px 6px 8px 2px rgb(0 0 0 / 10%);
+}
+
+.input-button:hover {
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
+}
+
+.input-button:active {
+  transform: scale(0.98);
 }
 
 .cancel-button {
@@ -135,13 +144,16 @@ body {
   height: 35px;
 }
 
-.input-button:hover {
-  background-color: var(--color-primary-dark);
-  color: var(--color-secondary);
-}
-
-.input-button:active {
-  transform: scale(0.98);
+.finish-button {
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  margin: 0px;
+  cursor: pointer;
+  color: var(--color-white);
+  background-color: var(--color-success);
+  width: 60px;
+  height: 35px;
 }
 
 .subscript-gray {
@@ -152,12 +164,12 @@ body {
 
 .subscript-yellow {
   color: var(--color-primary);
-  font-size: 26px;
 }
 
 .driver-card {
   display: flex;
   justify-content: space-between;
+  background-color: var(--color-secondary);
 }
 
 .driver-card-relative-span {
@@ -171,7 +183,7 @@ body {
   font-family: Staatliches;
   letter-spacing: 0.1em;
   font-size: 60px;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   margin-top: 0px;
   margin-bottom: 0px;
   text-align: center;
@@ -194,13 +206,27 @@ body {
 
 #all-drivers-wrapper li {
   list-style-type: none;
-  background-color: #ffffff;
-  margin: 15px;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  box-shadow: 4px 6px 8px 2px rgb(0 0 0 / 10%);
+  margin: 25px;
   height: 140px;
   width: 300px;
   padding: 14px;
-  border-radius: var(--border-radius);
+  border-radius: 8px;
   font-size: 1.5em;
+}
+
+.all-routes-wrapper li {
+  list-style-type: none;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  box-shadow: 4px 6px 8px 2px rgb(0 0 0 / 10%);
+  margin: 25px;
+  height: 100%;
+  width: 300px;
+  padding: 14px;
+  border-radius: 8px;
 }
 
 /* ! for testing purposes >>> */
@@ -208,6 +234,20 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.active-route-wrapper {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--color-secondary);
+  border-radius: 8px;
+  padding: 20px;
+  color: var(--color-white);
+  box-shadow: 4px 6px 8px 2px rgb(0 0 0 / 10%);
+}
+
+.active-route-wrapper span {
+  margin-right: 50px;
 }
 
 #form-login {
@@ -294,12 +334,13 @@ body {
   padding: 1rem 2rem;
   font-weight: bold;
   font-size: 1.1rem;
-  color: var(--color-secondary-dark);
+  color: var(--color-white);
   border: none;
   border-radius: var(--border-radius);
   outline: none;
   cursor: pointer;
   background: var(--color-primary);
+  box-shadow: 4px 6px 8px 2px rgb(0 0 0 / 10%);
 }
 
 .form-button:hover {
@@ -328,6 +369,11 @@ body {
 .form-menu-selection {
   display: flex;
   justify-content: space-between;
+}
+
+.sign-up-user-errors-wrapper ul {
+  list-style: none;
+  color: var(--color-error);
 }
 
 /* media query at width of 700px */
