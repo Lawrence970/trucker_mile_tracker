@@ -587,26 +587,32 @@ var app = new Vue({
 		}
 		*/
       console.log("routes list", this.routes);
-      for (route in this.routes) {
+      var rightarray = [];
+      if (this.page == "oneDriver") {
+        rightarray = this.driverRoutes;
+      } else if (this.page == "allRoutes") {
+        rightarray = this.routes;
+      }
+      for (route in rightarray) {
         //this.routes.forEach(function (routes) {
         console.log(this.filterBy);
         // console.log("----route created: ", route.)
-        let oldDate = Date.parse(this.routes[route].created_at);
+        let oldDate = Date.parse(rightarray[route].created_at);
         if (this.filterBy == "custom" && filterDateS > 4 && filterDateE > 4) {
           if (oldDate < filterDateE && oldDate > filterDateS) {
-            this.filteredRoutes.push(this.routes[route]);
+            this.filteredRoutes.push(rightarray[route]);
             //console.log("filtered routes list", this.filteredRoutes);
           }
         } else if (this.filterBy == "Month") {
           console.log("Hit Month", this.filterBy);
           console.log("old Date", oldDate);
           if (oldDate < currentDate && oldDate > currentDate - 2592000000) {
-            this.filteredRoutes.push(this.routes[route]);
+            this.filteredRoutes.push(rightarray[route]);
           }
         } else if (this.filterBy == "Week") {
           console.log("Hit Week");
           if (oldDate < currentDate && oldDate > currentDate - 604800000) {
-            this.filteredRoutes.push(this.routes[route]);
+            this.filteredRoutes.push(rightarray[route]);
           }
           //filter by week
         } else if (this.filterBy == "Day") {
@@ -616,7 +622,7 @@ var app = new Vue({
             oldDate < currentDate &&
             oldDate > currentDate - 86400000
           ) {
-            this.filteredRoutes.push(this.routes[route]);
+            this.filteredRoutes.push(rightarray[route]);
           }
         }
       }
