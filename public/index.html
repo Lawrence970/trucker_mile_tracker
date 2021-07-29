@@ -5,16 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trucker Mile Tracker</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="/icons/icofont/icofont.css">
+    <link rel="stylesheet" href="style.css"/>
+    
   </head>
-  <!--! USING webpack-simple for vue CLI -->
   <body>
     <div id="vue-app-wrapper">
       <!--! LANDING PAGE-->
-      <div class="test-nav">
-        <button v-on:click="changePageDisplay('adminLanding')">admin</button>
-        <button v-on:click="changePageDisplay('driverLanding')">driver</button>
-      </div>
       <div
         class="display-flex-col-align-center"
         v-if="page=='landingContainer'"
@@ -46,8 +43,8 @@
           <div class="form" v-if="page=='signIn'">
             <!--action="POST"-->
             <span class="display-flex-space-between">
-              <h1 class="form-title">Login</h1>
               <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
+              <h2 class="form-title">Login</h2>
             </span>
 
             <div class="form-message form-message-error"></div>
@@ -110,8 +107,9 @@
           <!--*create account COMPANY form-->
           <div class="form" v-if="page=='signUpCompany'">
             <span class="display-flex-space-between">
-              <h1 class="form-title">Create Account</h1>
               <button class="back-button" v-on:click="changePageDisplay('landingContainer')">Back</button>
+              <h2 class="form-title">Create Account</h2>
+              
             </span>
 
             <!-- DIV TO DISPLAY ERRORS IF COMPANY DONT FILL ALL THEM OUT -->
@@ -182,9 +180,9 @@
         <!--* ADMIN PAGE---------------------------------------------------------------------------------------------------------------------------->
         <!--! ADMIN LANDING success on login/signup-->
         <div v-if="page=='adminLanding'" class="display-flex-col-align-center">
-          <h1>
+          <h2>
             Welcome {{currentUser.company.company_name}}
-          </h1>
+          </h2>
 
           <button class="input-button" v-on:click="goToDisplayAllDrivers">
             All Drivers
@@ -195,14 +193,14 @@
           >
             Add New Driver
           </button>
-          <button v-on:click="logOut" class="logout-button">logout</button>
+          <button v-on:click="logOut" class="logout-button">logout<i class="icofont-logout icofont-1x"></i></button>
         </div>
 
         <!--! ALL Drivers-->
         <div v-if="page=='allDrivers'">
           <span class="display-flex-space-between">
-            <h1 class="form-title">All Drivers</h1>
             <button class="back-button" v-on:click="changePageDisplay('adminLanding')">Back</button>
+            <h1 class="form-title">All Drivers</h1>
           </span>
           
 
@@ -210,14 +208,12 @@
             <ul>
               <li v-for="driver in drivers" v-on:click="goToDriver(driver)">
                 <div  class="driver-card">
-                  <span>{{driver.first_name}} {{driver.last_name}}</span>
+                  <span>{{driver.first_name}} {{driver.last_name}} <i class="icofont-plus icofont-1x"></i></span>
                   <span class="subscript-gray" class="driver-id-display">
                     {{ "_" + driver._id.slice(driver._id.length - 5) }}
                   </span>
                 </div>
-                <span class="driver-card-relative-span">
-                  <p>arrow</p>
-                </span>
+                  
               </li>
             </ul>
           </div>
@@ -225,8 +221,8 @@
 
         <div v-if="page=='oneDriver'">
           <span class="display-flex-space-between">
-            <h1 class="form-title">Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h1>
             <button class="back-button" v-on:click="changePageDisplay('adminLanding')">Back</button>
+            <h3 class="form-title">Routes of {{currentDriver.first_name}} {{currentDriver.last_name}}</h3>  
           </span>
           
           <div v-if="driverRoutes.length == 0" class="no-routes">
@@ -251,20 +247,16 @@
           <!--*create account USER form-->
           <div class="form">
             <span class="form-menu-selection">
-              <img
-                class="hamburger-menu"
-                src="/icons/navigation-menu.svg"
-                alt="menu"
-              />
               <button
                 class="cancel-button"
                 v-on:click="changePageDisplay('adminLanding')"
               >
                 Cancel
               </button>
+              <h2 class="form-title">New Driver</h2>
             </span>
 
-            <h1 class="form-title">New Driver</h1>
+            
             <div class="form-message form-message-error"></div>
             <!--* error message-->
             <!-- DIV TO DISPLAY ERRORS IF USER DOESN'T FILL ALL THEM OUT -->
@@ -369,13 +361,14 @@
           >
             My Routes
           </button>
-          <button v-on:click="logOut" class="logout-button">logout</button>
+          <button v-on:click="logOut" class="logout-button">logout<i class="icofont-logout icofont-1x"></i></button>
         </div>
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'">
-			<h1>MY ROUTES</h1>
-			<button class="back-button" v-on:click="changePageDisplay('driverLanding')">back</button>
-
+      <span class="display-flex-space-between">
+        <h1 class="large-text-h1">MY ROUTES</h1>
+        <button class="back-button" v-on:click="changePageDisplay('driverLanding')">back</button>
+      </span>
 			<p>Filter By:</p>
 			<button v-on:click="filterBy='Month', filterByDate">30 Days</button>
 			<button v-on:click="filterBy='Week', filterByDate">7 Days </button>
@@ -385,15 +378,20 @@
 			<input type = "date" v-model = "filterDateEnd">
 			<button v-on:click= "filterBy = 'custom', filterByDate">Search</button>
 			<div class="all-routes-wrapper">
-          <ul>
-            <li v-show = "filterBy.length==0 " v-for="route in routes">
-				Starting City: {{route.from_location}}<br>
-				Starting Mileage: {{route.start_mileage}}<br>
-				Ending City: {{route.to_location}}<br>
-				Ending Mileage: {{route.end_mileage}}<br>
-				Total Mileage: {{route.total_miles}}<br>
-			</li>
-		  </ul>
+        <ul>
+          <li v-for="route in routes">
+            <span class="display-flex-space-between">
+              <h3>{{route.from_location}}</h3> 
+              <h3>{{route.start_mileage}}<br></h3>
+            </span>
+            <i class="icofont-arrow-down icofont-2x"></i>
+            <span class="display-flex-space-between">
+              <h3>{{route.to_location}}</h3> 
+              <h3> {{route.end_mileage}}<br></h3>
+            </span>
+            <h2 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h2>
+          </li>
+        </ul>
 		  
 		  <div v-if="filterBy.length!=0">
 			  <ul>
@@ -408,23 +406,19 @@
 		  </div>
         </div>
         <!--! Start A new Route *New route form*-->
-        <div v-if="page=='newRoute'">
-          <div class="form">
-            <span class="form-menu-selection">
-              <img
-                class="hamburger-menu"
-                src="/icons/navigation-menu.svg"
-                alt="menu"
-              />
+        <div v-if="page=='newRoute'" >
+          <div class="form margin-left-right">
+            <span class="display-flex-space-between">
               <button
                 class="cancel-button"
                 v-on:click="changePageDisplay('driverLanding')"
               >
                 Cancel
               </button>
+              <h1 class="form-title">New Route</h1>
             </span>
 
-            <h1 class="form-title">New Route</h1>
+            
 
             <div
               v-if="newStartRouteErrors.length > 0"
@@ -467,11 +461,6 @@
         <div v-if="page=='endRoute'">
           <div class="form">
             <span class="form-menu-selection">
-              <img
-                class="hamburger-menu"
-                src="/icons/navigation-menu.svg"
-                alt="menu"
-              />
               <button
                 class="cancel-button"
                 v-on:click="changePageDisplay('driverLanding')"
