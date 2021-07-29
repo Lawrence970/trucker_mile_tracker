@@ -33,7 +33,7 @@ app.use(
   session({
     secret: "fljadskjvn123bf",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: true
   })
 );
 app.use(passport.initialize());
@@ -69,14 +69,14 @@ app.get("/route/active", (req, res) => {
   if (req.user.role == constants.UserRoles.driver) {
     findQuery = {
       user: driverID,
-      to_location: "",
+      to_location: ""
     };
   }
-  Route.findOne(findQuery, function (err, route) {
+  Route.findOne(findQuery, function(err, route) {
     if (err) {
       res.status(500).json({
         message: `unable to list routes`,
-        error: err,
+        error: err
       });
       return;
     }
@@ -105,14 +105,14 @@ app.get("/route/:driverID", (req, res) => {
       console.log("User exists: ", user);
       var findQuery = {
         user: driverID,
-        company: companyID,
+        company: companyID
       };
 
-      Route.find(findQuery, function (err, routes) {
+      Route.find(findQuery, function(err, routes) {
         if (err) {
           res.status(500).json({
             message: "Unable to list routes",
-            error: err,
+            error: err
           });
           return;
         }
@@ -121,7 +121,7 @@ app.get("/route/:driverID", (req, res) => {
       });
     } else {
       res.status(422).json({
-        error: "User does not exist",
+        error: "User does not exist"
       });
     }
   });
@@ -146,7 +146,7 @@ app.get("/route", (req, res, next) => {
   if (req.user.role === constants.UserRoles.admin) {
     findQuery = {
       company: companyID,
-      to_location: { $ne: "" },
+      to_location: { $ne: "" }
     };
   }
 
@@ -154,12 +154,12 @@ app.get("/route", (req, res, next) => {
   else if (req.user.role === constants.UserRoles.driver) {
     findQuery = {
       user: driverID,
-      to_location: { $ne: "" },
+      to_location: { $ne: "" }
     };
   }
   console.log("This is the find query: ", findQuery);
   //
-  Route.find(findQuery, function (err, routes) {
+  Route.find(findQuery, function(err, routes) {
     if (err) {
       res.status(500).json({ message: `unable to list routes`, error: err });
       return;
@@ -184,7 +184,7 @@ app.get("/route/:id", (req, res, next) => {
     } else if (route === null) {
       res.status(404).json({
         error: `Returns Null`,
-        error: err,
+        error: err
       });
       return;
     }
@@ -197,7 +197,7 @@ app.get("/route/:id", (req, res, next) => {
       start_mileage: route.start_mileage,
       end_mileage: route.end_mileage,
       total_miles: total,
-      created_at: route.createdAt,
+      created_at: route.createdAt
     };
 
     res.status(200).json(route);
@@ -206,7 +206,7 @@ app.get("/route/:id", (req, res, next) => {
 });
 
 //post - Creates new route
-app.post("/route", function (req, res) {
+app.post("/route", function(req, res) {
   // CHECKING IF THEY ARE LOGGED IN
   if (!req.user) {
     res.sendStatus(401);
@@ -224,16 +224,16 @@ app.post("/route", function (req, res) {
     to_location: req.body.to_location || "",
     start_mileage: req.body.start_mileage || 0,
     end_mileage: req.body.end_mileage || 0,
-    route_Date: new Date(req.body.route_Date),
+    // route_Date: new Date(req.body.route_Date),
     user: req.user,
-    company: req.user.company._id,
+    company: req.user.company._id
   };
   Route.create(creatingRoute, (err, route) => {
     if (err) {
       console.log("unable to create todo");
       res.status(500).json({
         message: "unable to create route",
-        error: err,
+        error: err
       });
       return;
     }
@@ -243,22 +243,22 @@ app.post("/route", function (req, res) {
   });
 });
 
-app.put("/route/:routeID", function (req, res) {
+app.put("/route/:routeID", function(req, res) {
   if (!req.user) {
     res.sendStatus(401);
     return;
   }
   res.setHeader("Content-Type", "application/json");
-  Route.findOne({ _id: req.params.routeID }).then(function (route) {
+  Route.findOne({ _id: req.params.routeID }).then(function(route) {
     if (route) {
       route.to_location = req.body.to_location;
       route.end_mileage = req.body.end_mileage;
       route
         .save()
-        .then(function () {
+        .then(function() {
           res.status(201).json(route);
         })
-        .catch(function (err) {
+        .catch(function(err) {
           res.sendStatus(500);
         });
     } else {
@@ -274,12 +274,12 @@ app.delete("/route/:id", (req, res) => {
     if (err) {
       res.status(500).json({
         message: "unable to find and delete route",
-        error: err,
+        error: err
       });
     } else if (route === null) {
       res.status(404).json({
         error: `Returns Null`,
-        error: err,
+        error: err
       });
       return;
     }
@@ -287,7 +287,7 @@ app.delete("/route/:id", (req, res) => {
   });
 });
 
-app.patch("/route/:id", function (req, res) {
+app.patch("/route/:id", function(req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(
     `Patching route with updates from:${req.params.id} with body`,
@@ -307,62 +307,61 @@ app.patch("/route/:id", function (req, res) {
     updateRoute.end_mileage = req.body.end_mileage;
   }
 
-  Route.updateOne(
-    { _id: req.params.id },
-    { $set: updateRoute },
-    function (err, updateResult) {
-      if (err) {
-        console.log("unable to patch", err);
-        res.status(500).json({
-          message: "unable to patch todo",
-          error: err,
-        });
-      } else if (updateResult.n === 0) {
-        console.log("");
-        res.status(404).json({
-          error: "Returns Null",
-          error: err,
-        });
-        return;
-      }
-      res.status(200).json(updateRoute);
+  Route.updateOne({ _id: req.params.id }, { $set: updateRoute }, function(
+    err,
+    updateResult
+  ) {
+    if (err) {
+      console.log("unable to patch", err);
+      res.status(500).json({
+        message: "unable to patch todo",
+        error: err
+      });
+    } else if (updateResult.n === 0) {
+      console.log("");
+      res.status(404).json({
+        error: "Returns Null",
+        error: err
+      });
+      return;
     }
-  );
+    res.status(200).json(updateRoute);
+  });
 });
 
 // AUTHENTICATION
 
 // CREATING NEW USERS
-app.post("/user", function (req, res) {
+app.post("/user", function(req, res) {
   // ---------CREATING AN ACCOUNT FOR A COMPANY
   if (req.body.companyName) {
     console.log("creating an account for a company");
-    User.findOne({ email: req.body.companyEmail }).then(function (user) {
+    User.findOne({ email: req.body.companyEmail }).then(function(user) {
       if (user) {
         res.status(422).json({
-          error: "Email already registered",
+          error: "Email already registered"
         });
       } else {
         var newCompany = new Company({
           company_name: req.body.companyName,
-          company_email: req.body.companyEmail,
+          company_email: req.body.companyEmail
         });
         var companyPlainPassword = req.body.companyPlainPassword;
         // CHECK WITH JAZE
-        newCompany.setEncryptedPassword(companyPlainPassword, function () {
-          newCompany.save().then(function (companyCreated) {
+        newCompany.setEncryptedPassword(companyPlainPassword, function() {
+          newCompany.save().then(function(companyCreated) {
             var user = new User({
               email: companyCreated.company_email,
               encrypted_password: companyCreated.encrypted_password,
               role: "admin",
-              company: companyCreated,
+              company: companyCreated
             });
             user
               .save()
-              .then(function () {
+              .then(function() {
                 res.status(201).json(user);
               })
-              .catch(function (err) {
+              .catch(function(err) {
                 if (err.errors) {
                   // MONGOOSE VALIDATION FAILURE
                   var messages = {};
@@ -389,10 +388,10 @@ app.post("/user", function (req, res) {
     }
 
     // CHECKING IF THE EMAIL IS UNIQUE
-    User.findOne({ email: req.body.email }).then(function (user) {
+    User.findOne({ email: req.body.email }).then(function(user) {
       if (user) {
         res.status(422).json({
-          error: "Email Already registered",
+          error: "Email Already registered"
         });
       } else {
         // CREATING THE NEW USER MODEL
@@ -401,17 +400,17 @@ app.post("/user", function (req, res) {
           last_name: req.body.lastName,
           email: req.body.email,
           role: "driver",
-          company: req.user.company,
+          company: req.user.company
         });
         // storing the plain password
         var plainPassword = req.body.plainPassword;
-        user.setEncryptedPassword(plainPassword, function () {
+        user.setEncryptedPassword(plainPassword, function() {
           user
             .save()
-            .then(function () {
+            .then(function() {
               res.status(201).json(user);
             })
-            .catch(function (err) {
+            .catch(function(err) {
               if (err.errors) {
                 // MONGOOSE VALIDATION FAILURE
                 var messages = {};
@@ -446,7 +445,7 @@ app.get("/drivers", (req, res, next) => {
 
   let findQuery = { company: companyID, role: "driver" };
 
-  User.find(findQuery, function (err, users) {
+  User.find(findQuery, function(err, users) {
     if (err) {
       console.log(`there was error finding users`, err);
       res.status(500), json({ message: `unable to list users` });
@@ -469,19 +468,19 @@ passport.use(
     {
       //some configs
       usernameField: "email",
-      passwordField: "plainPassword",
+      passwordField: "plainPassword"
     },
-    function (email, plainPassword, done) {
+    function(email, plainPassword, done) {
       console.log("local got hit");
       User.findOne({ email: email })
-        .then(function (user) {
+        .then(function(user) {
           console.log("this is the user: ", user);
           if (!user) {
             done(null, false, { message: "No user with that email" });
             return;
           }
           // verify that the user exists
-          user.verifyPassword(plainPassword, function (result) {
+          user.verifyPassword(plainPassword, function(result) {
             if (result) {
               done(null, user);
             } else {
@@ -489,38 +488,38 @@ passport.use(
             }
           });
         })
-        .catch(function (err) {
+        .catch(function(err) {
           done(err);
         });
     }
   )
 );
 // 2. SERIALIZED USER TO SESSION
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function(user, done) {
   done(null, user._id);
 });
 
 //3. DESERIALIZED USER FROM SESSION
-passport.deserializeUser(function (userId, done) {
+passport.deserializeUser(function(userId, done) {
   User.findOne({ _id: userId })
     .populate("company")
-    .then(function (user) {
+    .then(function(user) {
       done(null, user);
     })
-    .catch(function (err) {
+    .catch(function(err) {
       done(err);
     });
 });
 
 // 4. Authenticate endpoint
-app.post("/session", passport.authenticate("local"), function (req, res) {
+app.post("/session", passport.authenticate("local"), function(req, res) {
   // this function is called if authentication succeeds.
   console.log("session got hit");
   res.sendStatus(201);
 });
 
 // 5. ME ENDPOINT
-app.get("/session", function (req, res) {
+app.get("/session", function(req, res) {
   if (req.user) {
     // send user details
     console.log("This is the user we are sending back: ", req.user);
@@ -532,12 +531,12 @@ app.get("/session", function (req, res) {
 
 // LOGING OUT
 
-app.get("/logout", function (req, res) {
+app.get("/logout", function(req, res) {
   console.log("I am Logout");
   req.logout();
   res.json({
     status: "logout",
-    msg: "Please Log In again",
+    msg: "Please Log In again"
   });
 });
 
