@@ -363,6 +363,9 @@
 			<button v-on:click="filterBy='Week', filterByDate">7 Days </button>
 			<button v-on:click="filterBy='Day', filterByDate">24 Hours</button>
 			<button v-on:click="filterBy=''">Reset</button>
+			<input type = "date" v-model = "filterDateStart">
+			<input type = "date" v-model = "filterDateEnd">
+			<button v-on:click= "filterBy = 'custom', filterByDate">Search</button>
           <ul>
             <li v-show = "filterBy.length==0 " v-for="route in routes">
 				Starting City: {{route.from_location}}<br>

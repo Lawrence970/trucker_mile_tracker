@@ -47,6 +47,8 @@ var app = new Vue({
     role: "",
     password: "",
     confirm_password: "",
+    filterDateStart: "",
+    filterDateEnd: "",
     // Creating a new company account
     new_company_name: "",
     new_company_email: "",
@@ -433,6 +435,10 @@ var app = new Vue({
       let currentDate = Date.parse(new Date());
       console.log("Current Date:", currentDate);
       this.filteredRoutes = [];
+      console.log("filter date start", this.filterDateStart);
+      let filterDateS = Date.parse(this.filterDateStart);
+      let filterDateE = Date.parse(this.filterDateEnd);
+      console.log("parsed dates:", filterDateS, filterDateE);
       /*
       console.log(this.filterBy);
       for (route in this.routes) {
@@ -449,7 +455,12 @@ var app = new Vue({
         console.log(this.filterBy);
         // console.log("----route created: ", route.)
         let oldDate = Date.parse(this.routes[route].created_at);
-        if (this.filterBy == "Month") {
+        if (this.filterBy == "custom" && filterDateS > 4 && filterDateE > 4) {
+          if (oldDate < filterDateE && oldDate > filterDateS) {
+            this.filteredRoutes.push(this.routes[route]);
+            //console.log("filtered routes list", this.filteredRoutes);
+          }
+        } else if (this.filterBy == "Month") {
           console.log("Hit Month", this.filterBy);
           console.log("old Date", oldDate);
           if (oldDate < currentDate && oldDate > currentDate - 2592000000) {
