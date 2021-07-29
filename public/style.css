@@ -29,8 +29,21 @@ body {
   font-family: Roboto;
 }
 
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
 #vue-app-wrapper {
   height: 100%;
+}
+
+.margin-left-right {
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 /* global classes >>> */
@@ -109,7 +122,6 @@ body {
   border: none;
   border-radius: var(--border-radius);
   font-size: 16px;
-  margin: 0px;
   cursor: pointer;
   color: var(--color-white);
   background-color: var(--color-error);
@@ -125,7 +137,7 @@ body {
   cursor: pointer;
   color: var(--color-white);
   background-color: var(--color-error);
-  width: 60px;
+  width: 85px;
   height: 35px;
 }
 
@@ -133,7 +145,7 @@ body {
   border: none;
   border-radius: var(--border-radius);
   font-size: 16px;
-  margin: 0px;
+  margin-left: 20px;
   cursor: pointer;
   color: var(--color-white);
   background-color: var(--color-error);
@@ -169,12 +181,6 @@ body {
   background-color: var(--color-secondary);
 }
 
-.driver-card-relative-span {
-  position: relative;
-  top: 65px;
-  left: 240px;
-}
-
 /* use this wherever TRUCKER MILES h1 is used */
 .app-name-header-one {
   font-family: Staatliches;
@@ -207,7 +213,7 @@ body {
   color: var(--color-white);
   box-shadow: 4px 6px 8px 2px rgb(0 0 0 / 10%);
   margin: 25px;
-  height: 140px;
+  height: 100%;
   width: 300px;
   padding: 14px;
   border-radius: 8px;
@@ -268,16 +274,16 @@ body {
 }
 
 .form > *:first-child {
-  margin-top: 0;
+  margin-top: 20px;
 }
 
 .form > *:last-child {
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 
 .form-title {
-  margin-bottom: 2rem;
   text-align: center;
+  margin-right: 20px;
   color: var(--color-primary);
 }
 
@@ -295,6 +301,7 @@ body {
 }
 
 .form-input-group {
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -351,6 +358,7 @@ body {
 
 .form-text {
   text-align: center;
+  margin-top: 20px;
 }
 
 .form-link {
