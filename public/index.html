@@ -226,16 +226,23 @@
           </span>
           
           <div v-if="driverRoutes.length == 0" class="no-routes">
-            <h1>This Driver Has No Routes</h1>
+            <h2 style="text-align: center; margin:20px;">This Driver Has No Routes</h2>
           </div>
-          <div class="all-routes-of-driver all-routes-wrapper">
+          <div class="all-routes-of-driver all-routes-wrapper" >
             <ul>
               <li v-for="route in driverRoutes">
-                <h3>ID: {{route._id}}</h3>
-                <h3>FROM: {{route.from_location}}</h3>
-                <h3>TO: {{route.to_location}}</h3>
-                <h3>TOTAL: {{route.total_miles}} miles covered</h3>
-                <h4>Created: {{route.time_ago}}</h4>
+                
+                <span class="display-flex-space-between">
+                  <h3>Start - {{route.from_location}}</h3>
+                </span>
+                <i class="icofont-arrow-down icofont-2x"></i>
+                <span class="display-flex-space-between">
+                  <h3>End - {{route.to_location}}</h3> 
+                  <h3>Miles Gone - {{route.total_miles}}</h3>
+                </span>
+                <h2 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h2>
+                <p style="text-align: right; color:#008cff;" >Finished - {{route.time_ago}}<br></p>
+                <h5 style="text-align: left; color:#4bb544; margin-top:10px;">Route ID: {{route._id}}</h5> 
               </li>
             </ul>
           </div>
@@ -342,9 +349,9 @@
           <!-- ACTIVE ROUTE -->
           <div v-if="activeRoutes == true" class="active-route-wrapper">
             <span>
-              <h3>Active Route</h3>
-              <h4>From Location: {{activeRoute.from_location}}</h4>
-              <h4>Start Mileage: {{activeRoute.start_mileage}} miles</h4>
+              <h3 style="color:#4bb544;">Active Route</h3>
+              <h4>Start - {{activeRoute.from_location}}</h4>
+              <h4>Start Mileage - {{activeRoute.start_mileage}}</h4>
             </span>
             
             <button v-on:click="goToFinishRoute" class="finish-button">END</button>
@@ -370,14 +377,20 @@
         <button class="back-button" v-on:click="changePageDisplay('driverLanding')">back</button>
         <h1 class="large-text-h1">MY ROUTES</h1>
       </span>
-			<p>Filter By:</p>
-			<button v-on:click="filterBy='Month', filterByDate">30 Days</button>
-			<button v-on:click="filterBy='Week', filterByDate">7 Days </button>
-			<button v-on:click="filterBy='Day', filterByDate">24 Hours</button>
-			<button v-on:click="filterBy=''">Reset</button>
-			<input type = "date" v-model = "filterDateStart">
-			<input type = "date" v-model = "filterDateEnd">
-			<button v-on:click= "filterBy = 'custom', filterByDate">Search</button>
+      <div class="search-group">
+        <button class="search-group-button" v-on:click="filterBy='Month', filterByDate">30 Days</button>
+			  <button class="search-group-button" v-on:click="filterBy='Week', filterByDate">7 Days </button>
+			  <button class="search-group-button" v-on:click="filterBy='Day', filterByDate">24 Hours</button>
+      </div>
+			
+      <div class="search-group-by-date">
+        <input type = "date" v-model = "filterDateStart">
+			  <input type = "date" v-model = "filterDateEnd">
+      </div>
+      <div class="display-flex-col-align-center">
+        <button class="search-button" v-on:click= "filterBy = 'custom', filterByDate">Search</button>
+        <button class="reset-search-button" v-on:click="filterBy=''">Reset Search</button>
+      </div>
 			<div class="all-routes-wrapper">
         <ul>
           <li v-show = "filterBy.length==0 " v-for="route in routes">
@@ -390,25 +403,27 @@
               <h3>{{route.to_location}}</h3> 
               <h3> {{route.end_mileage}}<br></h3>
             </span>
-<<<<<<< HEAD
-            <h3 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h3>
-=======
             <h2 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h2>
-            Created: {{route.time_ago}}<br>
->>>>>>> develop_main
+            <p style="text-align: right; color:#008cff;" >Finished - {{route.time_ago}}<br></p>
           </li>
         </ul>
 		  
-		  <div v-if="filterBy.length!=0">
+		  <div class="all-routes-wrapper" v-if="filterBy.length!=0">
 			  <ul>
-				  <li v-for="route in filteredRoutes">
-					Starting City: {{route.from_location}}<br>
-					Starting Mileage: {{route.start_mileage}}<br>
-					Ending City: {{route.to_location}}<br>
-					Ending Mileage: {{route.end_mileage}}<br>
-          Total Mileage: {{route.total_miles}}<br>
-          Created: {{route.time_ago}}<br>
-			  </ul>
+          <li v-for="route in filteredRoutes">
+            <span class="display-flex-space-between">
+              <h3>{{route.from_location}}</h3> 
+              <h3>{{route.start_mileage}}<br></h3>
+            </span>
+            <i class="icofont-arrow-down icofont-2x"></i>
+            <span class="display-flex-space-between">
+              <h3>{{route.to_location}}</h3> 
+              <h3> {{route.end_mileage}}<br></h3>
+            </span>
+            <h2 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h2>
+            <p style="text-align: right; color:#008cff;" >Finished - {{route.time_ago}}<br></p>
+          </li>
+        </ul>
 			  </div>
 		  </div>
         </div>
@@ -462,7 +477,7 @@
         </div>
         <!--End A New Route -->
         <div v-if="page=='endRoute'">
-          <div class="form">
+          <div class="form margin-left-right">
             <span class="form-menu-selection">
               <button
                 class="cancel-button"
