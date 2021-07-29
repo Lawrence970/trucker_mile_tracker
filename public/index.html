@@ -239,6 +239,7 @@
                 <h3>FROM: {{route.from_location}}</h3>
                 <h3>TO: {{route.to_location}}</h3>
                 <h3>TOTAL: {{route.total_miles}} miles covered</h3>
+                <h4>Created: {{route.time_ago}}</h4>
               </li>
             </ul>
           </div>
@@ -391,7 +392,8 @@
 				Starting Mileage: {{route.start_mileage}}<br>
 				Ending City: {{route.to_location}}<br>
 				Ending Mileage: {{route.end_mileage}}<br>
-				Total Mileage: {{route.total_miles}}<br>
+        Total Mileage: {{route.total_miles}}<br>
+        Created: {{route.time_ago}}<br>
 			</li>
 		  </ul>
 		  
@@ -402,7 +404,8 @@
 					Starting Mileage: {{route.start_mileage}}<br>
 					Ending City: {{route.to_location}}<br>
 					Ending Mileage: {{route.end_mileage}}<br>
-					Total Mileage: {{route.total_miles}}<br>
+          Total Mileage: {{route.total_miles}}<br>
+          Created: {{route.time_ago}}<br>
 			  </ul>
 			  </div>
 		  </div>
