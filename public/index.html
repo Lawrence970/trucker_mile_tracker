@@ -334,10 +334,10 @@
           v-if="page=='driverLanding'"
           class="display-flex-col-align-center"
         >
-          <h1>
+          <h2>
             Welcome Driver {{currentUser.first_name}}
             {{currentUser.last_name}}
-          </h1>
+          </h2>
           <!-- ACTIVE ROUTE -->
           <div v-if="activeRoutes == true" class="active-route-wrapper">
             <span>
@@ -366,8 +366,8 @@
         <!--! My Routes *DISPLAY ALL ROUTES* -->
         <div v-if="page=='allRoutes'">
       <span class="display-flex-space-between">
-        <h1 class="large-text-h1">MY ROUTES</h1>
         <button class="back-button" v-on:click="changePageDisplay('driverLanding')">back</button>
+        <h1 class="large-text-h1">MY ROUTES</h1>
       </span>
 			<p>Filter By:</p>
 			<button v-on:click="filterBy='Month', filterByDate">30 Days</button>
@@ -389,7 +389,7 @@
               <h3>{{route.to_location}}</h3> 
               <h3> {{route.end_mileage}}<br></h3>
             </span>
-            <h2 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h2>
+            <h3 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h3>
           </li>
         </ul>
 		  
@@ -417,9 +417,6 @@
               </button>
               <h1 class="form-title">New Route</h1>
             </span>
-
-            
-
             <div
               v-if="newStartRouteErrors.length > 0"
               class="begin-route-errors-wrapper"
@@ -447,7 +444,6 @@
                 v-model="new_start_mileage"
                 autofocus
               />
-              {{new_start_mileage}}
             </div>
             <button
               class="form-button"
