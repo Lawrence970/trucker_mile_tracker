@@ -257,6 +257,7 @@ var app = new Vue({
     getRoutes: function() {
       fetch(`${url}/route`).then(function(response) {
         response.json().then(function(data) {
+          data.reverse();
           app.routes = data;
           for (route in app.routes) {
             console.log("THIS IS A ROUTE", app.routes[route]);
@@ -462,6 +463,7 @@ var app = new Vue({
       getDriverRoutesFromCompany(driverID).then(response => {
         response.json().then(routes => {
           console.log("THis are the routes: ", routes);
+          routes.reverse();
           this.driverRoutes = routes;
           for (route in this.driverRoutes) {
             this.driverRoutes[route].total_miles = this.driverRoutes[
