@@ -228,7 +228,6 @@
           </span>
           
           <div v-if="driverRoutes.length == 0" class="no-routes">
-<<<<<<< HEAD
             <h2 style="text-align: center; margin:20px;">This Driver Has No Routes</h2>
           </div>
           <div class="search-group">
@@ -282,39 +281,6 @@
               </li>
             </ul>
             </div>
-=======
-            <h1>This Driver Has No Routes</h1>
-		  </div>
-		  
-		  <p>Filter By:</p>
-			<button v-on:click="filterBy='Month', filterByDate">30 Days</button>
-			<button v-on:click="filterBy='Week', filterByDate">7 Days </button>
-			<button v-on:click="filterBy='Day', filterByDate">24 Hours</button>
-			<button v-on:click="filterBy=''">Reset</button>
-			<input type = "date" v-model = "filterDateStart">
-			<input type = "date" v-model = "filterDateEnd">
-			<button v-on:click= "filterBy = 'custom', filterByDate">Search</button>
-          <div class="all-routes-of-driver all-routes-wrapper">
-            <ul>
-              <li v-show = "filterBy.length==0 "v-for="route in driverRoutes">
-                <h3>ID: {{route._id}}</h3>
-                <h3>FROM: {{route.from_location}}</h3>
-                <h3>TO: {{route.to_location}}</h3>
-                <h3>TOTAL: {{route.total_miles}} miles covered</h3>
-                <h4>Created: {{route.time_ago}}</h4>
-              </li>
-			</ul>
-			<div v-if="filterBy.length!=0">
-				<ul>
-					<li v-for="route in filteredRoutes">
-					  Starting City: {{route.from_location}}<br>
-					  Starting Mileage: {{route.start_mileage}}<br>
-					  Ending City: {{route.to_location}}<br>
-					  Ending Mileage: {{route.end_mileage}}<br>
-					  Total Mileage: {{route.total_miles}}<br>
-				</ul>
-				</div>
->>>>>>> develop_main
           </div>
         </div>
 
