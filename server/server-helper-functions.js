@@ -7,7 +7,7 @@ function setTotalMileageOfRoutes(routes) {
     // CALCULATING THE TOTAL OF MILEAGE COVERED
     var total = route.end_mileage - route.start_mileage;
     console.log();
-    var routeCreatedAt = new Date(route.createdAt);
+    var routeFinishedAt = new Date(route.updatedAt);
 
     route = {
       _id: route._id,
@@ -19,7 +19,8 @@ function setTotalMileageOfRoutes(routes) {
       company: route.company._id,
       total_miles: total,
       created_at: route.createdAt,
-      time_ago: moment(routeCreatedAt).fromNow()
+      updated_at: route.updatedAt,
+      time_ago: moment(routeFinishedAt).fromNow(),
     };
     completeRoutes.push(route);
   }
@@ -27,5 +28,5 @@ function setTotalMileageOfRoutes(routes) {
 }
 
 module.exports = {
-  setTotalMileageOfRoutes: setTotalMileageOfRoutes
+  setTotalMileageOfRoutes: setTotalMileageOfRoutes,
 };

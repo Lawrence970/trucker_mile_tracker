@@ -5,9 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trucker Mile Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://allyoucan.cloud/cdn/icofont/1.0.1/icofont.css" integrity="sha384-jbCTJB16Q17718YM9U22iJkhuGbS0Gd2LjaWb4YJEZToOPmnKDjySVa323U+W7Fv" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/icons/icofont/icofont.css">
     <link rel="stylesheet" href="style.css"/>
-    
   </head>
   <body>
     <div id="vue-app-wrapper">
@@ -17,6 +18,8 @@
         v-if="page=='landingContainer'"
       >
         <h1 class="app-name-header-one">TRACK THE TRUCK</h1>
+        <i class="icofont-truck"></i>
+        <i class="fa fa-road fa-lg"></i>
         <p class="subscript-yellow">Keeping Track of Miles for You</p>
         <button
           type="button"
@@ -250,12 +253,12 @@
                 
                 <span class="display-flex-space-between">
                   <h3>{{route.from_location}}</h3>
-                  <h3>{{route.start_mileage}}</h3>
+                  <h3>{{route.start_mileage}}mi</h3>
                 </span>
                 <i class="icofont-arrow-down icofont-2x"></i>
                 <span class="display-flex-space-between">
                   <h3>{{route.to_location}}</h3> 
-                  <h3>{{route.end_mileage}}</h3>
+                  <h3>{{route.end_mileage}}mi</h3>
                 </span>
                 <h2 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h2>
                 <p style="text-align: right; color:#008cff;" >Finished - {{route.time_ago}}<br></p>
@@ -387,7 +390,7 @@
             <span>
               <h3 style="color:#4bb544;">Active Route</h3>
               <h4>Start - {{activeRoute.from_location}}</h4>
-              <h4>Start Mileage - {{activeRoute.start_mileage}}</h4>
+              <h4>Start Mileage - {{activeRoute.start_mileage}} mi</h4>
             </span>
             
             <button v-on:click="goToFinishRoute" class="finish-button">END</button>
@@ -433,12 +436,12 @@
               <li v-show = "filterBy.length==0 " v-for="route in routes">
                 <span class="display-flex-space-between">
                   <h3>{{route.from_location}}</h3> 
-                  <h3>{{route.start_mileage}}<br></h3>
+                  <h3>{{route.start_mileage}} mi<br></h3>
                 </span>
                 <i class="icofont-arrow-down icofont-2x"></i>
                 <span class="display-flex-space-between">
                   <h3>{{route.to_location}}</h3> 
-                  <h3> {{route.end_mileage}}<br></h3>
+                  <h3> {{route.end_mileage}} mi<br></h3>
                 </span>
                 <h2 style="text-align: center; margin:10px;">Total Miles {{route.total_miles}}<br></h2>
                 <p style="text-align: right; color:#008cff;" >Finished - {{route.time_ago}}<br></p>

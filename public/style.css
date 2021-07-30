@@ -439,6 +439,14 @@ ul {
   color: var(--color-error);
 }
 
+.icofont-truck {
+  font-size: 3em;
+}
+
+.fa-road {
+  font-size: 2em;
+}
+
 /* media query at width of 700px */
 @media screen and (max-width: 700px) {
   .subscript-gray {
