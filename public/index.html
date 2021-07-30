@@ -184,7 +184,7 @@
         <!--! ADMIN LANDING success on login/signup-->
         <div v-if="page=='adminLanding'" class="display-flex-col-align-center">
           <h2>
-            Welcome {{currentUser.company.company_name}}
+            Welcome <b>{{currentUser.company.company_name}}</b>
           </h2>
 
           <button class="input-button" v-on:click="goToDisplayAllDrivers">
@@ -382,7 +382,7 @@
           class="display-flex-col-align-center"
         >
           <h2>
-            Welcome Driver {{currentUser.first_name}}
+            Welcome Driver <b>{{currentUser.first_name}}</b>
             {{currentUser.last_name}}
           </h2>
           <!-- ACTIVE ROUTE -->
