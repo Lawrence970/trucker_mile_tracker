@@ -281,7 +281,8 @@ ul {
   background-color: var(--color-secondary);
   color: var(--color-white);
   box-shadow: 4px 6px 8px 2px rgb(0 0 0 / 10%);
-  margin: 25px;
+  margin-top: 33px;
+  margin-left: 46px;
   height: 100%;
   width: 300px;
   padding: 14px;
